@@ -3,7 +3,7 @@ import pandas as pd
 
 @st.cache_data
 def carregar_tri_financas():
-    tri_financas = pd.read_csv('/home/fe007/VS Code/Apps Streamlit/dados_vale(Tri Financeiro).csv', encoding='ISO-8859-1', sep=';')
+    tri_financas = pd.read_csv('dados_vale(Tri Financeiro).csv', encoding='ISO-8859-1', sep=';')
 
     return tri_financas
 
