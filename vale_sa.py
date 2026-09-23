@@ -74,19 +74,21 @@ lista_trimestres_financas = tri_financas['Trimestre'].dropna().unique().tolist()
 tri_selecionado = st.selectbox("Selecione o Trimestre (1T19 - 2T26):", options=lista_trimestres_financas) #valor escolhido fica em memória
 dados_tri = tri_financas[tri_financas['Trimestre'] == tri_selecionado].iloc[0] #filtra alinha correspondente ao trimestre selecionado
 
-col1, col2, col3, col4 = st.columns(4) #cria colunas
+if pagina == "Financeiro":
+   
+   col1, col2, col3, col4 = st.columns(4) #cria colunas
 
-with col1:
-   card_condicao("Receita Líquida", "Receita Líquida", dados_tri)
+   with col1:
+      card_condicao("Receita Líquida", "Receita Líquida", dados_tri)
 
-with col2:
-   card_condicao("EBITDA", "EBITDA", dados_tri)
+   with col2:
+      card_condicao("EBITDA", "EBITDA", dados_tri)
 
-with col3:
-   card_condicao("Lucro Líquido", "Lucro Líquido", dados_tri)
+   with col3:
+      card_condicao("Lucro Líquido", "Lucro Líquido", dados_tri)
 
-with col4:
-   card_condicao("Margem Bruta (%)", "Margem Bruta (%)", dados_tri)
+   with col4:
+      card_condicao("Margem Bruta (%)", "Margem Bruta (%)", dados_tri)
 
-#MARGEM EBITDA OXODCEOIMEIMCEOICEMOECMCEOICMOCEMOICEMOCEMCEOIMCOICDEMOCDE
+   #MARGEM EBITDA OXODCEOIMEIMCEOICEMOECMCEOICMOCEMOICEMOCEMCEOIMCOICDEMOCDE
 
