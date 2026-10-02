@@ -1,2 +1,4 @@
 streamlit
 pandas
+import plotly.express
+import plotly.graph_objects
