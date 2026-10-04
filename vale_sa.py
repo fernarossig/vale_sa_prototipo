@@ -6,7 +6,7 @@ import streamlit as st
 @st.cache_data
 def carregar_tri_financas():
     tri_financas = pd.read_csv(
-        "/home/fe007/VS Code/Apps Streamlit/dados_vale(Tri Financeiro).csv",
+        "dados_vale(Tri Financeiro).csv",
         encoding="ISO-8859-1",
         sep=";",)
     tri_financas.columns = (
@@ -16,7 +16,7 @@ def carregar_tri_financas():
 @st.cache_data
 def carregar_anual_financas():
     anual_financas = pd.read_csv(
-        "/home/fe007/VS Code/Apps Streamlit/dados_vale(Anual Financeiro).csv",
+        "dados_vale(Anual Financeiro).csv",
         encoding="ISO-8859-1",
         sep=";",)
     anual_financas.columns = anual_financas.columns.str.strip()
