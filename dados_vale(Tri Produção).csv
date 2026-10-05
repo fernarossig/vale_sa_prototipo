@@ -1,0 +1,1562 @@
+Trimestre;Produto;Local;Extração (Mil Toneladas Métricas);Vendas (Mil Milhões R$)
+1T19;Minério de Ferro ;Serra Norte e Leste;23.029;NaN
+1T19;Minério de Ferro;S11D;17.986;NaN
+1T19;Minério de Ferro;Total Norte;41.015;NaN
+1T19;Minério de Ferro;Itabira;9.292;NaN
+1T19;Minério de Ferro;Minas Centrais;5.191;NaN
+1T19;Minério de Ferro;Mariana;5.095;NaN
+1T19;Minério de Ferro;Total Sudeste:;19.578;NaN
+1T19;Minério de Ferro;Paraopeba;4.447;NaN
+1T19;Minério de Ferro;Vargem Grande;2.432;NaN
+1T19;Minério de Ferro;Minas Itabirito;4.897;NaN
+1T19;Minério de Ferro;Total Sul;11.776;NaN
+1T19;Minério de Ferro;Corumbá;501;NaN
+1T19;Minério de Ferro;Total Centro-Oeste;501;NaN
+1T19;Minério de Ferro;Produção Total de Minério de Ferro;72.870;55.416
+1T19;Níquel;Sudbury, Canadá;12,6;NaN
+1T19;Níquel;Thompson, Canadá;3,1;NaN
+1T19;Níquel;Voisey's Bay, Canadá;10,2;NaN
+1T19;Níquel;Total Canadá;25,8;NaN
+1T19;Níquel;Indonésia;15,7;NaN
+1T19;Níquel;Nova Caledônia;6,3;NaN
+1T19;Níquel;Brasil;4,3;NaN
+1T19;Níquel;Minérios de Terceiros;2,7;NaN
+1T19;Níquel;Produção Total de Níquel;54,8;50,3
+1T19;Cobre;Sossego;20,5;NaN
+1T19;Cobre;Salobo;40,9;NaN
+1T19;Cobre;Total Brasil;61,4;NaN
+1T19;Cobre;Sudbury, Canadá;23,3;NaN
+1T19;Cobre;Thompson, Canadá;0,3;NaN
+1T19;Cobre;Voisey's Bay, Canadá;6,4;NaN
+1T19;Cobre;Minérios de Terceiros;2,4;NaN
+1T19;Cobre;Total Canadá;32,4;NaN
+1T19;Cobre;Produção Total de Cobre;93,8;90,4
+1T19;Pelotas;São Luís;1.221;NaN
+1T19;Pelotas;Total Norte;1.221;NaN
+1T19;Pelotas;Tubarão 1 e 2;1.166;NaN
+1T19;Pelotas;Itabrasco (Tubarão 3);575;NaN
+1T19;Pelotas;Hispanobrás (Tubarão 4);955;NaN
+1T19;Pelotas;Nibrasco (Tubarão 5 e 6);2.186;NaN
+1T19;Pelotas;Kobrasco (Tubarão 7);1.086;NaN
+1T19;Pelotas;Tubarão 8;1.792;NaN
+1T19;Pelotas;Total Sudeste;7.760;NaN
+1T19;Pelotas;Fábrica;515;NaN
+1T19;Pelotas;Vargem Grande;554;NaN
+1T19;Pelotas;Total Sul;1.069;NaN
+1T19;Pelotas;Omã;1.970;NaN
+1T19;Pelotas;Outros;154;NaN
+1T19;Pelotas;Produção Pelotas;12.174;12.314
+1T19;Subproduto Cobalto (Toneladas);Sudbury, Canadá;129;NaN
+1T19;Subproduto Cobalto (Toneladas);Thompson, Canadá;21;NaN
+1T19;Subproduto Cobalto (Toneladas);Voisey's Bay, Canadá;467;NaN
+1T19;Subproduto Cobalto (Toneladas);VNC;412;NaN
+1T19;Subproduto Cobalto (Toneladas);Outros;166;NaN
+1T19;Subproduto Cobalto (Toneladas);Produção Total de Cobalto;1.195;NaN
+2T19;Minério de Ferro;Serra Norte e Leste;25.838;NaN
+2T19;Minério de Ferro;S11D;15.738;NaN
+2T19;Minério de Ferro;Total Norte;41.576;NaN
+2T19;Minério de Ferro;Itabira;8.774;NaN
+2T19;Minério de Ferro;Minas Centrais;5.243;NaN
+2T19;Minério de Ferro;Mariana;1.839;NaN
+2T19;Minério de Ferro;Total Sudeste:;15.856;NaN
+2T19;Minério de Ferro;Paraopeba;5.736;NaN
+2T19;Minério de Ferro;Vargem Grande;436;NaN
+2T19;Minério de Ferro;Total Sul;6.173;NaN
+2T19;Minério de Ferro;Corumbá;451;NaN
+2T19;Minério de Ferro;Total Centro-Oeste;451;NaN
+2T19;Minério de Ferro;Produção Total de Minério de Ferro;64.057;61.945
+2T19;Níquel;Sudbury, Canadá;9,6;NaN
+2T19;Níquel;Thompson, Canadá;2,6;NaN
+2T19;Níquel;Voisey's Bay, Canadá;8,5;NaN
+2T19;Níquel;Total Canadá;20,7;NaN
+2T19;Níquel;Indonésia;13,2;NaN
+2T19;Níquel;Nova Caledônia;5,9;NaN
+2T19;Níquel;Brasil;3,9;NaN
+2T19;Níquel;Minérios de Terceiros;1,3;NaN
+2T19;Níquel;Produção Total de Níquel;45;45
+2T19;Cobre;Sossego;20;NaN
+2T19;Cobre;Salobo;45,7;NaN
+2T19;Cobre;Total Brasil;65,7;NaN
+2T19;Cobre;Sudbury, Canadá;24,4;NaN
+2T19;Cobre;Thompson, Canadá;0,2;NaN
+2T19;Cobre;Voisey's Bay, Canadá;6,4;NaN
+2T19;Cobre;Minérios de Terceiros;1,6;NaN
+2T19;Cobre;Total Canadá;32,5;NaN
+2T19;Cobre;Produção Total de Cobre;98,3;95
+2T19;Pelotas;São Luís;535;NaN
+2T19;Pelotas;Total Norte;535;NaN
+2T19;Pelotas;Tubarão 1 e 2;514;NaN
+2T19;Pelotas;Itabrasco (Tubarão 3);740;NaN
+2T19;Pelotas;Hispanobrás (Tubarão 4);696;NaN
+2T19;Pelotas;Nibrasco (Tubarão 5 e 6);1.781;NaN
+2T19;Pelotas;Kobrasco (Tubarão 7);841;NaN
+2T19;Pelotas;Tubarão 8;1.511;NaN
+2T19;Pelotas;Total Sudeste;6.080;NaN
+2T19;Pelotas;Fábrica;NaN;NaN
+2T19;Pelotas;Vargem Grande;NaN;NaN
+2T19;Pelotas;Total Sul;NaN;NaN
+2T19;Pelotas;Omã;2.456;NaN
+2T19;Pelotas;Outros;NaN;NaN
+2T19;Pelotas;Produção Pelotas;9.071;8.842
+2T19;Subproduto Cobalto (Toneladas);Sudbury, Canadá;139;NaN
+2T19;Subproduto Cobalto (Toneladas);Thompson, Canadá;20;NaN
+2T19;Subproduto Cobalto (Toneladas);Voisey's Bay, Canadá;405;NaN
+2T19;Subproduto Cobalto (Toneladas);VNC;347;NaN
+2T19;Subproduto Cobalto (Toneladas);Outros;120;NaN
+2T19;Subproduto Cobalto (Toneladas);Produção Total de Cobalto;1.032;NaN
+3T19;Minério de Ferro;Serra Norte e Leste;35.047;NaN
+3T19;Minério de Ferro;S11D;20.354;NaN
+3T19;Minério de Ferro;Total Norte;55.401;NaN
+3T19;Minério de Ferro;Itabira;9.836;NaN
+3T19;Minério de Ferro;Minas Centrais;8.849;NaN
+3T19;Minério de Ferro;Mariana;2.010;NaN
+3T19;Minério de Ferro;Total Sudeste:;20.695;NaN
+3T19;Minério de Ferro;Paraopeba;7.109;NaN
+3T19;Minério de Ferro;Vargem Grande;2.697;NaN
+3T19;Minério de Ferro;Total Sul;9.806;NaN
+3T19;Minério de Ferro;Corumbá;802;NaN
+3T19;Minério de Ferro;Total Centro-Oeste;802;NaN
+3T19;Minério de Ferro;Produção Total de Minério de Ferro;86.704;74.039
+3T19;Níquel;Sudbury, Canadá;13,3;NaN
+3T19;Níquel;Thompson, Canadá;2,7;NaN
+3T19;Níquel;Voisey's Bay, Canadá;8,7;NaN
+3T19;Níquel;Total Canadá;24,8;NaN
+3T19;Níquel;Indonésia;18,5;NaN
+3T19;Níquel;Nova Caledônia;6,4;NaN
+3T19;Níquel;Brasil;0,1;NaN
+3T19;Níquel;Minérios de Terceiros;1,5;NaN
+3T19;Níquel;Produção Total de Níquel;51,4;50,9
+3T19;Cobre;Sossego;18,1;NaN
+3T19;Cobre;Salobo;50,9;NaN
+3T19;Cobre;Total Brasil;69;NaN
+3T19;Cobre;Sudbury, Canadá;21,5;NaN
+3T19;Cobre;Thompson, Canadá;0,3;NaN
+3T19;Cobre;Voisey's Bay, Canadá;5,9;NaN
+3T19;Cobre;Minérios de Terceiros;1,6;NaN
+3T19;Cobre;Total Canadá;29,3;NaN
+3T19;Cobre;Produção Total de Cobre;98,3;92
+3T19;Pelotas;São Luís;1.090;NaN
+3T19;Pelotas;Total Norte;1.090;NaN
+3T19;Pelotas;Tubarão 1 e 2;1.012;NaN
+3T19;Pelotas;Itabrasco (Tubarão 3);868;NaN
+3T19;Pelotas;Hispanobrás (Tubarão 4);942;NaN
+3T19;Pelotas;Nibrasco (Tubarão 5 e 6);2.042;NaN
+3T19;Pelotas;Kobrasco (Tubarão 7);995;NaN
+3T19;Pelotas;Tubarão 8;1.769;NaN
+3T19;Pelotas;Total Sudeste;7.628;NaN
+3T19;Pelotas;Fábrica;NaN;NaN
+3T19;Pelotas;Vargem Grande;NaN;NaN
+3T19;Pelotas;Total Sul;NaN;NaN
+3T19;Pelotas;Omã;2.415;NaN
+3T19;Pelotas;Outros;NaN;NaN
+3T19;Pelotas;Produção Pelotas;11.133;11.077
+3T19;Subproduto Cobalto (Toneladas);Sudbury, Canadá;90;NaN
+3T19;Subproduto Cobalto (Toneladas);Thompson, Canadá;18;NaN
+3T19;Subproduto Cobalto (Toneladas);Voisey's Bay, Canadá;372;NaN
+3T19;Subproduto Cobalto (Toneladas);VNC;428;NaN
+3T19;Subproduto Cobalto (Toneladas);Outros;101;NaN
+3T19;Subproduto Cobalto (Toneladas);Produção Total de Cobalto;1.009;NaN
+4T19;Minério de Ferro;Serra Norte e Leste;31.438;NaN
+4T19;Minério de Ferro;S11D;19.291;NaN
+4T19;Minério de Ferro;Total Norte;50.729;NaN
+4T19;Minério de Ferro;Itabira;8.067;NaN
+4T19;Minério de Ferro;Minas Centrais;6.600;NaN
+4T19;Minério de Ferro;Mariana;2.352;NaN
+4T19;Minério de Ferro;Total Sudeste;17.019;NaN
+4T19;Minério de Ferro;Paraopeba;4.997;NaN
+4T19;Minério de Ferro;Vargem Grande;4.983;NaN
+4T19;Minério de Ferro;Total Sul;9.980;NaN
+4T19;Minério de Ferro;Corumbá;616;NaN
+4T19;Minério de Ferro;Total Centro-Oeste;616;NaN
+4T19;Minério de Ferro;Produção Total de Minério de Ferro;78.344;77.907
+4T19;Níquel;Sudbury, Canadá;15,3;NaN
+4T19;Níquel;Thompson, Canadá;2,8;NaN
+4T19;Níquel;Voisey's Bay, Canadá;8;NaN
+4T19;Níquel;Total Canadá;26,1;NaN
+4T19;Níquel;Indonésia;20,7;NaN
+4T19;Níquel;Nova Caledônia;4,8;NaN
+4T19;Níquel;Brasil;3,3;NaN
+4T19;Níquel;Minérios de Terceiros;1,8;NaN
+4T19;Níquel;Produção Total de Níquel;56,7;47
+4T19;Cobre;Sossego;6,9;NaN
+4T19;Cobre;Salobo;51,9;NaN
+4T19;Cobre;Total Brasil;58,8;NaN
+4T19;Cobre;Sudbury, Canadá;23,3;NaN
+4T19;Cobre;Thompson, Canadá;0,2;NaN
+4T19;Cobre;Voisey's Bay, Canadá;6,3;NaN
+4T19;Cobre;Minérios de Terceiros;1,9;NaN
+4T19;Cobre;Total Canadá;31,6;NaN
+4T19;Cobre;Produção Total de Cobre;90,3;87,5
+4T19;Pelotas;São Luís;1.152;NaN
+4T19;Pelotas;Total Norte;1.152;NaN
+4T19;Pelotas;Tubarão 1 e 2;34;NaN
+4T19;Pelotas;Itabrasco (Tubarão 3);989;NaN
+4T19;Pelotas;Hispanobrás (Tubarão 4);1.018;NaN
+4T19;Pelotas;Nibrasco (Tubarão 5 e 6);1.333;NaN
+4T19;Pelotas;Kobrasco (Tubarão 7);897;NaN
+4T19;Pelotas;Tubarão 8;1.588;NaN
+4T19;Pelotas;Total Sudeste;5.859;NaN
+4T19;Pelotas;Fábrica;NaN;NaN
+4T19;Pelotas;Vargem Grande;NaN;NaN
+4T19;Pelotas;Total Sul;NaN;NaN
+4T19;Pelotas;Omã;2.404;NaN
+4T19;Pelotas;Outros;NaN;NaN
+4T19;Pelotas;Produção Pelotas;9.415;10.966
+4T19;Subproduto Cobalto (Toneladas);Sudbury, Canadá;137;NaN
+4T19;Subproduto Cobalto (Toneladas);Thompson, Canadá;21;NaN
+4T19;Subproduto Cobalto (Toneladas);Voisey's Bay, Canadá;364;NaN
+4T19;Subproduto Cobalto (Toneladas);VNC;516;NaN
+4T19;Subproduto Cobalto (Toneladas);Outros;103;NaN
+4T19;Subproduto Cobalto (Toneladas);Produção Total de Cobalto;1.140;NaN
+1T20;Minério de Ferro;Serra Norte e Leste;21.480;NaN
+1T20;Minério de Ferro;S11D;18.420;NaN
+1T20;Minério de Ferro;Total Norte;39.900;NaN
+1T20;Minério de Ferro;Itabira;6.007;NaN
+1T20;Minério de Ferro;Minas Centrais;3.649;NaN
+1T20;Minério de Ferro;Mariana;2.133;NaN
+1T20;Minério de Ferro;Total Sudeste;11.789;NaN
+1T20;Minério de Ferro;Paraopeba;3.648;NaN
+1T20;Minério de Ferro;Vargem Grande;3.708;NaN
+1T20;Minério de Ferro;Total Sul;7.356;NaN
+1T20;Minério de Ferro;Corumbá;559;NaN
+1T20;Minério de Ferro;Total Centro-Oeste;559;NaN
+1T20;Minério de Ferro;Produção Total de Minério de Ferro;59.605;51.656
+1T20;Níquel;Sudbury, Canadá;12;NaN
+1T20;Níquel;Thompson, Canadá;2,7;NaN
+1T20;Níquel;Voisey's Bay, Canadá;7,3;NaN
+1T20;Níquel;Total Canadá;21,9;NaN
+1T20;Níquel;Indonésia;18,6;NaN
+1T20;Níquel;Nova Caledônia;8;NaN
+1T20;Níquel;Brasil;3;NaN
+1T20;Níquel;Minérios de Terceiros;1,8;NaN
+1T20;Níquel;Produção Total de Níquel;53,2;45,2
+1T20;Cobre;Sossego;22,4;NaN
+1T20;Cobre;Salobo;42,2;NaN
+1T20;Cobre;Total Brasil;64,6;NaN
+1T20;Cobre;Sudbury, Canadá;23,1;NaN
+1T20;Cobre;Thompson, Canadá;0,2;NaN
+1T20;Cobre;Voisey's Bay, Canadá;5,3;NaN
+1T20;Cobre;Minérios de Terceiros;1,3;NaN
+1T20;Cobre;Total Canadá;29,9;NaN
+1T20;Cobre;Produção Total de Cobre;94,5;89,2
+1T20;Pelotas;São Luís;883;NaN
+1T20;Pelotas;Total Norte;883;NaN
+1T20;Pelotas;Tubarão 1 e 2;NaN;NaN
+1T20;Pelotas;Itabrasco (Tubarão 3);888;NaN
+1T20;Pelotas;Hispanobrás (Tubarão 4);629;NaN
+1T20;Pelotas;Nibrasco (Tubarão 5 e 6);1.225;NaN
+1T20;Pelotas;Kobrasco (Tubarão 7);810;NaN
+1T20;Pelotas;Tubarão 8;1.580;NaN
+1T20;Pelotas;Total Sudeste;3.537;NaN
+1T20;Pelotas;Fábrica;NaN;NaN
+1T20;Pelotas;Vargem Grande;NaN;NaN
+1T20;Pelotas;Total Sul;NaN;NaN
+1T20;Pelotas;Omã;912;NaN
+1T20;Pelotas;Outros;NaN;NaN
+1T20;Pelotas;Produção Pelotas;6.926;7.311
+1T20;Subproduto Cobalto (Toneladas);Sudbury, Canadá;141;NaN
+1T20;Subproduto Cobalto (Toneladas);Thompson, Canadá;22;NaN
+1T20;Subproduto Cobalto (Toneladas);Voisey's Bay, Canadá;307;NaN
+1T20;Subproduto Cobalto (Toneladas);VNC;627;NaN
+1T20;Subproduto Cobalto (Toneladas);Outros;92;NaN
+1T20;Subproduto Cobalto (Toneladas);Produção Total de Cobalto;1.189;NaN
+2T20;Minério de Ferro;Serra Norte e Leste;24.319;NaN
+2T20;Minério de Ferro;S11D;18.144;NaN
+2T20;Minério de Ferro;Total Norte;42.463;NaN
+2T20;Minério de Ferro;Itabira;5.324;NaN
+2T20;Minério de Ferro;Minas Centrais;4.190;NaN
+2T20;Minério de Ferro;Mariana;3.207;NaN
+2T20;Minério de Ferro;Total Sudeste;12.721;NaN
+2T20;Minério de Ferro;Paraopeba;5.873;NaN
+2T20;Minério de Ferro;Vargem Grande;5.895;NaN
+2T20;Minério de Ferro;Total Sul;11.768;NaN
+2T20;Minério de Ferro;Corumbá;645;NaN
+2T20;Minério de Ferro;Total Centro-Oeste;645;NaN
+2T20;Minério de Ferro;Produção Total de Minério de Ferro;67.598;54.615
+2T20;Níquel;Sudbury, Canadá;14;NaN
+2T20;Níquel;Thompson, Canadá;3,6;NaN
+2T20;Níquel;Voisey's Bay, Canadá;9,4;NaN
+2T20;Níquel;Total Canadá;26,6;NaN
+2T20;Níquel;Indonésia;17,5;NaN
+2T20;Níquel;Nova Caledônia;10,4;NaN
+2T20;Níquel;Brasil;3,2;NaN
+2T20;Níquel;Minérios de Terceiros;1,7;NaN
+2T20;Níquel;Produção Total de Níquel;59,4;42,4
+2T20;Cobre;Sossego;19,5;NaN
+2T20;Cobre;Salobo;41,3;NaN
+2T20;Cobre;Total Brasil;60,8;NaN
+2T20;Cobre;Sudbury, Canadá;21,9;NaN
+2T20;Cobre;Thompson, Canadá;0,3;NaN
+2T20;Cobre;Voisey's Bay, Canadá;0,5;NaN
+2T20;Cobre;Minérios de Terceiros;1;NaN
+2T20;Cobre;Total Canadá;23,7;NaN
+2T20;Cobre;Produção Total de Cobre;82,5;83,4
+2T20;Pelotas;São Luís;919;NaN
+2T20;Pelotas;Total Norte;919;NaN
+2T20;Pelotas;Tubarão 1 e 2;NaN;NaN
+2T20;Pelotas;Itabrasco (Tubarão 3);455;NaN
+2T20;Pelotas;Hispanobrás (Tubarão 4);363;NaN
+2T20;Pelotas;Nibrasco (Tubarão 5 e 6);842;NaN
+2T20;Pelotas;Kobrasco (Tubarão 7);541;NaN
+2T20;Pelotas;Tubarão 8;1.336;NaN
+2T20;Pelotas;Total Sudeste;3.537;NaN
+2T20;Pelotas;Fábrica;NaN;NaN
+2T20;Pelotas;Vargem Grande;129;NaN
+2T20;Pelotas;Total Sul;129;NaN
+2T20;Pelotas;Omã;2.485;NaN
+2T20;Pelotas;Outros;NaN;NaN
+2T20;Pelotas;Produção Pelotas;7.070;6.950
+2T20;Subproduto Cobalto (Toneladas);Sudbury, Canadá;156;NaN
+2T20;Subproduto Cobalto (Toneladas);Thompson, Canadá;13;NaN
+2T20;Subproduto Cobalto (Toneladas);Voisey's Bay, Canadá;433;NaN
+2T20;Subproduto Cobalto (Toneladas);VNC;653;NaN
+2T20;Subproduto Cobalto (Toneladas);Outros;64;NaN
+2T20;Subproduto Cobalto (Toneladas);Produção Total de Cobalto;1.318;NaN
+3T20;Minério de Ferro;Serra Norte e Leste;32.459;NaN
+3T20;Minério de Ferro;S11D;24.391;NaN
+3T20;Minério de Ferro;Total Norte;56.850;NaN
+3T20;Minério de Ferro;Itabira;6.465;NaN
+3T20;Minério de Ferro;Minas Centrais;4.394;NaN
+3T20;Minério de Ferro;Mariana;5.448;NaN
+3T20;Minério de Ferro;Total Sudeste;16.307;NaN
+3T20;Minério de Ferro;Paraopeba;7.064;NaN
+3T20;Minério de Ferro;Vargem Grande;7.866;NaN
+3T20;Minério de Ferro;Total Sul;7.064;NaN
+3T20;Minério de Ferro;Corumbá;589;NaN
+3T20;Minério de Ferro;Total Centro-Oeste;589;NaN
+3T20;Minério de Ferro;Produção Total de Minério de Ferro;88.676;65.769
+3T20;Níquel;Sudbury, Canadá;6,5;NaN
+3T20;Níquel;Thompson, Canadá;2,2;NaN
+3T20;Níquel;Voisey's Bay, Canadá;10,1;NaN
+3T20;Níquel;Total Canadá;18,9;NaN
+3T20;Níquel;Indonésia;15,3;NaN
+3T20;Níquel;Nova Caledônia;8,5;NaN
+3T20;Níquel;Brasil;3,2;NaN
+3T20;Níquel;Minérios de Terceiros;1,3;NaN
+3T20;Níquel;Produção Total de Níquel;47,1;58,2
+3T20;Cobre;Sossego;22,2;NaN
+3T20;Cobre;Salobo;45,4;NaN
+3T20;Cobre;Total Brasil;67,6;NaN
+3T20;Cobre;Sudbury, Canadá;13,1;NaN
+3T20;Cobre;Thompson, Canadá;0,2;NaN
+3T20;Cobre;Voisey's Bay, Canadá;5,7;NaN
+3T20;Cobre;Minérios de Terceiros;1;NaN
+3T20;Cobre;Total Canadá;20;NaN
+3T20;Cobre;Produção Total de Cobre;87,6;80,6
+3T20;Pelotas;São Luís;1.176;NaN
+3T20;Pelotas;Total Norte;1.176;NaN
+3T20;Pelotas;Tubarão 1 e 2;NaN;NaN
+3T20;Pelotas;Itabrasco (Tubarão 3);821;NaN
+3T20;Pelotas;Hispanobrás (Tubarão 4);863;NaN
+3T20;Pelotas;Nibrasco (Tubarão 5 e 6);1.007;NaN
+3T20;Pelotas;Kobrasco (Tubarão 7);849;NaN
+3T20;Pelotas;Tubarão 8;1.366;NaN
+3T20;Pelotas;Total Sudeste;4.906;NaN
+3T20;Pelotas;Fábrica;NaN;NaN
+3T20;Pelotas;Vargem Grande;NaN;n
+3T20;Pelotas;Total Sul;NaN;NaN
+3T20;Pelotas;Omã;2.480;NaN
+3T20;Pelotas;Outros;NaN;NaN
+3T20;Pelotas;Produção Pelotas;8.562;8.464
+3T20;Subproduto Cobalto (Toneladas);Sudbury, Canadá;61;NaN
+3T20;Subproduto Cobalto (Toneladas);Thompson, Canadá;10;NaN
+3T20;Subproduto Cobalto (Toneladas);Voisey's Bay, Canadá;464;NaN
+3T20;Subproduto Cobalto (Toneladas);VNC;601;NaN
+3T20;Subproduto Cobalto (Toneladas);Outros;86;NaN
+3T20;Subproduto Cobalto (Toneladas);Produção Total de Cobalto;1.223;NaN
+4T20;Minério de Ferro;Serra Norte e Leste;31.158;NaN
+4T20;Minério de Ferro;S11D;21.895;NaN
+4T20;Minério de Ferro;Total Norte;53.053;NaN
+4T20;Minério de Ferro;Itabira;6.117;NaN
+4T20;Minério de Ferro;Minas Centrais;3.422;NaN
+4T20;Minério de Ferro;Mariana;6.929;NaN
+4T20;Minério de Ferro;Total Sudeste;16.468;NaN
+4T20;Minério de Ferro;Paraopeba;6.717;NaN
+4T20;Minério de Ferro;Vargem Grande;7.597;NaN
+4T20;Minério de Ferro;Total Sul;14.314;NaN
+4T20;Minério de Ferro;Corumbá;673;NaN
+4T20;Minério de Ferro;Total Centro-Oeste;673;NaN
+4T20;Minério de Ferro;Produção Total de Minério de Ferro;84.508;82.825
+4T20;Níquel;Sudbury, Canadá;11,2;NaN
+4T20;Níquel;Thompson, Canadá;2,1;NaN
+4T20;Níquel;Voisey's Bay, Canadá;8,9;NaN
+4T20;Níquel;Total Canadá;22,2;NaN
+4T20;Níquel;Indonésia;20,2;NaN
+4T20;Níquel;Nova Caledônia;5,1;NaN
+4T20;Níquel;Brasil;6,6;NaN
+4T20;Níquel;Minérios de Terceiros;1,8;NaN
+4T20;Níquel;Produção Total de Níquel;55,9;66,1
+4T20;Cobre;Sossego;23,7;NaN
+4T20;Cobre;Salobo;43,9;NaN
+4T20;Cobre;Total Brasil;67,5;NaN
+4T20;Cobre;Sudbury, Canadá;18,5;NaN
+4T20;Cobre;Thompson, Canadá;0,1;NaN
+4T20;Cobre;Voisey's Bay, Canadá;6,2;NaN
+4T20;Cobre;Minérios de Terceiros;1,2;NaN
+4T20;Cobre;Total Canadá;25,9;NaN
+4T20;Cobre;Produção Total de Cobre;93,5;93
+4T20;Pelotas;São Luís;1.195;NaN
+4T20;Pelotas;Total Norte;1.195;n
+4T20;Pelotas;Tubarão 1 e 2;NaN;NaN
+4T20;Pelotas;Itabrasco (Tubarão 3);804;NaN
+4T20;Pelotas;Hispanobrás (Tubarão 4);738;NaN
+4T20;Pelotas;Nibrasco (Tubarão 5 e 6);359;NaN
+4T20;Pelotas;Kobrasco (Tubarão 7);631;NaN
+4T20;Pelotas;Tubarão 8;1.642;NaN
+4T20;Pelotas;Total Sudeste;4.174;NaN
+4T20;Pelotas;Fábrica;NaN;NaN
+4T20;Pelotas;Vargem Grande;NaN;NaN
+4T20;Pelotas;Total Sul;NaN;NaN
+4T20;Pelotas;Omã;1.748;NaN
+4T20;Pelotas;Outros;NaN;NaN
+4T20;Pelotas;Produção Pelotas;7.117;8.486
+4T20;Subproduto Cobalto (Toneladas);Sudbury, Canadá;96;NaN
+4T20;Subproduto Cobalto (Toneladas);Thompson, Canadá;15;NaN
+4T20;Subproduto Cobalto (Toneladas);Voisey's Bay, Canadá;388;NaN
+4T20;Subproduto Cobalto (Toneladas);VNC;416;NaN
+4T20;Subproduto Cobalto (Toneladas);Outros;127;NaN
+4T20;Subproduto Cobalto (Toneladas);Produção Total de Cobalto;1.042;NaN
+1T21;Minério de Ferro;Serra Norte e Leste;25.300;NaN
+1T21;Minério de Ferro;S11D;16.993;NaN
+1T21;Minério de Ferro;Total Norte;42.293;NaN
+1T21;Minério de Ferro;Itabira;5.681;NaN
+1T21;Minério de Ferro;Minas Centrais;3.456;NaN
+1T21;Minério de Ferro;Mariana;4.392;NaN
+1T21;Minério de Ferro;Total Sudeste;13.529;NaN
+1T21;Minério de Ferro;Paraopeba;5.331;NaN
+1T21;Minério de Ferro;Vargem Grande;6.391;NaN
+1T21;Minério de Ferro;Total Sul;11.722;NaN
+1T21;Minério de Ferro;Corumbá;500;NaN
+1T21;Minério de Ferro;Total Centro-Oeste;500;NaN
+1T21;Minério de Ferro;Produção Total de Minério de Ferro;68.045;59.298
+1T21;Níquel;Sudbury, Canadá;12;NaN
+1T21;Níquel;Thompson, Canadá;2,8;NaN
+1T21;Níquel;Voisey's Bay, Canadá;10,4;NaN
+1T21;Níquel;Total Canadá;25,2;NaN
+1T21;Níquel;Indonésia;15,4;NaN
+1T21;Níquel;Nova Caledônia;0,04;NaN
+1T21;Níquel;Brasil;6,3;NaN
+1T21;Níquel;Minérios de Terceiros;1,6;NaN
+1T21;Níquel;Produção Total de Níquel;48,5;48
+1T21;Cobre;Sossego;15,9;NaN
+1T21;Cobre;Salobo;34,1;NaN
+1T21;Cobre;Total Brasil;50;NaN
+1T21;Cobre;Sudbury, Canadá;19,4;NaN
+1T21;Cobre;Thompson, Canadá;0,2;NaN
+1T21;Cobre;Voisey's Bay, Canadá;6,1;NaN
+1T21;Cobre;Minérios de Terceiros;1,1;NaN
+1T21;Cobre;Total Canadá;26,6;NaN
+1T21;Cobre;Produção Total de Cobre;76,5;71,2
+1T21;Pelotas;São Luís;961;NaN
+1T21;Pelotas;Total Norte;961;NaN
+1T21;Pelotas;Tubarão 1 e 2;NaN;NaN
+1T21;Pelotas;Itabrasco (Tubarão 3);583;NaN
+1T21;Pelotas;Hispanobrás (Tubarão 4);169;NaN
+1T21;Pelotas;Nibrasco (Tubarão 5 e 6);699;NaN
+1T21;Pelotas;Kobrasco (Tubarão 7);607;NaN
+1T21;Pelotas;Tubarão 8;1.551;NaN
+1T21;Pelotas;Total Sudeste;3.609;NaN
+1T21;Pelotas;Fábrica;NaN;NaN
+1T21;Pelotas;Vargem Grande;656;NaN
+1T21;Pelotas;Total Sul;656;NaN
+1T21;Pelotas;Omã;1.061;NaN
+1T21;Pelotas;Outros;NaN;NaN
+1T21;Pelotas;Produção Pelotas;6.287;6.271
+1T21;Subproduto Cobalto (Toneladas);Sudbury, Canadá;96;NaN
+1T21;Subproduto Cobalto (Toneladas);Thompson, Canadá;14;NaN
+1T21;Subproduto Cobalto (Toneladas);Voisey's Bay, Canadá;476;NaN
+1T21;Subproduto Cobalto (Toneladas);VNC;3;NaN
+1T21;Subproduto Cobalto (Toneladas);Outros;124;NaN
+1T21;Subproduto Cobalto (Toneladas);Produção Total de Cobalto;714;NaN
+2T21;Minério de Ferro;Serra Norte e Leste;26.916;NaN
+2T21;Minério de Ferro;S11D;16.585;NaN
+2T21;Minério de Ferro;Total Norte;43.501;NaN
+2T21;Minério de Ferro;Itabira;7.233;NaN
+2T21;Minério de Ferro;Minas Centrais;5.490;NaN
+2T21;Minério de Ferro;Mariana;5.337;NaN
+2T21;Minério de Ferro;Total Sudeste;18.059;NaN
+2T21;Minério de Ferro;Paraopeba;5.899;NaN
+2T21;Minério de Ferro;Vargem Grande;7.542;NaN
+2T21;Minério de Ferro;Total Sul;13.441;NaN
+2T21;Minério de Ferro;Corumbá;684;NaN
+2T21;Minério de Ferro;Total Centro-Oeste;684;NaN
+2T21;Minério de Ferro;Produção Total de Minério de Ferro;75.685;67.218
+2T21;Níquel;Sudbury, Canadá;9;NaN
+2T21;Níquel;Thompson, Canadá;1,4;NaN
+2T21;Níquel;Voisey's Bay, Canadá;10;NaN
+2T21;Níquel;Total Canadá;20,4;naN
+2T21;Níquel;Indonésia;14,5;NaN
+2T21;Níquel;Nova Caledônia;NaN;NaN
+2T21;Níquel;Brasil;5,2;NaN
+2T21;Níquel;Minérios de Terceiros;1,3;NaN
+2T21;Níquel;Produção Total de Níquel;41,5;47,4
+2T21;Cobre;Sossego;38,7;NaN
+2T21;Cobre;Salobo;16,6;NaN
+2T21;Cobre;Total Brasil;55,2;NaN
+2T21;Cobre;Sudbury, Canadá;13;NaN
+2T21;Cobre;Thompson, Canadá;0,1;NaN
+2T21;Cobre;Voisey's Bay, Canadá;4,5;NaN
+2T21;Cobre;Minérios de Terceiros;0,6;NaN
+2T21;Cobre;Total Canadá;18,2;NaN
+2T21;Cobre;Produção Total de Cobre;73,5;74,2
+2T21;Pelotas;São Luís;748;NaN
+2T21;Pelotas;Total Norte;748;NaN
+2T21;Pelotas;Tubarão 1 e 2;NaN;NaN
+2T21;Pelotas;Itabrasco (Tubarão 3);742;NaN
+2T21;Pelotas;Hispanobrás (Tubarão 4);NaN;NaN
+2T21;Pelotas;Nibrasco (Tubarão 5 e 6);974;NaN
+2T21;Pelotas;Kobrasco (Tubarão 7);803;NaN
+2T21;Pelotas;Tubarão 8;1.445;NaN
+2T21;Pelotas;Total Sudeste;3.963;NaN
+2T21;Pelotas;Fábrica;NaN;NaN
+2T21;Pelotas;Vargem Grande;975;NaN
+2T21;Pelotas;Total Sul;975;NaN
+2T21;Pelotas;Omã;2.322;NaN
+2T21;Pelotas;Outros;NaN;
+2T21;Pelotas;Produção Pelotas;8.008;7.647
+2T21;Subproduto Cobalto (Toneladas);Sudbury, Canadá;116;NaN
+2T21;Subproduto Cobalto (Toneladas);Thompson, Canadá;13;NaN
+2T21;Subproduto Cobalto (Toneladas);Voisey's Bay, Canadá;463;NaN
+2T21;Subproduto Cobalto (Toneladas);VNC;NaN;NaN
+2T21;Subproduto Cobalto (Toneladas);Outros;161;NaN
+2T21;Subproduto Cobalto (Toneladas);Produção Total de Cobalto;754;NaN
+3T21;Minério de Ferro;Serra Norte e Leste;31.961;NaN
+3T21;Minério de Ferro;S11D;21.059;NaN
+3T21;Minério de Ferro;Total Norte;53.020;NaN
+3T21;Minério de Ferro;Itabira;7.795;NaN
+3T21;Minério de Ferro;Minas Centrais;5.696;NaN
+3T21;Minério de Ferro;Mariana;6.041;NaN
+3T21;Minério de Ferro;Total Sudeste;19.532;NaN
+3T21;Minério de Ferro;Paraopeba;6.867;NaN
+3T21;Minério de Ferro;Vargem Grande;9.271;NaN
+3T21;Minério de Ferro;Total Sul;16.138;NaN
+3T21;Minério de Ferro;Corumbá;731;NaN
+3T21;Minério de Ferro;Total Centro-Oeste;731;NaN
+3T21;Minério de Ferro;Produção Total de Minério de Ferro;89.421;67.844
+3T21;Níquel;Sudbury, Canadá;2,4;NaN
+3T21;Níquel;Thompson, Canadá;0,6;NaN
+3T21;Níquel;Voisey's Bay, Canadá;9,4;NaN
+3T21;Níquel;Total Canadá;12,4;NaN
+3T21;Níquel;Indonésia;15,1;NaN
+3T21;Níquel;Nova Caledônia;NaN;NaN
+3T21;Níquel;Brasil;2,2;NaN
+3T21;Níquel;Minérios de Terceiros;0,6;NaN
+3T21;Níquel;Produção Total de Níquel;30,2;41,8
+3T21;Cobre;Sossego;25,4;NaN
+3T21;Cobre;Salobo;38;NaN
+3T21;Cobre;Total Brasil;63,4;NaN
+3T21;Cobre;Sudbury, Canadá;1;NaN
+3T21;Cobre;Thompson, Canadá;NaN;NaN
+3T21;Cobre;Voisey's Bay, Canadá;4,6;NaN
+3T21;Cobre;Minérios de Terceiros;0,3;NaN
+3T21;Cobre;Total Canadá;5,8;NaN
+3T21;Cobre;Produção Total de Cobre;69,2;65,4
+3T21;Pelotas;São Luís;1.020;NaN
+3T21;Pelotas;Total Norte;1.020;NaN
+3T21;Pelotas;Tubarão 1 e 2;NaN;NaN
+3T21;Pelotas;Itabrasco (Tubarão 3);972;NaN
+3T21;Pelotas;Hispanobrás (Tubarão 4);NaN;NaN
+3T21;Pelotas;Nibrasco (Tubarão 5 e 6);1.069;NaN
+3T21;Pelotas;Kobrasco (Tubarão 7);826;NaN
+3T21;Pelotas;Tubarão 8;1.490;NaN
+3T21;Pelotas;Total Sudeste;4.357;NaN
+3T21;Pelotas;Fábrica;NaN;NaN
+3T21;Pelotas;Vargem Grande;803;NaN
+3T21;Pelotas;Total Sul;803;NaN
+3T21;Pelotas;Omã;2.161;NaN
+3T21;Pelotas;Outros;NaN;NaN
+3T21;Pelotas;Produção Pelotas;8.341;8.037
+3T21;Subproduto Cobalto (Toneladas);Sudbury, Canadá;NaN;NaN
+3T21;Subproduto Cobalto (Toneladas);Thompson, Canadá;NaN;NaN
+3T21;Subproduto Cobalto (Toneladas);Voisey's Bay, Canadá;NaN;NaN
+3T21;Subproduto Cobalto (Toneladas);VNC;NaN;NaN
+3T21;Subproduto Cobalto (Toneladas);Outros;NaN;NaN
+3T21;Subproduto Cobalto (Toneladas);Produção Total de Cobalto;452;NaN
+4T21;Minério de Ferro;Serra Norte e Leste;30.958;NaN
+4T21;Minério de Ferro;S11D;19.062;NaN
+4T21;Minério de Ferro;Total Norte;50.021;NaN
+4T21;Minério de Ferro;Itabira;7.987;NaN
+4T21;Minério de Ferro;Minas Centrais;4.664;NaN
+4T21;Minério de Ferro;Mariana;6.008;NaN
+4T21;Minério de Ferro;Total Sudeste;18.659;NaN
+4T21;Minério de Ferro;Paraopeba;4.892;NaN
+4T21;Minério de Ferro;Vargem Grande;8.106;NaN
+4T21;Minério de Ferro;Total Sul;12.999;NaN
+4T21;Minério de Ferro;Corumbá;795;NaN
+4T21;Minério de Ferro;Total Centro-Oeste;795;NaN
+4T21;Minério de Ferro;Produção Total de Minério de Ferro;82.473;83.147
+4T21;Níquel;Sudbury, Canadá;8,8;NaN
+4T21;Níquel;Thompson, Canadá;1,2;NaN
+4T21;Níquel;Voisey's Bay, Canadá;8,4;NaN
+4T21;Níquel;Total Canadá;18,3;NaN
+4T21;Níquel;Indonésia;21,7;NaN
+4T21;Níquel;Nova Caledônia;NaN;NaN
+4T21;Níquel;Brasil;5,4;NaN
+4T21;Níquel;Minérios de Terceiros;2,6;NaN
+4T21;Níquel;Produção Total de Níquel;48;44,7
+4T21;Cobre;Sossego;24;NaN
+4T21;Cobre;Salobo;33,8;NaN
+4T21;Cobre;Total Brasil;57,7;NaN
+4T21;Cobre;Sudbury, Canadá;12,9;NaN
+4T21;Cobre;Thompson, Canadá;0,2;NaN
+4T21;Cobre;Voisey's Bay, Canadá;5,1;NaN
+4T21;Cobre;Minérios de Terceiros;1,6;NaN
+4T21;Cobre;Total Canadá;19,7;NaN
+4T21;Cobre;Produção Total de Cobre;77,5;73,7
+4T21;Pelotas;São Luís;895;NaN
+4T21;Pelotas;Total Norte;895;NaN
+4T21;Pelotas;Tubarão 1 e 2;NaN;NaN
+4T21;Pelotas;Itabrasco (Tubarão 3);1.089;NaN
+4T21;Pelotas;Hispanobrás (Tubarão 4);NaN;NaN
+4T21;Pelotas;Nibrasco (Tubarão 5 e 6);1.052;NaN
+4T21;Pelotas;Kobrasco (Tubarão 7);989;NaN
+4T21;Pelotas;Tubarão 8;1.677;NaN
+4T21;Pelotas;Total Sudeste;4.807;NaN
+4T21;Pelotas;Fábrica;NaN;NaN
+4T21;Pelotas;Vargem Grande;745;NaN
+4T21;Pelotas;Total Sul;745;NaN
+4T21;Pelotas;Omã;2.625;NaN
+4T21;Pelotas;Outros;NaN;NaN
+4T21;Pelotas;Produção Pelotas;9.073;10.351
+4T21;Subproduto Cobalto (Toneladas);Sudbury, Canadá;NaN;NaN
+4T21;Subproduto Cobalto (Toneladas);Thompson, Canadá;NaN;NaN
+4T21;Subproduto Cobalto (Toneladas);Voisey's Bay, Canadá;NaN;NaN
+4T21;Subproduto Cobalto (Toneladas);VNC;NaN;NaN
+4T21;Subproduto Cobalto (Toneladas);Outros;NaN;NaN
+4T21;Subproduto Cobalto (Toneladas);Produção Total de Cobalto;603;NaN
+1T22;Minério de Ferro;Serra Norte e Leste;22.586;NaN
+1T22;Minério de Ferro;S11D;15.147;NaN
+1T22;Minério de Ferro;Total Norte;37.732;NaN
+1T22;Minério de Ferro;Itabira;6.198;NaN
+1T22;Minério de Ferro;Minas Centrais;3.569;NaN
+1T22;Minério de Ferro;Mariana;5.188;NaN
+1T22;Minério de Ferro;Total Sudeste;14.955;NaN
+1T22;Minério de Ferro;Paraopeba;4.010;NaN
+1T22;Minério de Ferro;Vargem Grande;4.010;NaN
+1T22;Minério de Ferro;Total Sul;10.441;NaN
+1T22;Minério de Ferro;Corumbá;800;NaN
+1T22;Minério de Ferro;Total Centro-Oeste;800;NaN
+1T22;Minério de Ferro;Produção Total de Minério de Ferro;63.928;53.603
+1T22;Níquel;Sudbury, Canadá;7,5;NaN
+1T22;Níquel;Thompson, Canadá;2,9;NaN
+1T22;Níquel;Voisey's Bay, Canadá;8,6;NaN
+1T22;Níquel;Total Canadá;18,9;NaN
+1T22;Níquel;Indonésia;17,6;NaN
+1T22;Níquel;Nova Caledônia;NaN;NaN
+1T22;Níquel;Brasil;5,4;NaN
+1T22;Níquel;Minérios de Terceiros;3,7;NaN
+1T22;Níquel;Produção Total de Níquel;45,8;39
+1T22;Cobre;Sossego;3,8;NaN
+1T22;Cobre;Salobo;33,9;NaN
+1T22;Cobre;Total Brasil;37,7;NaN
+1T22;Cobre;Sudbury, Canadá;13,9;NaN
+1T22;Cobre;Thompson, Canadá;0,3;NaN
+1T22;Cobre;Voisey's Bay, Canadá;3,1;NaN
+1T22;Cobre;Minérios de Terceiros;1,6;NaN
+1T22;Cobre;Total Canadá;18,9;NaN
+1T22;Cobre;Produção Total de Cobre;56,6;50,3
+1T22;Pelotas;São Luís;738;NaN
+1T22;Pelotas;Total Norte;738;NaN
+1T22;Pelotas;Tubarão 1 e 2;NaN;NaN
+1T22;Pelotas;Itabrasco (Tubarão 3);310;NaN
+1T22;Pelotas;Hispanobrás (Tubarão 4);NaN;NaN
+1T22;Pelotas;Nibrasco (Tubarão 5 e 6);1.064;NaN
+1T22;Pelotas;Kobrasco (Tubarão 7);969;NaN
+1T22;Pelotas;Tubarão 8;1.346;NaN
+1T22;Pelotas;Total Sudeste;3.689;NaN
+1T22;Pelotas;Fábrica;NaN;NaN
+1T22;Pelotas;Vargem Grande;679;NaN
+1T22;Pelotas;Total Sul;679;NaN
+1T22;Pelotas;Omã;1.818;NaN
+1T22;Pelotas;Outros;NaN;NaN
+1T22;Pelotas;Produção Pelotas;6.924;7.011
+1T22;Subproduto Cobalto (Toneladas);Sudbury, Canadá;NaN;NaN
+1T22;Subproduto Cobalto (Toneladas);Thompson, Canadá;NaN;NaN
+1T22;Subproduto Cobalto (Toneladas);Voisey's Bay, Canadá;NaN;NaN
+1T22;Subproduto Cobalto (Toneladas);VNC;NaN;NaN
+1T22;Subproduto Cobalto (Toneladas);Outros;NaN;NaN
+1T22;Subproduto Cobalto (Toneladas);Produção Total de Cobalto;755;NaN
+2T22;Minério de Ferro;Serra Norte e Leste;22.548;NaN
+2T22;Minério de Ferro;S11D;16.525;NaN
+2T22;Minério de Ferro;Total Norte;39.073;NaN
+2T22;Minério de Ferro;Itabira;7.061;NaN
+2T22;Minério de Ferro;Minas Centrais;5.950;NaN
+2T22;Minério de Ferro;Mariana;6.547;NaN
+2T22;Minério de Ferro;Total Sudeste;19.557;NaN
+2T22;Minério de Ferro;Paraopeba;6.968;NaN
+2T22;Minério de Ferro;Vargem Grande;8.510;NaN
+2T22;Minério de Ferro;Total Sul;6.547;NaN
+2T22;Minério de Ferro;Corumbá;NaN;NaN
+2T22;Minério de Ferro;Total Centro-Oeste;NaN;NaN
+2T22;Minério de Ferro;Produção Total de Minério de Ferro;74.108;64.318
+2T22;Níquel;Sudbury, Canadá;7,7;NaN
+2T22;Níquel;Thompson, Canadá;2,2;NaN
+2T22;Níquel;Voisey's Bay, Canadá;6,9;NaN
+2T22;Níquel;Total Canadá;16,7;NaN
+2T22;Níquel;Indonésia;9,1;NaN
+2T22;Níquel;Nova Caledônia;NaN;NaN
+2T22;Níquel;Brasil;6,3;NaN
+2T22;Níquel;Minérios de Terceiros;2,7;NaN
+2T22;Níquel;Produção Total de Níquel;34,8;39,3
+2T22;Cobre;Sossego;5,4;NaN
+2T22;Cobre;Salobo;29,6;NaN
+2T22;Cobre;Total Brasil;35;NaN
+2T22;Cobre;Sudbury, Canadá;16,9;NaN
+2T22;Cobre;Thompson, Canadá;0,2;NaN
+2T22;Cobre;Voisey's Bay, Canadá;2,5;NaN
+2T22;Cobre;Minérios de Terceiros;1,3;n
+2T22;Cobre;Total Canadá;20,9;NaN
+2T22;Cobre;Produção Total de Cobre;55,9;51,5
+2T22;Pelotas;São Luís;836;NaN
+2T22;Pelotas;Total Norte;836;NaN
+2T22;Pelotas;Tubarão 1 e 2;NaN;NaN
+2T22;Pelotas;Itabrasco (Tubarão 3);930;NaN
+2T22;Pelotas;Hispanobrás (Tubarão 4);NaN;NaN
+2T22;Pelotas;Nibrasco (Tubarão 5 e 6);921;NaN
+2T22;Pelotas;Kobrasco (Tubarão 7);963;NaN
+2T22;Pelotas;Tubarão 8;1.273;NaN
+2T22;Pelotas;Total Sudeste;4.088;NaN
+2T22;Pelotas;Fábrica;NaN;NaN
+2T22;Pelotas;Vargem Grande;1.136;NaN
+2T22;Pelotas;Total Sul;1.136;NaN
+2T22;Pelotas;Omã;2.612;NaN
+2T22;Pelotas;Outros;NaN;NaN
+2T22;Pelotas;Produção Pelotas;8.672;8.843
+2T22;Subproduto Cobalto (Toneladas);Sudbury, Canadá;NaN;NaN
+2T22;Subproduto Cobalto (Toneladas);Thompson, Canadá;NaN;NaN
+2T22;Subproduto Cobalto (Toneladas);Voisey's Bay, Canadá;NaN;NaN
+2T22;Subproduto Cobalto (Toneladas);VNC;NaN;NaN
+2T22;Subproduto Cobalto (Toneladas);Outros;NaN;NaN
+2T22;Subproduto Cobalto (Toneladas);Produção Total de Cobalto;541;NaN
+3T22;Minério de Ferro;Serra Norte e Leste;30.678;NaN
+3T22;Minério de Ferro;S11D;18.974;NaN
+3T22;Minério de Ferro;Total Norte;49.652;NaN
+3T22;Minério de Ferro;Itabira;7.017;NaN
+3T22;Minério de Ferro;Minas Centrais;5.845;NaN
+3T22;Minério de Ferro;Mariana;6.864;NaN
+3T22;Minério de Ferro;Total Sudeste;19.725;NaN
+3T22;Minério de Ferro;Paraopeba;10.725;NaN
+3T22;Minério de Ferro;Vargem Grande;9.599;NaN
+3T22;Minério de Ferro;Total Sul;20.324;NaN
+3T22;Minério de Ferro;Corumbá;NaN;NaN
+3T22;Minério de Ferro;Total Centro-Oeste;NaN;NaN
+3T22;Minério de Ferro;Produção Total de Minério de Ferro;89.701;69.049
+3T22;Níquel;Sudbury, Canadá;12,2;NaN
+3T22;Níquel;Thompson, Canadá;2,7;NaN
+3T22;Níquel;Voisey's Bay, Canadá;5,1;NaN
+3T22;Níquel;Total Canadá;20;NaN
+3T22;Níquel;Indonésia;19,2;NaN
+3T22;Níquel;Nova Caledônia;NaN;NaN
+3T22;Níquel;Brasil;6,8;NaN
+3T22;Níquel;Minérios de Terceiros;5,8;NaN
+3T22;Níquel;Produção Total de Níquel;51,8;44,3
+3T22;Cobre;Sossego;18,7;NaN
+3T22;Cobre;Salobo;34,7;NaN
+3T22;Cobre;Total Brasil;53,4;NaN
+3T22;Cobre;Sudbury, Canadá;12,3;NaN
+3T22;Cobre;Thompson, Canadá;3,6;NaN
+3T22;Cobre;Voisey's Bay, Canadá;3,3;NaN
+3T22;Cobre;Minérios de Terceiros;1,7;NaN
+3T22;Cobre;Total Canadá;20,9;NaN
+3T22;Cobre;Produção Total de Cobre;74,3;70,5
+3T22;Pelotas;São Luís;899;NaN
+3T22;Pelotas;Total Norte;899;NaN
+3T22;Pelotas;Tubarão 1 e 2;NaN;NaN
+3T22;Pelotas;Itabrasco (Tubarão 3);525;NaN
+3T22;Pelotas;Hispanobrás (Tubarão 4);NaN;NaN
+3T22;Pelotas;Nibrasco (Tubarão 5 e 6);349;NaN
+3T22;Pelotas;Kobrasco (Tubarão 7);924;NaN
+3T22;Pelotas;Tubarão 8;1.485;NaN
+3T22;Pelotas;Total Sudeste;3.284;NaN
+3T22;Pelotas;Fábrica;NaN;NaN
+3T22;Pelotas;Vargem Grande;1.268;NaN
+3T22;Pelotas;Total Sul;1.268;NaN
+3T22;Pelotas;Omã;2.805;NaN
+3T22;Pelotas;Outros;NaN;NaN
+3T22;Pelotas;Produção Pelotas;8.256;8.521
+3T22;Subproduto Cobalto (Toneladas);Sudbury, Canadá;NaN;NaN
+3T22;Subproduto Cobalto (Toneladas);Thompson, Canadá;NaN;NaN
+3T22;Subproduto Cobalto (Toneladas);Voisey's Bay, Canadá;NaN;NaN
+3T22;Subproduto Cobalto (Toneladas);VNC;NaN;NaN
+3T22;Subproduto Cobalto (Toneladas);Outros;NaN;NaN
+3T22;Subproduto Cobalto (Toneladas);Produção Total de Cobalto;609;NaN
+4T22;Minério de Ferro;Serra Norte e Leste;26.486;NaN
+4T22;Minério de Ferro;S11D;18.611;NaN
+4T22;Minério de Ferro;Total Norte;45.097;NaN
+4T22;Minério de Ferro;Itabira;7.007;NaN
+4T22;Minério de Ferro;Minas Centrais;5.395;NaN
+4T22;Minério de Ferro;Mariana;6.003;NaN
+4T22;Minério de Ferro;Total Sudeste;18.405;NaN
+4T22;Minério de Ferro;Paraopeba;8.403;NaN
+4T22;Minério de Ferro;Vargem Grande;8.947;NaN
+4T22;Minério de Ferro;Total Sul;17.350;NaN
+4T22;Minério de Ferro;Corumbá;NaN;NaN
+4T22;Minério de Ferro;Total Centro-Oeste;NaN;NaN
+4T22;Minério de Ferro;Produção Total de Minério de Ferro;80.852;91.954
+4T22;Níquel;Sudbury, Canadá;11,1;NaN
+4T22;Níquel;Thompson, Canadá;2,4;NaN
+4T22;Níquel;Voisey's Bay, Canadá;4,6;NaN
+4T22;Níquel;Total Canadá;18,2;NaN
+4T22;Níquel;Indonésia;18;NaN
+4T22;Níquel;Nova Caledônia;NaN;NaN
+4T22;Níquel;Brasil;5,1;NaN
+4T22;Níquel;Minérios de Terceiros;6,1;NaN
+4T22;Níquel;Produção Total de Níquel;47,4;58,2
+4T22;Cobre;Sossego;15,3;NaN
+4T22;Cobre;Salobo;29,6;NaN
+4T22;Cobre;Total Brasil;44,9;NaN
+4T22;Cobre;Sudbury, Canadá;16,1;NaN
+4T22;Cobre;Thompson, Canadá;1,2;NaN
+4T22;Cobre;Voisey's Bay, Canadá;1,9;NaN
+4T22;Cobre;Minérios de Terceiros;2,2;NaN
+4T22;Cobre;Total Canadá;21,4;NaN
+4T22;Cobre;Produção Total de Cobre;;NaN
+4T22;Pelotas;São Luís;739;NaN
+4T22;Pelotas;Total Norte;739;NaN
+4T22;Pelotas;Tubarão 1 e 2;NaN;NaN
+4T22;Pelotas;Itabrasco (Tubarão 3);960;NaN
+4T22;Pelotas;Hispanobrás (Tubarão 4);NaN;NaN
+4T22;Pelotas;Nibrasco (Tubarão 5 e 6);1.131;NaN
+4T22;Pelotas;Kobrasco (Tubarão 7);178;NaN
+4T22;Pelotas;Tubarão 8;1.347;NaN
+4T22;Pelotas;Total Sudeste;3.616;NaN
+4T22;Pelotas;Fábrica;NaN;NaN
+4T22;Pelotas;Vargem Grande;1.222;NaN
+4T22;Pelotas;Total Sul;1.222;NaN
+4T22;Pelotas;Omã;2.684;NaN
+4T22;Pelotas;Outros;NaN;NaN
+4T22;Pelotas;Produção Pelotas;8.261;8.789
+4T22;Subproduto Cobalto (Toneladas);Sudbury, Canadá;NaN;NaN
+4T22;Subproduto Cobalto (Toneladas);Thompson, Canadá;NaN;NaN
+4T22;Subproduto Cobalto (Toneladas);Voisey's Bay, Canadá;NaN;NaN
+4T22;Subproduto Cobalto (Toneladas);VNC;NaN;NaN
+4T22;Subproduto Cobalto (Toneladas);Outros;NaN;NaN
+4T22;Subproduto Cobalto (Toneladas);Produção Total de Cobalto;529;NaN
+1T23;Minério de Ferro;Serra Norte e Leste;19.450;NaN
+1T23;Minério de Ferro;S11D;16.321;NaN
+1T23;Minério de Ferro;Total Norte;35.771;NaN
+1T23;Minério de Ferro;Itabira;7.439;NaN
+1T23;Minério de Ferro;Minas Centrais;5.411;NaN
+1T23;Minério de Ferro;Mariana;5.753;NaN
+1T23;Minério de Ferro;Total Sudeste;18.604;NaN
+1T23;Minério de Ferro;Paraopeba;4.326;NaN
+1T23;Minério de Ferro;Vargem Grande;8.074;NaN
+1T23;Minério de Ferro;Total Sul;12.399;NaN
+1T23;Minério de Ferro;Corumbá;NaN;NaN
+1T23;Minério de Ferro;Total Centro-Oeste;NaN;NaN
+1T23;Minério de Ferro;Produção Total de Minério de Ferro;66.774;53.994
+1T23;Níquel;Sudbury, Canadá;9,5;NaN
+1T23;Níquel;Thompson, Canadá;2,5;NaN
+1T23;Níquel;Voisey's Bay, Canadá;4,3;NaN
+1T23;Níquel;Total Canadá;16,3;NaN
+1T23;Níquel;Indonésia;14;NaN
+1T23;Níquel;Nova Caledônia;NaN;NaN
+1T23;Níquel;Brasil;4,9;NaN
+1T23;Níquel;Minérios de Terceiros;5,9;NaN
+1T23;Níquel;Produção Total de Níquel;41;40,1
+1T23;Cobre;Sossego;13,3;NaN
+1T23;Cobre;Salobo;32,8;NaN
+1T23;Cobre;Total Brasil;46,1;NaN
+1T23;Cobre;Sudbury, Canadá;16,3;NaN
+1T23;Cobre;Thompson, Canadá;0,1;NaN
+1T23;Cobre;Voisey's Bay, Canadá;2;NaN
+1T23;Cobre;Minérios de Terceiros;2,5;NaN
+1T23;Cobre;Total Canadá;20,9;NaN
+1T23;Cobre;Produção Total de Cobre;67;62,7
+1T23;Pelotas;São Luís;784;NaN
+1T23;Pelotas;Total Norte;784;NaN
+1T23;Pelotas;Tubarão 1 e 2;NaN;NaN
+1T23;Pelotas;Itabrasco (Tubarão 3);951;NaN
+1T23;Pelotas;Hispanobrás (Tubarão 4);NaN;NaN
+1T23;Pelotas;Nibrasco (Tubarão 5 e 6);1.208;NaN
+1T23;Pelotas;Kobrasco (Tubarão 7);948;NaN
+1T23;Pelotas;Tubarão 8;1.562;NaN
+1T23;Pelotas;Total Sudeste;4.668;NaN
+1T23;Pelotas;Fábrica;NaN;NaN
+1T23;Pelotas;Vargem Grande;1.147;NaN
+1T23;Pelotas;Total Sul;1.147;NaN
+1T23;Pelotas;Omã;1.719;NaN
+1T23;Pelotas;Outros;NaN;NaN
+1T23;Pelotas;Produção Pelotas;8.318;8.133
+1T23;Subproduto Cobalto (Toneladas);Sudbury, Canadá;NaN;NaN
+1T23;Subproduto Cobalto (Toneladas);Thompson, Canadá;NaN;NaN
+1T23;Subproduto Cobalto (Toneladas);Voisey's Bay, Canadá;NaN;NaN
+1T23;Subproduto Cobalto (Toneladas);VNC;NaN;NaN
+1T23;Subproduto Cobalto (Toneladas);Outros;NaN;NaN
+1T23;Subproduto Cobalto (Toneladas);Produção Total de Cobalto;597;NaN
+2T23;Minério de Ferro;Serra Norte e Leste;21.000;NaN
+2T23;Minério de Ferro;S11D;19.156;NaN
+2T23;Minério de Ferro;Total Norte;40.157;NaN
+2T23;Minério de Ferro;Itabira;8.362;NaN
+2T23;Minério de Ferro;Minas Centrais;6.537;NaN
+2T23;Minério de Ferro;Mariana;6.895;NaN
+2T23;Minério de Ferro;Total Sudeste;21.795;NaN
+2T23;Minério de Ferro;Paraopeba;7.483;NaN
+2T23;Minério de Ferro;Vargem Grande;9.308;NaN
+2T23;Minério de Ferro;Total Sul;16.792;NaN
+2T23;Minério de Ferro;Corumbá;NaN;NaN
+2T23;Minério de Ferro;Total Centro-Oeste;NaN;NaN
+2T23;Minério de Ferro;Produção Total de Minério de Ferro;78.743;72.138
+2T23;Níquel;Sudbury, Canadá;10,6;NaN
+2T23;Níquel;Thompson, Canadá;0,9;NaN
+2T23;Níquel;Voisey's Bay, Canadá;1,7;NaN
+2T23;Níquel;Total Canadá;13,2;NaN
+2T23;Níquel;Indonésia;13,2;NaN
+2T23;Níquel;Nova Caledônia;NaN;NaN
+2T23;Níquel;Brasil;5,7;NaN
+2T23;Níquel;Minérios de Terceiros;4,8;NaN
+2T23;Níquel;Produção Total de Níquel;36,9;40,3
+2T23;Cobre;Sossego;15;NaN
+2T23;Cobre;Salobo;42,7;NaN
+2T23;Cobre;Total Brasil;57,7;NaN
+2T23;Cobre;Sudbury, Canadá;16,7;NaN
+2T23;Cobre;Thompson, Canadá;0,05;NaN
+2T23;Cobre;Voisey's Bay, Canadá;2,2;NaN
+2T23;Cobre;Minérios de Terceiros;2,1;NaN
+2T23;Cobre;Total Canadá;21,1;NaN
+2T23;Cobre;Produção Total de Cobre;78,8;73,8
+2T23;Pelotas;São Luís;665;NaN
+2T23;Pelotas;Total Norte;665;NaN
+2T23;Pelotas;Tubarão 1 e 2;NaN;NaN
+2T23;Pelotas;Itabrasco (Tubarão 3);1.004;NaN
+2T23;Pelotas;Hispanobrás (Tubarão 4);57;NaN
+2T23;Pelotas;Nibrasco (Tubarão 5 e 6);1.130;NaN
+2T23;Pelotas;Kobrasco (Tubarão 7);800;NaN
+2T23;Pelotas;Tubarão 8;1.642;NaN
+2T23;Pelotas;Total Sudeste;4.633;NaN
+2T23;Pelotas;Fábrica;NaN;NaN
+2T23;Pelotas;Vargem Grande;1.200;NaN
+2T23;Pelotas;Total Sul;1.200;NaN
+2T23;Pelotas;Omã;2.613;NaN
+2T23;Pelotas;Outros;NaN;NaN
+2T23;Pelotas;Produção Pelotas;9.111;8.809
+2T23;Subproduto Cobalto (Toneladas);Sudbury, Canadá;NaN;NaN
+2T23;Subproduto Cobalto (Toneladas);Thompson, Canadá;NaN;NaN
+2T23;Subproduto Cobalto (Toneladas);Voisey's Bay, Canadá;NaN;NaN
+2T23;Subproduto Cobalto (Toneladas);VNC;NaN;NaN
+2T23;Subproduto Cobalto (Toneladas);Outros;NaN;NaN
+2T23;Subproduto Cobalto (Toneladas);Produção Total de Cobalto;361;NaN
+3T23;Minério de Ferro;Serra Norte e Leste;28.833;NaN
+3T23;Minério de Ferro;S11D;19.355;NaN
+3T23;Minério de Ferro;Total Norte;48.188;NaN
+3T23;Minério de Ferro;Itabira;8.543;NaN
+3T23;Minério de Ferro;Minas Centrais;5.250;NaN
+3T23;Minério de Ferro;Mariana;6.557;NaN
+3T23;Minério de Ferro;Total Sudeste;20.350;NaN
+3T23;Minério de Ferro;Paraopeba;8.273;NaN
+3T23;Minério de Ferro;Vargem Grande;9.428;NaN
+3T23;Minério de Ferro;Total Sul;17.701;NaN
+3T23;Minério de Ferro;Corumbá;NaN;NaN
+3T23;Minério de Ferro;Total Centro-Oeste;NaN;NaN
+3T23;Minério de Ferro;Produção Total de Minério de Ferro;86.238;78.327
+3T23;Níquel;Sudbury, Canadá;8,1;NaN
+3T23;Níquel;Thompson, Canadá;1,3;NaN
+3T23;Níquel;Voisey's Bay, Canadá;3,9;NaN
+3T23;Níquel;Total Canadá;13,3;NaN
+3T23;Níquel;Indonésia;17,1;NaN
+3T23;Níquel;Nova Caledônia;NaN;NaN
+3T23;Níquel;Brasil;5,8;NaN
+3T23;Níquel;Minérios de Terceiros;5,9;NaN
+3T23;Níquel;Produção Total de Níquel;42,1;39,2
+3T23;Cobre;Sossego;17,1;NaN
+3T23;Cobre;Salobo;49,6;NaN
+3T23;Cobre;Total Brasil;66,7;NaN
+3T23;Cobre;Sudbury, Canadá;9,4;NaN
+3T23;Cobre;Thompson, Canadá;1,6;NaN
+3T23;Cobre;Voisey's Bay, Canadá;2,7;NaN
+3T23;Cobre;Minérios de Terceiros;1,2;NaN
+3T23;Cobre;Total Canadá;14,9;NaN
+3T23;Cobre;Produção Total de Cobre;81,6;73,8
+3T23;Pelotas;São Luís;1.037;NaN
+3T23;Pelotas;Total Norte;1.037;NaN
+3T23;Pelotas;Tubarão 1 e 2;NaN;NaN
+3T23;Pelotas;Itabrasco (Tubarão 3);801;NaN
+3T23;Pelotas;Hispanobrás (Tubarão 4);720;NaN
+3T23;Pelotas;Nibrasco (Tubarão 5 e 6);837;NaN
+3T23;Pelotas;Kobrasco (Tubarão 7);557;NaN
+3T23;Pelotas;Tubarão 8;1.488;NaN
+3T23;Pelotas;Total Sudeste;4.403;NaN
+3T23;Pelotas;Fábrica;NaN;NaN
+3T23;Pelotas;Vargem Grande;1.107;NaN
+3T23;Pelotas;Total Sul;1.107;NaN
+3T23;Pelotas;Omã;2.628;NaN
+3T23;Pelotas;Outros;NaN;NaN
+3T23;Pelotas;Produção Pelotas;9.175;8.613
+3T23;Subproduto Cobalto (Toneladas);Sudbury, Canadá;NaN;NaN
+3T23;Subproduto Cobalto (Toneladas);Thompson, Canadá;NaN;NaN
+3T23;Subproduto Cobalto (Toneladas);Voisey's Bay, Canadá;NaN;NaN
+3T23;Subproduto Cobalto (Toneladas);VNC;NaN;NaN
+3T23;Subproduto Cobalto (Toneladas);Outros;NaN;NaN
+3T23;Subproduto Cobalto (Toneladas);Produção Total de Cobalto;452;NaN
+4T23;Minério de Ferro;Serra Norte e Leste;28.702;NaN
+4T23;Minério de Ferro;S11D;20.150;NaN
+4T23;Minério de Ferro;Total Norte;48.852;NaN
+4T23;Minério de Ferro;Itabira;7.979;NaN
+4T23;Minério de Ferro;Minas Centrais;6.658;NaN
+4T23;Minério de Ferro;Mariana;6.959;NaN
+4T23;Minério de Ferro;Total Sudeste;21.595;NaN
+4T23;Minério de Ferro;Paraopeba;8.758;NaN
+4T23;Minério de Ferro;Vargem Grande;10.191;NaN
+4T23;Minério de Ferro;Total Sul;18.949;NaN
+4T23;Minério de Ferro;Corumbá;NaN;NaN
+4T23;Minério de Ferro;Total Centro-Oeste;NaN;NaN
+4T23;Minério de Ferro;Produção Total de Minério de Ferro;89.397;90.328
+4T23;Níquel;Sudbury, Canadá;10;NaN
+4T23;Níquel;Thompson, Canadá;3,2;NaN
+4T23;Níquel;Voisey's Bay, Canadá;3,5;NaN
+4T23;Níquel;Total Canadá;16,7;NaN
+4T23;Níquel;Indonésia;19,8;NaN
+4T23;Níquel;Nova Caledônia;NaN;NaN
+4T23;Níquel;Brasil;0,6;NaN
+4T23;Níquel;Minérios de Terceiros;7,7;NaN
+4T23;Níquel;Produção Total de Níquel;44,9;47,9
+4T23;Cobre;Sossego;21,4;NaN
+4T23;Cobre;Salobo;55,2;NaN
+4T23;Cobre;Total Brasil;76,7;NaN
+4T23;Cobre;Sudbury, Canadá;15,4;NaN
+4T23;Cobre;Thompson, Canadá;2,9;NaN
+4T23;Cobre;Voisey's Bay, Canadá;2,7;NaN
+4T23;Cobre;Minérios de Terceiros;1,4;NaN
+4T23;Cobre;Total Canadá;22,4;NaN
+4T23;Cobre;Produção Total de Cobre;99,1;97,5
+4T23;Pelotas;São Luís;735;NaN
+4T23;Pelotas;Total Norte;735;NaN
+4T23;Pelotas;Tubarão 1 e 2;NaN;NaN
+4T23;Pelotas;Itabrasco (Tubarão 3);739;NaN
+4T23;Pelotas;Hispanobrás (Tubarão 4);892;NaN
+4T23;Pelotas;Nibrasco (Tubarão 5 e 6);1.585;NaN
+4T23;Pelotas;Kobrasco (Tubarão 7);899;NaN
+4T23;Pelotas;Tubarão 8;1.503;NaN
+4T23;Pelotas;Total Sudeste;5.618;NaN
+4T23;Pelotas;Fábrica;NaN;NaN
+4T23;Pelotas;Vargem Grande;1.175;NaN
+4T23;Pelotas;Total Sul;1.175;NaN
+4T23;Pelotas;Omã;2.323;NaN
+4T23;Pelotas;Outros;NaN;NaN
+4T23;Pelotas;Produção Pelotas;9.851;10.285
+4T23;Subproduto Cobalto (Toneladas);Sudbury, Canadá;NaN;NaN
+4T23;Subproduto Cobalto (Toneladas);Thompson, Canadá;NaN;NaN
+4T23;Subproduto Cobalto (Toneladas);Voisey's Bay, Canadá;NaN;NaN
+4T23;Subproduto Cobalto (Toneladas);VNC;NaN;NaN
+4T23;Subproduto Cobalto (Toneladas);Outros;NaN;NaN
+4T23;Subproduto Cobalto (Toneladas);Produção Total de Cobalto;549;NaN
+1T24;Minério de Ferro;Serra Norte e Leste;18.218;NaN
+1T24;Minério de Ferro;S11D;17.711;NaN
+1T24;Minério de Ferro;Total Norte;35.929;NaN
+1T24;Minério de Ferro;Itabira;7.599;NaN
+1T24;Minério de Ferro;Minas Centrais;6.408;NaN
+1T24;Minério de Ferro;Mariana;5.555;NaN
+1T24;Minério de Ferro;Total Sudeste;19.561;NaN
+1T24;Minério de Ferro;Paraopeba;6.525;NaN
+1T24;Minério de Ferro;Vargem Grande;8.822;NaN
+1T24;Minério de Ferro;Total Sul;15.347;NaN
+1T24;Minério de Ferro;Corumbá;NaN;NaN
+1T24;Minério de Ferro;Total Centro-Oeste;NaN;NaN
+1T24;Minério de Ferro;Produção Total de Minério de Ferro;70.837;63.826
+1T24;Níquel;Sudbury, Canadá;10,2;NaN
+1T24;Níquel;Thompson, Canadá;2,4;NaN
+1T24;Níquel;Voisey's Bay, Canadá;4,4;NaN
+1T24;Níquel;Total Canadá;16,9;NaN
+1T24;Níquel;Indonésia;18,7;NaN
+1T24;Níquel;Nova Caledônia;NaN;NaN
+1T24;Níquel;Brasil;NaN;NaN
+1T24;Níquel;Minérios de Terceiros;3,8;NaN
+1T24;Níquel;Produção Total de Níquel;39,5;33,1
+1T24;Cobre;Sossego;12,3;NaN
+1T24;Cobre;Salobo;48,4;NaN
+1T24;Cobre;Total Brasil;60,6;NaN
+1T24;Cobre;Sudbury, Canadá;16,8;NaN
+1T24;Cobre;Thompson, Canadá;0,4;NaN
+1T24;Cobre;Voisey's Bay, Canadá;2,7;NaN
+1T24;Cobre;Minérios de Terceiros;1,3;NaN
+1T24;Cobre;Total Canadá;21,3;NaN
+1T24;Cobre;Produção Total de Cobre;81,9;76,8
+1T24;Pelotas;São Luís;766;NaN
+1T24;Pelotas;Total Norte;766;NaN
+1T24;Pelotas;Tubarão 1 e 2;NaN;NaN
+1T24;Pelotas;Itabrasco (Tubarão 3);557;NaN
+1T24;Pelotas;Hispanobrás (Tubarão 4);688;NaN
+1T24;Pelotas;Nibrasco (Tubarão 5 e 6);1.153;NaN
+1T24;Pelotas;Kobrasco (Tubarão 7);852;NaN
+1T24;Pelotas;Tubarão 8;1.219;NaN
+1T24;Pelotas;Total Sudeste;4.852;NaN
+1T24;Pelotas;Fábrica;NaN;NaN
+1T24;Pelotas;Vargem Grande;4.852;NaN
+1T24;Pelotas;Total Sul;4.852;NaN
+1T24;Pelotas;Omã;1.629;NaN
+1T24;Pelotas;Outros;NaN;NaN
+1T24;Pelotas;Produção Pelotas;8.467;9.225
+1T24;Subproduto Cobalto (Toneladas);Sudbury, Canadá;NaN;NaN
+1T24;Subproduto Cobalto (Toneladas);Thompson, Canadá;NaN;NaN
+1T24;Subproduto Cobalto (Toneladas);Voisey's Bay, Canadá;NaN;NaN
+1T24;Subproduto Cobalto (Toneladas);VNC;NaN;NaN
+1T24;Subproduto Cobalto (Toneladas);Outros;NaN;NaN
+1T24;Subproduto Cobalto (Toneladas);Produção Total de Cobalto;482;NaN
+2T24;Minério de Ferro;Serra Norte e Leste;20.012;NaN
+2T24;Minério de Ferro;S11D;19.522;NaN
+2T24;Minério de Ferro;Total Norte;39.534;NaN
+2T24;Minério de Ferro;Itabira;8.003;NaN
+2T24;Minério de Ferro;Minas Centrais;6.152;NaN
+2T24;Minério de Ferro;Mariana;7.073;NaN
+2T24;Minério de Ferro;Total Sudeste;21.228;NaN
+2T24;Minério de Ferro;Paraopeba;7.970;NaN
+2T24;Minério de Ferro;Vargem Grande;11.866;NaN
+2T24;Minério de Ferro;Total Sul;19.836;NaN
+2T24;Minério de Ferro;Corumbá;NaN;NaN
+2T24;Minério de Ferro;Total Centro-Oeste;NaN;NaN
+2T24;Minério de Ferro;Produção Total de Minério de Ferro;80.598;79.792
+2T24;Níquel;Sudbury, Canadá;3,1;NaN
+2T24;Níquel;Thompson, Canadá;1,8;NaN
+2T24;Níquel;Voisey's Bay, Canadá;2,4;NaN
+2T24;Níquel;Total Canadá;7,3;NaN
+2T24;Níquel;Indonésia;16,2;NaN
+2T24;Níquel;Nova Caledônia;NaN;NaN
+2T24;Níquel;Brasil;3;NaN
+2T24;Níquel;Minérios de Terceiros;1,4;NaN
+2T24;Níquel;Produção Total de Níquel;27,9;34,3
+2T24;Cobre;Sossego;15,3;NaN
+2T24;Cobre;Salobo;46;NaN
+2T24;Cobre;Total Brasil;61,3;NaN
+2T24;Cobre;Sudbury, Canadá;13,9;NaN
+2T24;Cobre;Thompson, Canadá;NaN;NaN
+2T24;Cobre;Voisey's Bay, Canadá;2,7;NaN
+2T24;Cobre;Minérios de Terceiros;0,7;NaN
+2T24;Cobre;Total Canadá;17,3;NaN
+2T24;Cobre;Produção Total de Cobre;78,6;76,1
+2T24;Pelotas;São Luís;489;NaN
+2T24;Pelotas;Total Norte;489;NaN
+2T24;Pelotas;Tubarão 1 e 2;NaN;NaN
+2T24;Pelotas;Itabrasco (Tubarão 3);761;NaN
+2T24;Pelotas;Hispanobrás (Tubarão 4);729;NaN
+2T24;Pelotas;Nibrasco (Tubarão 5 e 6);1.261;NaN
+2T24;Pelotas;Kobrasco (Tubarão 7);489;NaN
+2T24;Pelotas;Tubarão 8;1.549;NaN
+2T24;Pelotas;Total Sudeste;4.789;NaN
+2T24;Pelotas;Fábrica;NaN;NaN
+2T24;Pelotas;Vargem Grande;1.058;NaN
+2T24;Pelotas;Total Sul;1.058;NaN
+2T24;Pelotas;Omã;2.557;NaN
+2T24;Pelotas;Outros;NaN;NaN
+2T24;Pelotas;Produção Pelotas;8.895;8.864
+2T24;Subproduto Cobalto (Toneladas);Sudbury, Canadá;NaN;NaN
+2T24;Subproduto Cobalto (Toneladas);Thompson, Canadá;NaN;NaN
+2T24;Subproduto Cobalto (Toneladas);Voisey's Bay, Canadá;NaN;NaN
+2T24;Subproduto Cobalto (Toneladas);VNC;NaN;NaN
+2T24;Subproduto Cobalto (Toneladas);Outros;NaN;NaN
+2T24;Subproduto Cobalto (Toneladas);Produção Total de Cobalto;189;NaN
+3T24;Minério de Ferro;Serra Norte e Leste;28.044;NaN
+3T24;Minério de Ferro;S11D;22.094;NaN
+3T24;Minério de Ferro;Total Norte;50.137;NaN
+3T24;Minério de Ferro;Itabira;9.492;NaN
+3T24;Minério de Ferro;Minas Centrais;7.250;NaN
+3T24;Minério de Ferro;Mariana;7.258;NaN
+3T24;Minério de Ferro;Total Sudeste;24.000;NaN
+3T24;Minério de Ferro;Paraopeba;7.103;NaN
+3T24;Minério de Ferro;Vargem Grande;9.730;NaN
+3T24;Minério de Ferro;Total Sul;16.833;NaN
+3T24;Minério de Ferro;Corumbá;NaN;NaN
+3T24;Minério de Ferro;Total Centro-Oeste;NaN;NaN
+3T24;Minério de Ferro;Produção Total de Minério de Ferro;90.971;81.838
+3T24;Níquel;Sudbury, Canadá;12,3;NaN
+3T24;Níquel;Thompson, Canadá;3,1;NaN
+3T24;Níquel;Voisey's Bay, Canadá;6,1;NaN
+3T24;Níquel;Total Canadá;21,5;NaN
+3T24;Níquel;Indonésia;NaN;NaN
+3T24;Níquel;Nova Caledônia;NaN;NaN
+3T24;Níquel;Brasil;6,2;NaN
+3T24;Níquel;Minérios de Terceiros;4,1;NaN
+3T24;Níquel;Produção Total de Níquel;47,1;40,1
+3T24;Cobre;Sossego;19,7;NaN
+3T24;Cobre;Salobo;46,6;NaN
+3T24;Cobre;Total Brasil;66,3;NaN
+3T24;Cobre;Sudbury, Canadá;11,6;NaN
+3T24;Cobre;Thompson, Canadá;3,2;NaN
+3T24;Cobre;Voisey's Bay, Canadá;3,6;NaN
+3T24;Cobre;Minérios de Terceiros;1,1;NaN
+3T24;Cobre;Total Canadá;66,3;NaN
+3T24;Cobre;Produção Total de Cobre;85,9;75,2
+3T24;Pelotas;São Luís;818;NaN
+3T24;Pelotas;Total Norte;818;NaN
+3T24;Pelotas;Tubarão 1 e 2;NaN;NaN
+3T24;Pelotas;Itabrasco (Tubarão 3);908;NaN
+3T24;Pelotas;Hispanobrás (Tubarão 4);531;NaN
+3T24;Pelotas;Nibrasco (Tubarão 5 e 6);1.935;NaN
+3T24;Pelotas;Kobrasco (Tubarão 7);1.071;NaN
+3T24;Pelotas;Tubarão 8;1.532;NaN
+3T24;Pelotas;Total Sudeste;5.978;NaN
+3T24;Pelotas;Fábrica;NaN;NaN
+3T24;Pelotas;Vargem Grande;1.238;NaN
+3T24;Pelotas;Total Sul;1.238;NaN
+3T24;Pelotas;Omã;2.328;NaN
+3T24;Pelotas;Outros;NaN;NaN
+3T24;Pelotas;Produção Pelotas;10.363;10.143
+3T24;Subproduto Cobalto (Toneladas);Sudbury, Canadá;NaN;NaN
+3T24;Subproduto Cobalto (Toneladas);Thompson, Canadá;NaN;NaN
+3T24;Subproduto Cobalto (Toneladas);Voisey's Bay, Canadá;NaN;NaN
+3T24;Subproduto Cobalto (Toneladas);VNC;NaN;NaN
+3T24;Subproduto Cobalto (Toneladas);Outros;NaN;NaN
+3T24;Subproduto Cobalto (Toneladas);Produção Total de Cobalto;714;NaN
+4T24;Minério de Ferro;Serra Norte e Leste;28.274;NaN
+4T24;Minério de Ferro;S11D;23.667;NaN
+4T24;Minério de Ferro;Total Norte;51.942;NaN
+4T24;Minério de Ferro;Itabira;7.722;NaN
+4T24;Minério de Ferro;Minas Centrais;8.083;NaN
+4T24;Minério de Ferro;Mariana;6.292;NaN
+4T24;Minério de Ferro;Total Sudeste;22.097;NaN
+4T24;Minério de Ferro;Paraopeba;4.214;NaN
+4T24;Minério de Ferro;Vargem Grande;7.027;NaN
+4T24;Minério de Ferro;Total Sul;11.241;NaN
+4T24;Minério de Ferro;Corumbá;NaN;NaN
+4T24;Minério de Ferro;Total Centro-Oeste;NaN;NaN
+4T24;Minério de Ferro;Produção Total de Minério de Ferro;85.279;81.196
+4T24;Níquel;Sudbury, Canadá;10,6;NaN
+4T24;Níquel;Thompson, Canadá;2,9;NaN
+4T24;Níquel;Voisey's Bay, Canadá;6,5;NaN
+4T24;Níquel;Total Canadá;20;NaN
+4T24;Níquel;Indonésia;NaN;NaN
+4T24;Níquel;Nova Caledônia;NaN;NaN
+4T24;Níquel;Brasil;4,8;NaN
+4T24;Níquel;Minérios de Terceiros;20,7;NaN
+4T24;Níquel;Produção Total de Níquel;45,5;47,1
+4T24;Cobre;Sossego;18,1;NaN
+4T24;Cobre;Salobo;58,9;NaN
+4T24;Cobre;Total Brasil;77;NaN
+4T24;Cobre;Sudbury, Canadá;16,3;NaN
+4T24;Cobre;Thompson, Canadá;3,6;NaN
+4T24;Cobre;Voisey's Bay, Canadá;3,9;NaN
+4T24;Cobre;Minérios de Terceiros;1,2;NaN
+4T24;Cobre;Total Canadá;101,8;NaN
+4T24;Cobre;Produção Total de Cobre;99;NaN
+4T24;Pelotas;São Luís;521;NaN
+4T24;Pelotas;Total Norte;521;NaN
+4T24;Pelotas;Tubarão 1 e 2;NaN;NaN
+4T24;Pelotas;Itabrasco (Tubarão 3);789;NaN
+4T24;Pelotas;Hispanobrás (Tubarão 4);921;NaN
+4T24;Pelotas;Nibrasco (Tubarão 5 e 6);1.612;NaN
+4T24;Pelotas;Kobrasco (Tubarão 7);896;NaN
+4T24;Pelotas;Tubarão 8;1.110;NaN
+4T24;Pelotas;Total Sudeste;5.328;NaN
+4T24;Pelotas;Fábrica;NaN;NaN
+4T24;Pelotas;Vargem Grande;638;NaN
+4T24;Pelotas;Total Sul;638;NaN
+4T24;Pelotas;Omã;2.680;NaN
+4T24;Pelotas;Outros;NaN;NaN
+4T24;Pelotas;Produção Pelotas;9.167;10.067
+4T24;Subproduto Cobalto (Toneladas);Sudbury, Canadá;NaN;NaN
+4T24;Subproduto Cobalto (Toneladas);Thompson, Canadá;NaN;NaN
+4T24;Subproduto Cobalto (Toneladas);Voisey's Bay, Canadá;NaN;NaN
+4T24;Subproduto Cobalto (Toneladas);VNC;NaN;NaN
+4T24;Subproduto Cobalto (Toneladas);Outros;NaN;NaN
+4T24;Subproduto Cobalto (Toneladas);Produção Total de Cobalto;695;NaN
+1T25;Minério de Ferro;Serra Norte e Leste;15.615;NaN
+1T25;Minério de Ferro;S11D;19.366;NaN
+1T25;Minério de Ferro;Total Norte;34.981;NaN
+1T25;Minério de Ferro;Itabira;5.494;NaN
+1T25;Minério de Ferro;Minas Centrais;6.751;NaN
+1T25;Minério de Ferro;Mariana;6.150;NaN
+1T25;Minério de Ferro;Total Sudeste;18.396;NaN
+1T25;Minério de Ferro;Paraopeba;4.774;NaN
+1T25;Minério de Ferro;Vargem Grande;9.513;NaN
+1T25;Minério de Ferro;Total Sul;14.287;NaN
+1T25;Minério de Ferro;Corumbá;NaN;NaN
+1T25;Minério de Ferro;Total Centro-Oeste;NaN;NaN
+1T25;Minério de Ferro;Produção Total de Minério de Ferro;67.664;66.141
+1T25;Níquel;Sudbury, Canadá;9,9;NaN
+1T25;Níquel;Thompson, Canadá;3,6;NaN
+1T25;Níquel;Voisey's Bay, Canadá;6,5;NaN
+1T25;Níquel;Total Canadá;20;NaN
+1T25;Níquel;Indonésia;NaN;NaN
+1T25;Níquel;Nova Caledônia;NaN;n
+1T25;Níquel;Brasil;5,4;NaN
+1T25;Níquel;Minérios de Terceiros;4,3;NaN
+1T25;Níquel;Produção Total de Níquel;43,9;38,9
+1T25;Cobre;Sossego;16;NaN
+1T25;Cobre;Salobo;52,3;NaN
+1T25;Cobre;Total Brasil;68,3;NaN
+1T25;Cobre;Sudbury, Canadá;15,9;NaN
+1T25;Cobre;Thompson, Canadá;1;NaN
+1T25;Cobre;Voisey's Bay, Canadá;4,6;NaN
+1T25;Cobre;Minérios de Terceiros;1,1;NaN
+1T25;Cobre;Total Canadá;22,6;NaN
+1T25;Cobre;Produção Total de Cobre;90,9;81,9
+1T25;Pelotas;São Luís;370;NaN
+1T25;Pelotas;Total Norte;370;NaN
+1T25;Pelotas;Tubarão 1 e 2;NaN;NaN
+1T25;Pelotas;Itabrasco (Tubarão 3);754;NaN
+1T25;Pelotas;Hispanobrás (Tubarão 4);187;NaN
+1T25;Pelotas;Nibrasco (Tubarão 5 e 6);621;NaN
+1T25;Pelotas;Kobrasco (Tubarão 7);835;NaN
+1T25;Pelotas;Tubarão 8;1.325;NaN
+1T25;Pelotas;Total Sudeste;3.722;NaN
+1T25;Pelotas;Fábrica;NaN;NaN
+1T25;Pelotas;Vargem Grande;1.118;NaN
+1T25;Pelotas;Total Sul;1.118;NaN
+1T25;Pelotas;Omã;1.974;NaN
+1T25;Pelotas;Outros;NaN;NaN
+1T25;Pelotas;Produção Pelotas;7.183;7.493
+1T25;Subproduto Cobalto (Toneladas);Sudbury, Canadá;NaN;NaN
+1T25;Subproduto Cobalto (Toneladas);Thompson, Canadá;NaN;NaN
+1T25;Subproduto Cobalto (Toneladas);Voisey's Bay, Canadá;NaN;NaN
+1T25;Subproduto Cobalto (Toneladas);VNC;NaN;NaN
+1T25;Subproduto Cobalto (Toneladas);Outros;NaN;NaN
+1T25;Subproduto Cobalto (Toneladas);Produção Total de Cobalto;739;NaN
+2T25;Minério de Ferro;Serra Norte e Leste;20.283;NaN
+2T25;Minério de Ferro;S11D;20.939;NaN
+2T25;Minério de Ferro;Total Norte;41.222;NaN
+2T25;Minério de Ferro;Itabira;6.199;NaN
+2T25;Minério de Ferro;Minas Centrais;7.848;NaN
+2T25;Minério de Ferro;Mariana;7.012;NaN
+2T25;Minério de Ferro;Total Sudeste;21.059;NaN
+2T25;Minério de Ferro;Paraopeba;3.953;NaN
+2T25;Minério de Ferro;Vargem Grande;9.136;NaN
+2T25;Minério de Ferro;Total Sul;13.089;NaN
+2T25;Minério de Ferro;Corumbá;NaN;NaN
+2T25;Minério de Ferro;Total Centro-Oeste;NaN;NaN
+2T25;Minério de Ferro;Produção Total de Minério de Ferro;83.599;77.346
+2T25;Níquel;Sudbury, Canadá;8,6;NaN
+2T25;Níquel;Thompson, Canadá;4,1;NaN
+2T25;Níquel;Voisey's Bay, Canadá;8,6;NaN
+2T25;Níquel;Total Canadá;21,3;NaN
+2T25;Níquel;Indonésia;NaN;NaN
+2T25;Níquel;Nova Caledônia;NaN;NaN
+2T25;Níquel;Brasil;4,8;NaN
+2T25;Níquel;Minérios de Terceiros;14,3;NaN
+2T25;Níquel;Produção Total de Níquel;40,3;41,4
+2T25;Cobre;Sossego;20,5;NaN
+2T25;Cobre;Salobo;50,5;NaN
+2T25;Cobre;Total Brasil;70;NaN
+2T25;Cobre;Sudbury, Canadá;15,1;NaN
+2T25;Cobre;Thompson, Canadá;0,2;NaN
+2T25;Cobre;Voisey's Bay, Canadá;5;NaN
+2T25;Cobre;Minérios de Terceiros;1,3;NaN
+2T25;Cobre;Total Canadá;21,6;NaN
+2T25;Cobre;Produção Total de Cobre;92,6;89
+2T25;Pelotas;São Luís;288;NaN
+2T25;Pelotas;Total Norte;288;NaN
+2T25;Pelotas;Tubarão 1 e 2;NaN;NaN
+2T25;Pelotas;Itabrasco (Tubarão 3);872;NaN
+2T25;Pelotas;Hispanobrás (Tubarão 4);604;NaN
+2T25;Pelotas;Nibrasco (Tubarão 5 e 6);784;NaN
+2T25;Pelotas;Kobrasco (Tubarão 7);854;NaN
+2T25;Pelotas;Tubarão 8;1.590;NaN
+2T25;Pelotas;Total Sudeste;4.704;NaN
+2T25;Pelotas;Fábrica;NaN;NaN
+2T25;Pelotas;Vargem Grande;1.113;NaN
+2T25;Pelotas;Total Sul;1.113;NaN
+2T25;Pelotas;Omã;1.744;NaN
+2T25;Pelotas;Outros;NaN;NaN
+2T25;Pelotas;Produção Pelotas;7.850;7.483
+2T25;Subproduto Cobalto (Toneladas);Sudbury, Canadá;NaN;NaN
+2T25;Subproduto Cobalto (Toneladas);Thompson, Canadá;NaN;NaN
+2T25;Subproduto Cobalto (Toneladas);Voisey's Bay, Canadá;NaN;NaN
+2T25;Subproduto Cobalto (Toneladas);VNC;NaN;NaN
+2T25;Subproduto Cobalto (Toneladas);Outros;NaN;NaN
+2T25;Subproduto Cobalto (Toneladas);Produção Total de Cobalto;815;NaN
+3T25;Minério de Ferro;Serra Norte e Leste;26.172;NaN
+3T25;Minério de Ferro;S11D;23.564;NaN
+3T25;Minério de Ferro;Total Norte;49.737;NaN
+3T25;Minério de Ferro;Itabira;7.247;NaN
+3T25;Minério de Ferro;Minas Centrais;7.989;NaN
+3T25;Minério de Ferro;Mariana;7.485;NaN
+3T25;Minério de Ferro;Total Sudeste;22.721;NaN
+3T25;Minério de Ferro;Paraopeba;4.376;NaN
+3T25;Minério de Ferro;Vargem Grande;9.407;NaN
+3T25;Minério de Ferro;Total Sul;13.783;NaN
+3T25;Minério de Ferro;Corumbá;NaN;NaN
+3T25;Minério de Ferro;Total Centro-Oeste;NaN;NaN
+3T25;Minério de Ferro;Produção Total de Minério de Ferro;86.240;85.997
+3T25;Níquel;Sudbury, Canadá;8,5;NaN
+3T25;Níquel;Thompson, Canadá;2,9;NaN
+3T25;Níquel;Voisey's Bay, Canadá;10,7;NaN
+3T25;Níquel;Total Canadá;22,1;NaN
+3T25;Níquel;Indonésia;NaN;NaN
+3T25;Níquel;Nova Caledônia;NaN;NaN
+3T25;Níquel;Brasil;5,9;NaN
+3T25;Níquel;Minérios de Terceiros;3,8;NaN
+3T25;Níquel;Produção Total de Níquel;46,8;42,9
+3T25;Cobre;Sossego;19,3;NaN
+3T25;Cobre;Salobo;53;NaN
+3T25;Cobre;Total Brasil;72,3;NaN
+3T25;Cobre;Sudbury, Canadá;12,6;NaN
+3T25;Cobre;Thompson, Canadá;0,2;NaN
+3T25;Cobre;Voisey's Bay, Canadá;4,3;NaN
+3T25;Cobre;Minérios de Terceiros;1,3;NaN
+3T25;Cobre;Total Canadá;18,4;NaN
+3T25;Cobre;Produção Total de Cobre;90,8;90
+3T25;Pelotas;São Luís;10;NaN
+3T25;Pelotas;Total Norte;10;NaN
+3T25;Pelotas;Tubarão 1 e 2;NuN;NaN
+3T25;Pelotas;Itabrasco (Tubarão 3);349;NaN
+3T25;Pelotas;Hispanobrás (Tubarão 4);755;NaN
+3T25;Pelotas;Nibrasco (Tubarão 5 e 6);1.028;NaN
+3T25;Pelotas;Kobrasco (Tubarão 7);903;NaN
+3T25;Pelotas;Tubarão 8;1.540;NaN
+3T25;Pelotas;Total Sudeste;4.575;NaN
+3T25;Pelotas;Fábrica;NuN;NaN
+3T25;Pelotas;Vargem Grande;888;NaN
+3T25;Pelotas;Total Sul;888;NaN
+3T25;Pelotas;Omã;2.524;NaN
+3T25;Pelotas;Outros;NuN;NaN
+3T25;Pelotas;Produção Pelotas;7.997;8.769
+3T25;Subproduto Cobalto (Toneladas);Sudbury, Canadá;NaN;NaN
+3T25;Subproduto Cobalto (Toneladas);Thompson, Canadá;NaN;NaN
+3T25;Subproduto Cobalto (Toneladas);Voisey's Bay, Canadá;NaN;NaN
+3T25;Subproduto Cobalto (Toneladas);VNC;NaN;NaN
+3T25;Subproduto Cobalto (Toneladas);Outros;NaN;NaN
+3T25;Subproduto Cobalto (Toneladas);Produção Total de Cobalto;964;NaN
+4T25;Minério de Ferro;Serra Norte e Leste;22.629;NaN
+4T25;Minério de Ferro;S11D;22.147;NaN
+4T25;Minério de Ferro;Total Norte;44.776;NaN
+4T25;Minério de Ferro;Itabira;7.002;NaN
+4T25;Minério de Ferro;Minas Centrais;8.811;NaN
+4T25;Minério de Ferro;Mariana;8.051;NaN
+4T25;Minério de Ferro;Total Sudeste;23.864;NaN
+4T25;Minério de Ferro;Paraopeba;3.790;NaN
+4T25;Minério de Ferro;Vargem Grande;9.714;NaN
+4T25;Minério de Ferro;Total Sul;13.504;NaN
+4T25;Minério de Ferro;Corumbá;NaN;NaN
+4T25;Minério de Ferro;Total Centro-Oeste;NaN;NaN
+4T25;Minério de Ferro;Produção Total de Minério de Ferro;82.144;84.874
+4T25;Níquel;Sudbury, Canadá;8,2;NaN
+4T25;Níquel;Thompson, Canadá;1,4;NaN
+4T25;Níquel;Voisey's Bay, Canadá;7,4;NaN
+4T25;Níquel;Total Canadá;17;NaN
+4T25;Níquel;Indonésia;NaN;NaN
+4T25;Níquel;Nova Caledônia;NaN;NaN
+4T25;Níquel;Brasil;10;NaN
+4T25;Níquel;Minérios de Terceiros;4,3;NaN
+4T25;Níquel;Produção Total de Níquel;46,2;49,6
+4T25;Cobre;Sossego;18,6;NaN
+4T25;Cobre;Salobo;62,9;NaN
+4T25;Cobre;Total Brasil;81,5;NaN
+4T25;Cobre;Sudbury, Canadá;20,2;NaN
+4T25;Cobre;Thompson, Canadá;0,1;NaN
+4T25;Cobre;Voisey's Bay, Canadá;4,7;NaN
+4T25;Cobre;Minérios de Terceiros;1,7;NaN
+4T25;Cobre;Total Canadá;26,7;NaN
+4T25;Cobre;Produção Total de Cobre;108,1;106,9
+4T25;Pelotas;São Luís;NaN;NaN
+4T25;Pelotas;Total Norte;NaN;NaN
+4T25;Pelotas;Tubarão 1 e 2;NaN;NaN
+4T25;Pelotas;Itabrasco (Tubarão 3);382;NaN
+4T25;Pelotas;Hispanobrás (Tubarão 4);754;NaN
+4T25;Pelotas;Nibrasco (Tubarão 5 e 6);1.071;NaN
+4T25;Pelotas;Kobrasco (Tubarão 7);1.019;NaN
+4T25;Pelotas;Tubarão 8;1.666;NaN
+4T25;Pelotas;Total Sudeste;4.892;n
+4T25;Pelotas;Fábrica;NaN;NaN
+4T25;Pelotas;Vargem Grande;947;NaN
+4T25;Pelotas;Total Sul;947;NaN
+4T25;Pelotas;Omã;2.486;NaN
+4T25;Pelotas;Outros;NaN;NaN
+4T25;Pelotas;Produção Pelotas;8.325;9.056
+4T25;Subproduto Cobalto (Toneladas);Sudbury, Canadá;NaN;NaN
+4T25;Subproduto Cobalto (Toneladas);Thompson, Canadá;NaN;NaN
+4T25;Subproduto Cobalto (Toneladas);Voisey's Bay, Canadá;NaN;NaN
+4T25;Subproduto Cobalto (Toneladas);VNC;NaN;NaN
+4T25;Subproduto Cobalto (Toneladas);Outros;NaN;NaN
+4T25;Subproduto Cobalto (Toneladas);Produção Total de Cobalto;724;NaN
+1T26;Minério de Ferro;Serra Norte e Leste;13.319;NaN
+1T26;Minério de Ferro;S11D;19.854;NaN
+1T26;Minério de Ferro;Total Norte;33.173;NaN
+1T26;Minério de Ferro;Itabira;5.423;NaN
+1T26;Minério de Ferro;Minas Centrais;6.811;NaN
+1T26;Minério de Ferro;Mariana;6.960;NaN
+1T26;Minério de Ferro;Total Sudeste;19.194;NaN
+1T26;Minério de Ferro;Paraopeba;1.643;NaN
+1T26;Minério de Ferro;Vargem Grande;8.735;NaN
+1T26;Minério de Ferro;Total Sul;10.378;NaN
+1T26;Minério de Ferro;Corumbá;NaN;NaN
+1T26;Minério de Ferro;Total Centro-Oeste;NaN;NaN
+1T26;Minério de Ferro;Produção Total de Minério de Ferro;62.744;69.675
+1T26;Níquel;Sudbury, Canadá;10,6;NaN
+1T26;Níquel;Thompson, Canadá;1,2;NaN
+1T26;Níquel;Voisey's Bay, Canadá;10,5;NaN
+1T26;Níquel;Total Canadá;22,3;NaN
+1T26;Níquel;Indonésia;NaN;NaN
+1T26;Níquel;Nova Caledônia;NaN;NaN
+1T26;Níquel;Brasil;8,9;NaN
+1T26;Níquel;Minérios de Terceiros;3,6;NaN
+1T26;Níquel;Produção Total de Níquel;49,3;44,8
+1T26;Cobre;Sossego;29;NaN
+1T26;Cobre;Salobo;52,8;NaN
+1T26;Cobre;Total Brasil;81,8;NaN
+1T26;Cobre;Sudbury, Canadá;13,3;NaN
+1T26;Cobre;Thompson, Canadá;0,1;NaN
+1T26;Cobre;Voisey's Bay, Canadá;5,4;NaN
+1T26;Cobre;Minérios de Terceiros;1,6;NaN
+1T26;Cobre;Total Canadá;20,4;NaN
+1T26;Cobre;Produção Total de Cobre;102,3;91,2
+1T26;Pelotas;São Luís;72;NaN
+1T26;Pelotas;Total Norte;72;NaN
+1T26;Pelotas;Tubarão 1 e 2;NaN;NaN
+1T26;Pelotas;Itabrasco (Tubarão 3);846;NaN
+1T26;Pelotas;Hispanobrás (Tubarão 4);651;NaN
+1T26;Pelotas;Nibrasco (Tubarão 5 e 6);1.122;NaN
+1T26;Pelotas;Kobrasco (Tubarão 7);879;NaN
+1T26;Pelotas;Tubarão 8;1.531;NaN
+1T26;Pelotas;Total Sudeste;5.029;NaN
+1T26;Pelotas;Fábrica;NaN;NaN
+1T26;Pelotas;Vargem Grande;1.189;NaN
+1T26;Pelotas;Total Sul;1.189;NaN
+1T26;Pelotas;Omã;1.879;NaN
+1T26;Pelotas;Outros;NaN;NaN
+1T26;Pelotas;Produção Pelotas;8.169;7.699
+1T26;Subproduto Cobalto (Toneladas);Sudbury, Canadá;NaN;NaN
+1T26;Subproduto Cobalto (Toneladas);Thompson, Canadá;NaN;NaN
+1T26;Subproduto Cobalto (Toneladas);Voisey's Bay, Canadá;NaN;NaN
+1T26;Subproduto Cobalto (Toneladas);VNC;NaN;NaN
+1T26;Subproduto Cobalto (Toneladas);Outros;NaN;NaN
+1T26;Subproduto Cobalto (Toneladas);Produção Total de Cobalto;888;NaN
+2T26;Minério de Ferro;Serra Norte e Leste;16.134;NaN
+2T26;Minério de Ferro;S11D;23.426;NaN
+2T26;Minério de Ferro;Total Norte;39.560;NaN
+2T26;Minério de Ferro;Itabira;6.034;NaN
+2T26;Minério de Ferro;Minas Centrais;8.376;NaN
+2T26;Minério de Ferro;Mariana;9.925;NaN
+2T26;Minério de Ferro;Total Sudeste;24.336;NaN
+2T26;Minério de Ferro;Paraopeba;1.806;NaN
+2T26;Minério de Ferro;Vargem Grande;10.269;NaN
+2T26;Minério de Ferro;Total Sul;12.075;NaN
+2T26;Minério de Ferro;Corumbá;NaN;NaN
+2T26;Minério de Ferro;Total Centro-Oeste;NaN;NaN
+2T26;Minério de Ferro;Produção Total de Minério de Ferro;84.255;79.747
+2T26;Níquel;Sudbury, Canadá;7;NaN
+2T26;Níquel;Thompson, Canadá;2,2;NaN
+2T26;Níquel;Voisey's Bay, Canadá;10,4;NaN
+2T26;Níquel;Total Canadá;19,4;NaN
+2T26;Níquel;Indonésia;NaN;NaN
+2T26;Níquel;Nova Caledônia;NaN;NaN
+2T26;Níquel;Brasil;9,4;NaN
+2T26;Níquel;Minérios de Terceiros;1,8;NaN
+2T26;Níquel;Produção Total de Níquel;42;44,4
+2T26;Cobre;Sossego;25,9;NaN
+2T26;Cobre;Salobo;52,4;NaN
+2T26;Cobre;Total Brasil;78,3;NaN
+2T26;Cobre;Sudbury, Canadá;12,5;NaN
+2T26;Cobre;Thompson, Canadá;0,2;NaN
+2T26;Cobre;Voisey's Bay, Canadá;6;NaN
+2T26;Cobre;Minérios de Terceiros;1,4;NaN
+2T26;Cobre;Total Canadá;20,1;NaN
+2T26;Cobre;Produção Total de Cobre;98,4;97,6
+2T26;Pelotas;São Luís;145;NaN
+2T26;Pelotas;Total Norte;145;NaN
+2T26;Pelotas;Tubarão 1 e 2;NaN;NaN
+2T26;Pelotas;Itabrasco (Tubarão 3);978;NaN
+2T26;Pelotas;Hispanobrás (Tubarão 4);909;NaN
+2T26;Pelotas;Nibrasco (Tubarão 5 e 6);1.127;NaN
+2T26;Pelotas;Kobrasco (Tubarão 7);1.112;NaN
+2T26;Pelotas;Tubarão 8;1.632;NaN
+2T26;Pelotas;Total Sudeste;5.759;NaN
+2T26;Pelotas;Fábrica;NaN;NaN
+2T26;Pelotas;Vargem Grande;1.199;NaN
+2T26;Pelotas;Total Sul;1.199;NaN
+2T26;Pelotas;Omã;200;NaN
+2T26;Pelotas;Outros;NaN;NaN
+2T26;Pelotas;Produção Pelotas;7.303;7.748
+2T26;Subproduto Cobalto (Toneladas);Sudbury, Canadá;NaN;NaN
+2T26;Subproduto Cobalto (Toneladas);Thompson, Canadá;NaN;NaN
+2T26;Subproduto Cobalto (Toneladas);Voisey's Bay, Canadá;NaN;NaN
+2T26;Subproduto Cobalto (Toneladas);VNC;NaN;NaN
+2T26;Subproduto Cobalto (Toneladas);Outros;NaN;NaN
+2T26;Subproduto Cobalto (Toneladas);Produção Total de Cobalto;772;NaN
