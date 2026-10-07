@@ -24,10 +24,10 @@ def carregar_anual_financas():
 def carregar_tri_producao():
     tri_producao = pd.read_csv(
         "dados_vale(Tri Produção).csv", encoding="ISO-8859-1", sep=";",)
-    tri_producao.columns = tri_producao.columns.str.strip()
-    tri_producao["Produto"] = tri_producao["Produto"].astype(str).str.strip()
+    tri_producao.columns = tri_producao.columns.str.strip() #remove espaços em branco no início e no final dos nomes das colunas
+    tri_producao["Produto"] = tri_producao["Produto"].astype(str).str.strip() #converte a coluna para texto remove espaços em branco
     tri_producao["Local"] = tri_producao["Local"].astype(str).str.strip()
-    return tri_producao
+    return tri_producao #retorna a tabela limpa
 
 @st.cache_data
 def carregar_anual_producao():
@@ -37,6 +37,23 @@ def carregar_anual_producao():
     anual_prod["Ano"] = anual_prod["Ano"].dropna().astype(int).astype(str)
     return anual_prod
 
+@st.cache_data
+def carregar_tri_mercado():
+    tri_mercado = pd.read_csv(
+        "dados_vale(Tri Mercado e Economia).csv", encoding="ISO-8859-1", sep=";")
+    tri_mercado.columns = tri_mercado.columns.str.strip()
+    return tri_mercado
+
+@st.cache_data
+def carregar_anual_mercado():
+    anual_mercado = pd.read_csv(
+        "dados_vale(Anual Mercado e Economia ).csv", encoding="ISO-8859-1", sep=";")
+    anual_mercado.columns = anual_mercado.columns.str.strip()
+    anual_mercado["Ano"] = anual_mercado["Ano"].dropna().astype(int).astype(str)
+    return anual_mercado
+
+tri_mercado = carregar_tri_mercado()
+anual_mercado = carregar_anual_mercado()
 anual_producao = carregar_anual_producao()
 tri_producao = carregar_tri_producao()
 tri_financas = carregar_tri_financas()
@@ -45,12 +62,12 @@ anual_financas = carregar_anual_financas()
 #==========================================================
 
 def conv_pct(val):
-    if pd.isna(val):
-        return None
+    if pd.isna(val): #verifica se o valor é nulo ou ausente
+        return None #retorna None cao o valor seja nulo
     val_str = str(val).replace("%", "").replace(",", ".").strip()
-    try:
-        return float(val_str)
-    except ValueError:
+    try: #tentativa de converter o texto em número decimal
+        return float(val_str) #converte a string tratada para float
+    except ValueError: #captura o erro caso o texto não seja um número válido
         return None
 
 def conv_preco(val):
@@ -77,13 +94,13 @@ def f_bilhoes(val):
 
     val_str = str(val).replace("(R$ bi)", "").replace("R$", "").strip()
 
-    #Se a string contém vírgula e ponto (ex: "235.120,00" ou "235,12")
-    if "," in val_str:
+    #se a string contém vírgula e ponto (ex: "235.120,00" ou "235,12")
+    if "," in val_str: #verifica se existe uma vírgula no texto
         val_str = val_str.replace(".", "").replace(",", ".")
-    else:
-        # Se contém apenas um ponto e 3 casas decimais (ex: 235.120 -> milhar do CSV)
-        parts = val_str.split(".")
-        if len(parts) == 2 and len(parts[1]) == 3 and float(parts[0]) > 10:
+    else: #executa se a string não tiver vírgula
+        #se contém apenas um ponto e 3 casas decimais (ex: 235.120 -> milhar do CSV)
+        parts = val_str.split(".") #divide em partes onde tiver ponto
+        if len(parts) == 2 and len(parts[1]) == 3 and float(parts[0]) > 10: #checa se tem duas partes
             val_str = val_str.replace(".", "")
 
     try:
@@ -104,34 +121,34 @@ def _card_base(titulo, valor, coluna, tabela, key_slider, conversor, cor, col_te
         st.metric(titulo, valor)
 
         with st.expander("Histórico"):
-            n = st.slider("Períodos:", 3, len(tabela), min(8, len(tabela)), key=key_slider)
+            n = st.slider("Períodos:", 3, len(tabela), min(8, len(tabela)), key=key_slider) #slider para escolher o número de períodos
 
-            df = tabela.tail(n).copy()
-            df[coluna] = df[coluna].apply(conversor)
-            df[col_tempo] = df[col_tempo].astype(str)
+            df = tabela.tail(n).copy() #pega os últimos 'n' registros
+            df[coluna] = df[coluna].apply(conversor) #converte os dados para número
+            df[col_tempo] = df[col_tempo].astype(str) #converte para string
 
-            fig = px.line(df, x=col_tempo, y=coluna, markers=True,
+            fig = px.line(df, x=col_tempo, y=coluna, markers=True, #cria gráfico de linha
                           color_discrete_sequence=[cor])
             fig.update_layout(margin=dict(l=10, r=30, t=10, b=10), height=190,
-                              xaxis_title="", yaxis_title="", hovermode="x unified")
-            fig.update_xaxes(tickangle=-45, tickfont=dict(size=10),
+                              xaxis_title="", yaxis_title="", hovermode="x unified") #remove títulos dos eixos e unifica os hovers
+            fig.update_xaxes(tickangle=-45, tickfont=dict(size=10), #inclina rótulos do eixo X
                              type="category", automargin=True)
-            fig.update_yaxes(automargin=False, ticklabelposition="inside",
+            fig.update_yaxes(automargin=False, ticklabelposition="inside", #coloca os valores do eixo Y para dentro
                              tickfont=dict(size=10))
             fig.update_traces(cliponaxis=False)
 
-            st.plotly_chart(fig, use_container_width=True,
-                            config={"displayModeBar": False})
+            st.plotly_chart(fig, use_container_width=True, #exibe gráfico na largura do card
+                            config={"displayModeBar": False}) #oculta a barra de ferramentas do plotly
 
 def card_expansivel_real(titulo, coluna, dados_tri, tabela_validos, key_slider, col_tempo="Trimestre"):
-    valor = f"R$ {str(dados_tri[coluna]).replace(',00', '').strip()}"
-    _card_base(titulo, valor, coluna, tabela_validos, key_slider, f_bilhoes, "#00529B", col_tempo)
+    valor = f"R$ {str(dados_tri[coluna]).replace(',00', '').strip()}" #remove os decimais
+    _card_base(titulo, valor, coluna, tabela_validos, key_slider, f_bilhoes, "#00529B", col_tempo) #chama o card base com conversor de bilhões
 
 def card_expansivel_geral(titulo, coluna, dados_tri, tabela_validos, key_slider, col_tempo="Trimestre"):
-    _card_base(titulo, f"{dados_tri[coluna]}", coluna, tabela_validos, key_slider, conv_pct, "#00529B", col_tempo)
+    _card_base(titulo, f"{dados_tri[coluna]}", coluna, tabela_validos, key_slider, conv_pct, "#00529B", col_tempo) #conversor de percentual
 
 def card_expansivel_acao(titulo, coluna, dados_tri, tabela_validos, key_slider, simbolo="", col_tempo="Trimestre"):
-    _card_base(titulo, f"{simbolo}{dados_tri[coluna]}", coluna, tabela_validos, key_slider, conv_preco, "#00A859", col_tempo)
+    _card_base(titulo, f"{simbolo}{dados_tri[coluna]}", coluna, tabela_validos, key_slider, conv_preco, "#00A859", col_tempo) #conversor de preço e símbolo personalizável
 
 def marcacao_preta():
     st.markdown(
@@ -175,9 +192,177 @@ st.sidebar.write(
     "Criado por Fernando Henrique M. Rossignolli, Israel Gomes Galdino, "
     "Luis Felipe de Souza Ferreira e João Pedro Barreto de Almeida")
 
+#PÁGINA VISÃO GERAL ===================================================================================================================
+
+if pagina == "Visão Geral":
+    st.title("Visão Geral — Vale S.A.")
+    st.markdown("##### Resumo Executivo: Desempenho Financeiro, Operacional e de Mercado")
+
+    #funções necessárias recriadas localmente ----------------------------------
+    def local_f_bilhoes(val):
+        if pd.isna(val):
+            return None
+        val_str = str(val).replace("(R$ bi)", "").replace("R$", "").strip()
+        if "," in val_str:
+            val_str = val_str.replace(".", "").replace(",", ".")
+        else:
+            parts = val_str.split(".")
+            if len(parts) == 2 and len(parts[1]) == 3 and float(parts[0]) > 10:
+                val_str = val_str.replace(".", "")
+        try:
+            num = float(val_str)
+        except ValueError:
+            return None
+        if abs(num) >= 100:
+            return num / 1000.0
+        return num
+
+    def local_conv_vol(val):
+        if pd.isna(val):
+            return 0.0
+        val_str = str(val).strip()
+        if "," in val_str:
+            val_str = val_str.replace(".", "").replace(",", ".")
+        try:
+            num = float(val_str)
+            if num >= 100 and "." not in val_str and "," not in str(val):
+                return num / 1000.0
+            return num
+        except ValueError:
+            return 0.0
+
+    def local_conv_preco(val):
+        if pd.isna(val):
+            return None
+        val_str = (
+            str(val)
+            .replace("US$", "")
+            .replace("US", "")
+            .replace("R$", "")
+            .replace("$", "")
+            .replace("€", "")
+            .replace("\x80", "")
+            .strip())
+        if "," in val_str and "." in val_str:
+            val_str = val_str.replace(".", "").replace(",", ".")
+        elif "," in val_str:
+            val_str = val_str.replace(",", ".")
+        try:
+            return float(val_str)
+        except ValueError:
+            return None
+
+    def local_layout(fig, col_tempo, **extra):
+        fig.update_layout( #atualiza as configurações de layout da figura
+            hovermode="x unified", #unifica as informações no balão ao passar o mouse pelo eixo X
+            legend=dict(orientation="h", y=1.1, title=""), #posiciona a legenda na horizontal acima e oculta o título
+            xaxis_title=col_tempo, #define título no eixo X
+            **extra,)
+        return fig
+
+    def local_mostrar(fig):
+        st.plotly_chart(fig, use_container_width=True)
+
+    def local_marcacao():
+        st.markdown(
+            '<hr style="border: 1px solid #444; margin-top: 20px; margin-bottom: 20px;">',
+            unsafe_allow_html=True,)
+
+    #1. alinhamento de período -------------------------------------------------
+    df_tri_f_valid = tri_financas.dropna(subset=["Trimestre"]).copy() #remove linhas sem trimestre
+    periodos_list = df_tri_f_valid["Trimestre"].unique().tolist() #pega a lista de trimestres únicos disponíveis
+    tri_sel = st.selectbox("Selecione o Trimestre para Análise:", options=periodos_list, index=len(periodos_list) - 1) #caixa de seleção de trimestre
+
+    dados_fin = df_tri_f_valid[df_tri_f_valid["Trimestre"] == tri_sel].iloc[0] #pega a linha com os trimestres financeiros selecionado
+    df_prod_tri = tri_producao[tri_producao["Trimestre"] == tri_sel].copy() #filtra a tabela de produção para o tri selescionado
+    df_merc_tri = tri_mercado[tri_mercado["Trimestre"] == tri_sel].copy() #filtra a tabela de mercado para o tri selescionado
+
+    #2. cards principais de destaque --------------------------------------------
+    c1, c2, c3, c4 = st.columns(4)
+
+    with c1:
+        rec_val = local_f_bilhoes(dados_fin["Receita Líquida"])
+        st.metric("Receita Líquida", f"R$ {rec_val:,.2f} Bi" if rec_val else "N/A")
+
+    with c2:
+        lucro_val = local_f_bilhoes(dados_fin["Lucro Líquido"])
+        st.metric("Lucro Líquido", f"R$ {lucro_val:,.2f} Bi" if lucro_val else "N/A")
+
+    with c3:
+        totais_excluir = [
+            "Total Norte", "Total Sudeste:", "Total Sul", "Total Centro-Oeste",
+            "Produção Total de Minério de Ferro", "Total Canadá", "Produção Total de Níquel",
+            "Total Brasil", "Produção Total de Cobre", "Total Sudeste", "Produção Pelotas",
+            "Produção Total de Cobalto",]
+        sub_fe = df_prod_tri[(df_prod_tri["Produto"] == "Minério de Ferro") & (~df_prod_tri["Local"].isin(totais_excluir))] #filtra excluindo as linhas total e subtotal
+        vol_fe = sub_fe["Extração (Mil Toneladas Métricas)"].apply(local_conv_vol).sum() if not sub_fe.empty else 0.0
+        st.metric("Produção de Minério de Ferro", f"{vol_fe:,.1f} kt")
+
+    with c4:
+        if not df_merc_tri.empty:
+            pr_fe = local_conv_preco(df_merc_tri.iloc[0]["Preço Realizado Ferro/t"])
+            st.metric("Preço Realizado (Ferro)", f"US$ {pr_fe:,.2f}/t" if pr_fe else "N/A")
+        else:
+            st.metric("Preço Realizado (Ferro)", "N/A")
+
+    local_marcacao()
+
+    #3. profundidade histórica -------------------------------------------------
+    qtd_p = st.slider("Selecione a quantidade de trimestres para visualização histórica:", min_value=3, max_value=len(df_tri_f_valid), value=min(8, len(df_tri_f_valid)), step=1)
+
+    tabela_f_sub = df_tri_f_valid.tail(qtd_p).copy() #seleciona os últimos 'qtd_p' trimestres da tabela financeira para os gráficos
+    tabela_m_sub = tri_mercado.tail(qtd_p).copy()
+
+    #4. painel de gráficos cruzados (2x2) --------------------------------------
+    g1, g2 = st.columns(2)
+
+    with g1:
+        st.subheader("Evolução da Receita Líquida vs. Lucro Líquido")
+        df_fin_bi = tabela_f_sub.assign( #cria colunas temporárias com o valor em bilhões
+            Receita=tabela_f_sub["Receita Líquida"].apply(local_f_bilhoes),
+            Lucro=tabela_f_sub["Lucro Líquido"].apply(local_f_bilhoes))
+
+        fig_fin_vis = go.Figure([
+            go.Bar(x=df_fin_bi["Trimestre"], y=df_fin_bi["Receita"], name="Receita Líquida", marker_color="#00529B"), #adiciona barras azuis da receita líquida
+            go.Scatter(x=df_fin_bi["Trimestre"], y=df_fin_bi["Lucro"], name="Lucro Líquido", mode="lines+markers", line=dict(color="#00A859", width=3))]) #adiciona a linha verde do lucro liquido
+        local_mostrar(local_layout(fig_fin_vis, "Trimestre", yaxis_title="R$ (Bilhões)", height=380))
+
+        st.subheader("Preço Realizado Vale vs. Mercado (Minério de Ferro)")
+        df_m_clean = tabela_m_sub.assign(
+            Realizado=tabela_m_sub["Preço Realizado Ferro/t"].apply(local_conv_preco),
+            Mercado=tabela_m_sub["Minério de Ferro"].apply(local_conv_preco))
+
+        fig_merc_vis = go.Figure([
+            go.Scatter(x=df_m_clean["Trimestre"], y=df_m_clean["Realizado"], name="Realizado Vale", mode="lines+markers", line=dict(color="#00529B", width=2.5)),
+            go.Scatter(x=df_m_clean["Trimestre"], y=df_m_clean["Mercado"], name="Mercado Mundial", mode="lines+markers", line=dict(color="#D97706", width=2.5))])
+        local_mostrar(local_layout(fig_merc_vis, "Trimestre", yaxis_title="USD / Tonelada", height=380))
+
+    with g2:
+        st.subheader(f"Mix de Produção por Mineral ({tri_sel})")
+        df_prod_operacional = df_prod_tri[~df_prod_tri["Local"].isin(totais_excluir)].copy()
+        df_prod_operacional["Vol"] = df_prod_operacional["Extração (Mil Toneladas Métricas)"].apply(local_conv_vol)
+        df_mix = df_prod_operacional.groupby("Produto")["Vol"].sum().reset_index()
+
+        fig_mix = px.pie(df_mix, values="Vol", names="Produto", hole=0.4, color_discrete_sequence=px.colors.qualitative.Set2) #cria o gráfico de rosca
+        fig_mix.update_layout(height=380, margin=dict(l=0, r=0, t=20, b=0)) #limpa e converte a cotção do dólar para número
+        st.plotly_chart(fig_mix, use_container_width=True)
+
+        st.subheader("Desempenho VALE3 (B3) vs. Cotação Dólar (USD/BRL)")
+        df_m_clean["Dolar"] = tabela_m_sub["Média Trimestral Dólar (USD/BRL)"].apply(local_conv_preco)
+        df_m_clean["VALE3"] = tabela_f_sub.tail(len(df_m_clean))["VALE3 (B3 - BRL)"].apply(local_conv_preco).values
+
+        fig_macro = go.Figure([
+            go.Scatter(x=df_m_clean["Trimestre"], y=df_m_clean["VALE3"], name="VALE3 (R$)", mode="lines+markers", line=dict(color="#00A859", width=2.5)), #linha verde para o preço da vale3
+            go.Scatter(x=df_m_clean["Trimestre"], y=df_m_clean["Dolar"], name="USD/BRL (R$)", mode="lines+markers", yaxis="y2", line=dict(color="#2563EB", width=2.5))]) #linha azul para cotação do dólar no eixo
+        local_layout(fig_macro, "Trimestre", yaxis=dict(title="Preço VALE3 (R$)"), yaxis2=dict(title="Dólar (USD/BRL)", overlaying="y", side="right"), height=380) #configura os dois eixos y e o layout
+        local_mostrar(fig_macro)
+
 #PÁGINA FINANCEIRA =====================================================================================
 
 if pagina == "Financeiro":
+
+    st.title("Dados Financeiros da Vale S.A.")
+
 
     visao = st.radio(
         "Selecione a Visão:", ["Trimestral", "Anual"], horizontal=True)
@@ -215,9 +400,7 @@ if pagina == "Financeiro":
     periodo_selecionado = st.selectbox(
         f"Selecione o {col_tempo}:", options=lista_periodos)
 
-    dados_tri = tabela_validos[
-        tabela_validos[col_tempo] == periodo_selecionado
-    ].iloc[0]
+    dados_tri = tabela_validos[tabela_validos[col_tempo] == periodo_selecionado].iloc[0] #seleciona a linha de dados escolhida
 
     #LINHA 1 DE CARDS --------------------------------------------------
     col1, col2, col3, col4, col5 = st.columns(5)
@@ -334,8 +517,8 @@ if pagina == "Financeiro":
     #FILTRO DE PERÍODO (SLIDER GERAL)
     qtd_trimestres = st.slider(
         f"Selecione a quantidade de {col_tempo.lower()}s para visualizar nos gráficos:",
-        min_value=3,
-        max_value=len(tabela_validos),
+        min_value=3, #define o limite mínimo de 3 períodos
+        max_value=len(tabela_validos), #define o máximo como o total de períodos disponíveis
         value=min(12 if visao == "Trimestral" else 6, len(tabela_validos)),
         step=1,)
 
@@ -349,7 +532,7 @@ if pagina == "Financeiro":
         st.subheader("Evolução do Resultado (Receita, EBITDA e Lucro Líquido)")
 
         def _bi(df, cols):
-            """Converte as colunas existentes para bilhões."""
+            #converte as colunas existentes para bilhões
             return df.assign(**{c: df[c].apply(f_bilhoes) for c in cols if c in df.columns})
 
         def _layout(fig, col_tempo, **extra):
@@ -416,6 +599,7 @@ if pagina == "Financeiro":
 
 if pagina == "Produção":
     st.title("Produção e Operações da Vale S.A.")
+    st.markdown("### Mil Toneladas Métricas (kt/Mt)")
 
     visao_prod = st.radio(
         "Selecione a Visão da Produção:", ["Trimestral", "Anual"], horizontal=True)
@@ -429,7 +613,7 @@ if pagina == "Produção":
         except ValueError:
             return 0.0
 
-    # VISÃO ANUAL DE PRODUÇÃO ==============================================================
+    #VISÃO ANUAL DE PRODUÇÃO ==============================================================
 
     if visao_prod == "Anual":
         df_anual_p = anual_producao.copy()
@@ -470,7 +654,7 @@ if pagina == "Produção":
 
         marcacao_preta()
 
-        # Gráficos de Produção vs Vendas
+        #gráficos de Produção vs Vendas
         g_col1, g_col2 = st.columns(2)
 
         with g_col1:
@@ -479,7 +663,7 @@ if pagina == "Produção":
                 go.Bar(x=df_anual_p["Ano"], y=df_anual_p["Produção Minério de Ferro"], name="Produção (Mt)", marker_color="#00529B"),
                 go.Bar(x=df_anual_p["Ano"], y=df_anual_p["Vendas de Minério de Ferro"], name="Vendas (Mt)", marker_color="#00A859")])
             fig_fe.update_layout(
-                barmode="group", bargap=0.15, hovermode="x unified",
+                barmode="group", bargap=0.15, hovermode="x unified", #agrupa as barras lado a lado e determina o espaço entre elas
                 legend=dict(orientation="h", y=1.1, title=""),
                 xaxis_title="Ano", yaxis_title="Milhões de Toneladas (Mt)", height=400)
             st.plotly_chart(fig_fe, use_container_width=True)
@@ -598,8 +782,8 @@ if pagina == "Produção":
             tri_prod_list = tri_producao["Trimestre"].dropna().unique().tolist()
             tri_prod_sel = st.selectbox(
                 "Selecione o Trimestre:",
-                options=tri_prod_list,
-                index=len(tri_prod_list) - 1,)
+                options=tri_prod_list, #lista com os trimestres
+                index=len(tri_prod_list) - 1,) #seleciona por padrão o trimestre mais recente
 
         with c_f2:
             prod_list = [
@@ -676,7 +860,7 @@ if pagina == "Produção":
         #escala visual ajustada para visibilidade dos metais valiosos (Níquel e Cobre)
         df_mapa_valid["Tamanho_Bolha"] = df_mapa_valid["Volume_Num"].apply(lambda x: (x**0.35) + 5)
 
-        #4. rnderização do Mapa Principal
+        #4. renderização do Mapa Principal
         st.subheader(f"Mapa de Operações e Unidades de Extração ({tri_prod_sel})")
 
         if not df_mapa_valid.empty:
@@ -760,7 +944,7 @@ if pagina == "Produção":
 
         marcacao_preta()
 
-        # 5. Painel Inferior: Gráficos Complementares
+        #5. painel Inferior: gráficos complementares
         c_p1, c_p2 = st.columns(2)
 
         with c_p1:
@@ -796,3 +980,302 @@ if pagina == "Produção":
                 color_discrete_sequence=px.colors.qualitative.Set2,)
             fig_pie.update_layout(height=400, margin=dict(l=0, r=0, t=20, b=0))
             st.plotly_chart(fig_pie, use_container_width=True)
+
+#PÁGINA MERCADO =====================================================================================================
+
+if pagina == "Mercado":
+    st.title("Mercado e Economia")
+
+    def conv_moeda(val): #limpeza de moeda
+        if pd.isna(val):
+            return None
+        val_str = (
+            str(val)
+            .replace("US$", "")
+            .replace("R$", "")
+            .replace("$", "")
+            .strip())
+        if "," in val_str and "." in val_str:
+            val_str = val_str.replace(".", "").replace(",", ".")
+        elif "," in val_str:
+            val_str = val_str.replace(",", ".")
+        try:
+            return float(val_str)
+        except ValueError:
+            return None
+
+    visao_merc = st.radio(
+        "Selecione a Visão:", ["Trimestral", "Anual"], horizontal=True)
+
+    #VISÃO ANUAL =========================================================
+
+    if visao_merc == "Anual":
+        df_anual_m = anual_mercado.copy()
+
+        cols_num = df_anual_m.columns.drop("Ano")
+        df_anual_m[cols_num] = df_anual_m[cols_num].map(conv_moeda)
+
+        anos_list = df_anual_m["Ano"].unique().tolist()
+        ano_sel = st.selectbox(
+            "Selecione o Ano:", options=anos_list, index=len(anos_list) - 1)
+
+        idx_sel = df_anual_m[df_anual_m["Ano"] == ano_sel].index[0]
+        dados_ano = df_anual_m.loc[idx_sel]
+        dados_ano_ant = df_anual_m.loc[idx_sel - 1] if idx_sel > 0 else None
+
+        def calc_delta(coluna, prefixo="US$"):
+            val_atual = dados_ano[coluna]
+            if dados_ano_ant is not None and pd.notna(val_atual):
+                val_ant = dados_ano_ant[coluna]
+                if pd.notna(val_ant) and val_ant != 0:
+                    diff = val_atual - val_ant
+                    pct = diff / val_ant * 100
+                    return (
+                        f"{diff:+,.2f} ({pct:+,.1f}%) vs {dados_ano_ant['Ano']}")
+            return "Sem dados do ano anterior"
+
+        st.markdown(f"### Indicadores Anuais ({ano_sel})")
+        k1, k2, k3, k4 = st.columns(4)
+
+        with k1:
+            st.metric(
+                "USD/BRL Médio",
+                f"R$ {dados_ano['USD/BRL Médio']:,.2f}",
+                delta=calc_delta("USD/BRL Médio", "R$"),)
+        with k2:
+            st.metric(
+                "Preço Realizado Ferro",
+                f"US$ {dados_ano['Preço Realizado Ferro']:,.2f}/t",
+                delta=calc_delta("Preço Realizado Ferro"),)
+        with k3:
+            st.metric(
+                "Preço Realizado Cobre",
+                f"US$ {dados_ano['Preço Realizado Cobre']:,.2f}/t",
+                delta=calc_delta("Preço Realizado Cobre"),)
+        with k4:
+            st.metric(
+                "Preço Realizado Níquel",
+                f"US$ {dados_ano['Preço Realizado Níquel']:,.2f}/t",
+                delta=calc_delta("Preço Realizado Níquel"),)
+
+        marcacao_preta()
+
+        #Gráficos Anuais
+        g1, g2 = st.columns(2)
+
+        with g1:
+            st.subheader("Minério de Ferro: Realizado Vale vs. Média Mundial")
+            fig_fe_a = go.Figure([
+                go.Bar(
+                    x=df_anual_m["Ano"],
+                    y=df_anual_m["Preço Realizado Ferro"],
+                    name="Realizado Vale (USD/t)",
+                    marker_color="#00529B",),
+                go.Bar(
+                    x=df_anual_m["Ano"],
+                    y=df_anual_m["Preço Médio do Ferro (Mundial)"],
+                    name="Média Mundial (BRL/t)",
+                    marker_color="#00A859",),])
+            fig_fe_a.update_layout(
+                barmode="group",
+                bargap=0.15,
+                hovermode="x unified",
+                legend=dict(orientation="h", y=1.1, title=""),
+                xaxis_title="Ano",
+                yaxis_title="Preço",
+                height=400,)
+            st.plotly_chart(fig_fe_a, use_container_width=True)
+
+            st.subheader("Cobre: Realizado Vale vs. Média Mundial (USD/t)")
+            fig_cu_a = go.Figure([
+                go.Bar(
+                    x=df_anual_m["Ano"],
+                    y=df_anual_m["Preço Realizado Cobre"],
+                    name="Realizado Vale",
+                    marker_color="#D97706",),
+                go.Bar(
+                    x=df_anual_m["Ano"],
+                    y=df_anual_m["Preço Médio do Cobre (Mundial)"],
+                    name="Média Mundial",
+                    marker_color="#059669",
+                ),])
+            fig_cu_a.update_layout(
+                barmode="group",
+                bargap=0.15,
+                hovermode="x unified",
+                legend=dict(orientation="h", y=1.1, title=""),
+                xaxis_title="Ano",
+                yaxis_title="USD / Tonelada",
+                height=400,)
+            st.plotly_chart(fig_cu_a, use_container_width=True)
+
+        with g2:
+            st.subheader("Evolução Anual da Cotação do Dólar (USD/BRL)")
+            fig_usd_a = px.line(
+                df_anual_m,
+                x="Ano",
+                y="USD/BRL Médio",
+                markers=True,
+                color_discrete_sequence=["#2563EB"],
+                labels={"USD/BRL Médio": "Cotação (R$)"},)
+            fig_usd_a.update_layout(hovermode="x unified", height=400)
+            st.plotly_chart(fig_usd_a, use_container_width=True)
+
+            st.subheader("Níquel: Realizado Vale vs. Média Mundial (USD/t)")
+            fig_ni_a = go.Figure([
+                go.Bar(
+                    x=df_anual_m["Ano"],
+                    y=df_anual_m["Preço Realizado Níquel"],
+                    name="Realizado Vale",
+                    marker_color="#7C3AED",),
+                go.Bar(
+                    x=df_anual_m["Ano"],
+                    y=df_anual_m["Preço Médio do Níquel (Mundial)"],
+                    name="Média Mundial",
+                    marker_color="#EC4899",
+                ),])
+            fig_ni_a.update_layout(
+                barmode="group",
+                bargap=0.15,
+                hovermode="x unified",
+                legend=dict(orientation="h", y=1.1, title=""),
+                xaxis_title="Ano",
+                yaxis_title="USD / Tonelada",
+                height=400,)
+            st.plotly_chart(fig_ni_a, use_container_width=True)
+
+        with st.expander(
+            "Visualizar Tabela de Dados Brutos de Mercado (Anual)"):
+            st.dataframe(df_anual_m, use_container_width=True)
+
+    #VISÃO TRIMESTRAL =====================================================
+
+    else:
+        df_tri_m = tri_mercado.copy()
+
+        cols_num = df_tri_m.columns.drop("Trimestre")
+        df_tri_m[cols_num] = df_tri_m[cols_num].map(conv_moeda)
+
+        tri_list = df_tri_m["Trimestre"].dropna().unique().tolist()
+        tri_sel = st.selectbox(
+            "Selecione o Trimestre:", options=tri_list, index=len(tri_list) - 1)
+
+        idx_sel = df_tri_m[df_tri_m["Trimestre"] == tri_sel].index[0]
+        dados_tri_m = df_tri_m.loc[idx_sel]
+
+        st.markdown(f"### Indicadores do Trimestre ({tri_sel})")
+        k1, k2, k3, k4 = st.columns(4)
+
+        with k1:
+            val_dol = dados_tri_m["Média Trimestral Dólar (USD/BRL)"]
+            st.metric(
+                "Dólar Médio",
+                f"R$ {val_dol:,.2f}" if pd.notna(val_dol) else "N/A",)
+        with k2:
+            val_fe = dados_tri_m["Preço Realizado Ferro/t"]
+            st.metric(
+                "Realizado Ferro",
+                f"US$ {val_fe:,.2f}/t" if pd.notna(val_fe) else "N/A",)
+        with k3:
+            val_cu = dados_tri_m["Preço Realizado Cobre/t"]
+            st.metric(
+                "Realizado Cobre",
+                f"US$ {val_cu:,.2f}/t" if pd.notna(val_cu) else "N/A",)
+        with k4:
+            val_ni = dados_tri_m["Preço Realizado Níquel/t"]
+            st.metric(
+                "Realizado Níquel",
+                f"US$ {val_ni:,.2f}/t" if pd.notna(val_ni) else "N/A",)
+
+        marcacao_preta()
+
+        qtd_tri_m = st.slider(
+            "Selecione a quantidade de trimestres nos gráficos:",
+            min_value=3,
+            max_value=len(df_tri_m),
+            value=min(12, len(df_tri_m)),
+            step=1,)
+
+        df_tri_m_sub = df_tri_m.tail(qtd_tri_m)
+
+        g1, g2 = st.columns(2)
+
+        with g1:
+            st.subheader(
+                "Minério de Ferro: Realizado Vale vs. Mercado (USD/t)")
+            fig_fe_t = go.Figure([
+                go.Scatter(
+                    x=df_tri_m_sub["Trimestre"],
+                    y=df_tri_m_sub["Preço Realizado Ferro/t"],
+                    name="Realizado Vale",
+                    mode="lines+markers",
+                    line=dict(color="#00529B", width=2.5),),
+                go.Scatter(
+                    x=df_tri_m_sub["Trimestre"],
+                    y=df_tri_m_sub["Minério de Ferro"],
+                    name="Mercado Mundial",
+                    mode="lines+markers",
+                    line=dict(color="#00A859", width=2.5),),])
+            fig_fe_t.update_layout(
+                hovermode="x unified",
+                legend=dict(orientation="h", y=1.1, title=""),
+                height=400,)
+            st.plotly_chart(fig_fe_t, use_container_width=True)
+
+            st.subheader("Cobre: Realizado Vale vs. Mercado (USD/t)")
+            fig_cu_t = go.Figure([
+                go.Scatter(
+                    x=df_tri_m_sub["Trimestre"],
+                    y=df_tri_m_sub["Preço Realizado Cobre/t"],
+                    name="Realizado Vale",
+                    mode="lines+markers",
+                    line=dict(color="#D97706", width=2.5),),
+                go.Scatter(
+                    x=df_tri_m_sub["Trimestre"],
+                    y=df_tri_m_sub["Cobre"],
+                    name="Mercado Mundial",
+                    mode="lines+markers",
+                    line=dict(color="#059669", width=2.5),
+                ),])
+            fig_cu_t.update_layout(
+                hovermode="x unified",
+                legend=dict(orientation="h", y=1.1, title=""),
+                height=400,)
+            st.plotly_chart(fig_cu_t, use_container_width=True)
+
+        with g2:
+            st.subheader("Evolução do Câmbio USD/BRL")
+            fig_usd_t = px.line(
+                df_tri_m_sub,
+                x="Trimestre",
+                y="Média Trimestral Dólar (USD/BRL)",
+                markers=True,
+                color_discrete_sequence=["#2563EB"],
+                labels={"Média Trimestral Dólar (USD/BRL)": "R$"},)
+            fig_usd_t.update_layout(hovermode="x unified", height=400)
+            st.plotly_chart(fig_usd_t, use_container_width=True)
+
+            st.subheader("Níquel: Realizado Vale vs. Mercado (USD/t)")
+            fig_ni_t = go.Figure([
+                go.Scatter(
+                    x=df_tri_m_sub["Trimestre"],
+                    y=df_tri_m_sub["Preço Realizado Níquel/t"],
+                    name="Realizado Vale",
+                    mode="lines+markers",
+                    line=dict(color="#7C3AED", width=2.5),),
+                go.Scatter(
+                    x=df_tri_m_sub["Trimestre"],
+                    y=df_tri_m_sub["Níquel"],
+                    name="Mercado Mundial",
+                    mode="lines+markers",
+                    line=dict(color="#EC4899", width=2.5),
+                ),])
+            fig_ni_t.update_layout(
+                hovermode="x unified",
+                legend=dict(orientation="h", y=1.1, title=""),
+                height=400,)
+            st.plotly_chart(fig_ni_t, use_container_width=True)
+
+        with st.expander(
+            "Visualizar Tabela de Dados Brutos de Mercado (Trimestral)"):
+            st.dataframe(df_tri_m, use_container_width=True)
