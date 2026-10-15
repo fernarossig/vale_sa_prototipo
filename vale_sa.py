@@ -64,6 +64,39 @@ tri_financas = carregar_tri_financas()
 anual_financas = carregar_anual_financas()
 
 #==========================================================
+totais_excluir = [
+    "Total Norte", "Total Sudeste:", "Total Sul", "Total Centro-Oeste",
+    "Produção Total de Minério de Ferro", "Total Canadá", "Produção Total de Níquel",
+    "Total Brasil", "Produção Total de Cobre", "Total Sudeste", "Produção Pelotas",
+    "Produção Total de Cobalto",]
+
+
+def conv_vol(val) -> float:
+    """
+    Converte uma string/valor de volume para float de forma determinística.
+    Preserva a escala/unidade original indicada no CSV/coluna sem aplicar
+    heurísticas baseadas no tamanho do número.
+    """
+    if pd.isna(val):
+        return 0.0
+    
+    val_str = str(val).strip()
+    if not val_str:
+        return 0.0
+
+    #trata formato brasileiro (ex: 1.400,50 -> 1400.50 ou 1.400 -> 1400.0)
+    if "," in val_str:
+        val_str = val_str.replace(".", "").replace(",", ".")
+    else:
+        #se contiver apenas ponto, verifica se é separador de milhar (ex: "1.400")
+        parts = val_str.split(".")
+        if len(parts) == 2 and len(parts[1]) == 3:
+            val_str = val_str.replace(".", "")
+            
+    try:
+        return float(val_str)
+    except ValueError:
+        return 0.0
 
 def conv_pct(val):
     if pd.isna(val): #verifica se o valor é nulo ou ausente
@@ -476,14 +509,14 @@ if pagina == "Visão Geral":
         st.metric("Lucro Líquido", f"R$ {lucro_val:,.2f} Bi" if lucro_val else "N/A")
 
     with c3:
-        totais_excluir = [
-            "Total Norte", "Total Sudeste:", "Total Sul", "Total Centro-Oeste",
-            "Produção Total de Minério de Ferro", "Total Canadá", "Produção Total de Níquel",
-            "Total Brasil", "Produção Total de Cobre", "Total Sudeste", "Produção Pelotas",
-            "Produção Total de Cobalto",]
-        sub_fe = tabela_prod_tri[(tabela_prod_tri["Produto"] == "Minério de Ferro") & (~tabela_prod_tri["Local"].isin(totais_excluir))] #filtra excluindo as linhas total e subtotal
-        vol_fe = sub_fe["Extração (Mil Toneladas Métricas)"].apply(local_conv_vol).sum() if not sub_fe.empty else 0.0
-        st.metric("Produção de Minério de Ferro", f"{vol_fe:,.1f} kt")
+
+        sub_fe = tabela_prod_tri[
+            (tabela_prod_tri["Produto"] == "Minério de Ferro") & 
+            (~tabela_prod_tri["Local"].isin(totais_excluir))].copy()
+
+        sub_fe["Vol_Mt"] = sub_fe["Extração (Mil Toneladas Métricas)"].apply(conv_vol) / 1000.0
+        vol_fe = sub_fe["Vol_Mt"].sum() if not sub_fe.empty else 0.0
+        st.metric("Produção de Minério de Ferro", f"{vol_fe:,.1f} Mt")  #alterado para Mt
 
     with c4:
         if not tabela_merc_tri.empty:
@@ -525,14 +558,15 @@ if pagina == "Visão Geral":
         local_mostrar(local_layout(fig_merc_vis, "Trimestre", yaxis_title="USD / Tonelada", height=380))
 
     with g2:
-        st.subheader(f"Mix de Produção por Mineral ({tri_sel})")
+        st.subheader(f"Mix de Produção por Mineral em kt ({tri_sel})")
         tabela_prod_operacional = tabela_prod_tri[~tabela_prod_tri["Local"].isin(totais_excluir)].copy()
-        tabela_prod_operacional["Vol"] = tabela_prod_operacional["Extração (Mil Toneladas Métricas)"].apply(local_conv_vol)
+        tabela_prod_operacional["Vol"] = tabela_prod_operacional["Extração (Mil Toneladas Métricas)"].apply(conv_vol)
         tabela_mix = tabela_prod_operacional.groupby("Produto")["Vol"].sum().reset_index()
 
         fig_mix = px.pie(tabela_mix, values="Vol", names="Produto", hole=0.4, color_discrete_sequence=px.colors.qualitative.Set2) #cria o gráfico de rosca
         fig_mix.update_layout(height=380, margin=dict(l=0, r=0, t=20, b=0)) #limpa e converte a cotção do dólar para número
         st.plotly_chart(fig_mix, use_container_width=True)
+        fig_mix.update_traces(hovertemplate="%{label}: %{value:,.1f} kt (%{percent})<extra></extra>")
 
         st.subheader("Desempenho VALE3 (B3) vs. Cotação Dólar (USD/BRL)")
         tabela_m_clean["Dolar"] = tabela_m_sub["Média Trimestral Dólar (USD/BRL)"].apply(local_conv_preco)
@@ -876,20 +910,9 @@ if pagina == "Financeiro":
             tabela_m["Dolar_Num"] = tabela_m["Média Trimestral Dólar (USD/BRL)"].apply(conv_preco)
             tabela_m["Minério_Num"] = tabela_m["Preço Realizado Ferro/t"].apply(conv_preco)
 
-            totais_excluir = [
-                "Total Norte", "Total Sudeste:", "Total Sul", "Total Centro-Oeste",
-                "Produção Total de Minério de Ferro", "Total Brasil", "Produção Pelotas"]
             sub_fe = tabela_prod[(tabela_prod["Produto"] == "Minério de Ferro") & (~tabela_prod["Local"].isin(totais_excluir))].copy()
             
-            def _conv_vol_puro(val):
-                if pd.isna(val): return 0.0
-                val_s = str(val).replace(".", "").replace(",", ".").strip()
-                try:
-                    n = float(val_s)
-                    return float(n / 1000.0) if n >= 1000 else float(n)
-                except ValueError: return 0.0
-
-            sub_fe["Vol_Mt"] = sub_fe["Extração (Mil Toneladas Métricas)"].apply(_conv_vol_puro)
+            sub_fe["Vol_Mt"] = sub_fe["Extração (Mil Toneladas Métricas)"].apply(conv_vol) / 1000.0
             tabela_p_agg = sub_fe.groupby("Trimestre")["Vol_Mt"].sum().reset_index()
 
             m1 = pd.merge(tabela_f[["Trimestre", "Rec_Bi", "Lucro_Bi", "EBITDA_Bi"]], tabela_m[["Trimestre", "Dolar_Num", "Minério_Num"]], on="Trimestre")
@@ -1085,7 +1108,7 @@ if pagina == "Produção":
         
         cols_num = [c for c in tabela_anual_p.columns if c != "Ano"]
         for c in cols_num:
-            tabela_anual_p[c] = tabela_anual_p[c].apply(conv_num_limpo)
+            tabela_anual_p[c] = tabela_anual_p[c].apply(conv_vol)
 
         anos_list = tabela_anual_p["Ano"].unique().tolist()
         ano_sel = st.selectbox("Selecione o Ano:", options=anos_list, index=len(anos_list) - 1)
@@ -1192,20 +1215,6 @@ if pagina == "Produção":
             "Nova Caledônia": {"lat": -22.2700, "lon": 166.4500, "regiao": "Oceania"},
             "Omã": {"lat": 24.3600, "lon": 56.7100, "regiao": "Omã"},}
 
-        def conv_vol(val):
-            if pd.isna(val):
-                return 0.0
-            val_str = str(val).strip()
-            if "," in val_str:
-                val_str = val_str.replace(".", "").replace(",", ".")
-            try:
-                num = float(val_str)
-                if num >= 100 and "." not in val_str and "," not in str(val):
-                    return num / 1000.0
-                return num
-            except ValueError:
-                return 0.0
-
         tri_producao["Volume_Num"] = tri_producao["Extração (Mil Toneladas Métricas)"].apply(conv_vol)
 
         c_f1, c_f2, c_f3 = st.columns([1, 1, 1])
@@ -1225,12 +1234,6 @@ if pagina == "Produção":
             foco_mapa = st.radio("Foco do Mapa:", ["Brasil", "Mundo"], horizontal=True)
 
         tabela_tri_p = tri_producao[tri_producao["Trimestre"] == tri_prod_sel].copy()
-
-        totais_excluir = [
-            "Total Norte", "Total Sudeste:", "Total Sul", "Total Centro-Oeste",
-            "Produção Total de Minério de Ferro", "Total Canadá", "Produção Total de Níquel",
-            "Total Brasil", "Produção Total de Cobre", "Total Sudeste", "Produção Pelotas",
-            "Produção Total de Cobalto",]
 
         st.markdown("### Resumo da Produção do Trimestre")
         kpi1, kpi2, kpi3, kpi4 = st.columns(4)
@@ -1322,15 +1325,16 @@ if pagina == "Produção":
             st.plotly_chart(fig_bar_prod, use_container_width=True)
 
         with c_p2:
-            st.subheader("Participação da Produção por Mineral")
+            st.subheader("Participação da Produção por Mineral (kt)")
             tabela_pie = (
-                tabela_tri_p_filtro[~tabela_tri_p_filtro["Local"].isin(totais_excluir)]
+                tabela_tri_p[~tabela_tri_p["Local"].isin(totais_excluir)]
                 .groupby("Produto")["Volume_Num"].sum().reset_index())
 
             fig_pie = px.pie(
                 tabela_pie, values="Volume_Num", names="Produto", hole=0.4,
                 color_discrete_sequence=px.colors.qualitative.Set2,)
             fig_pie.update_layout(height=400, margin=dict(l=0, r=0, t=20, b=0))
+            fig_pie.update_traces(hovertemplate="%{label}: %{value:,.1f} kt (%{percent})<extra></extra>")
             st.plotly_chart(fig_pie, use_container_width=True)
 
         renderizar_painel_exportacao_producao( #exportação trimestral
@@ -1349,30 +1353,9 @@ if pagina == "Produção":
         @st.cache_data
         def treinar_modelo_producao(tabela_prod_tri):
             df_p = tabela_prod_tri.copy()
-            
-            totais_excluir_ml = [
-                "Total Norte", "Total Sudeste:", "Total Sul", "Total Centro-Oeste",
-                "Produção Total de Minério de Ferro", "Total Canadá", "Produção Total de Níquel",
-                "Total Brasil", "Produção Total de Cobre", "Total Sudeste", "Produção Pelotas",
-                "Produção Total de Cobalto"]
-            
-            def _conv_vol_normalizado(val):
-                if pd.isna(val): return 0.0
-                val_str = str(val).strip()
-                if "," in val_str:
-                    val_str = val_str.replace(".", "").replace(",", ".")
-                try:
-                    num = float(val_str)
-                    if num >= 1000:
-                        return num / 1000.0
-                    elif num >= 100 and "." not in val_str and "," not in str(val):
-                        return num / 1000.0
-                    return num
-                except ValueError:
-                    return 0.0
 
-            df_p["Vol_Mt"] = df_p["Extração (Mil Toneladas Métricas)"].apply(_conv_vol_normalizado)
-            df_clean = df_p[~df_p["Local"].isin(totais_excluir_ml)].copy()
+            df_p["Vol_Mt"] = df_p["Extração (Mil Toneladas Métricas)"].apply(conv_vol)
+            df_clean = df_p[~df_p["Local"].isin(totais_excluir)].copy()
             
             agg = df_clean.groupby(["Trimestre", "Produto"])["Vol_Mt"].sum().reset_index()
             
@@ -1458,7 +1441,7 @@ if pagina == "Produção":
                     with cols_kpi_ml[i]:
                         st.metric(
                             label=f"Estimativa {row['Trimestre']}",
-                            value=f"{v_est:,.1f} Mt",
+                            value=f"{v_est:,.1f} kt",
                             delta=f"{var_pct:+.1f}% vs Último Tri")
                 
                 st.caption(f"**Acurácia Histórica (R² Score) para {prod_ml_sel}:** `{r2_prod.get(prod_ml_sel, 0)*100:.1f}%`")
@@ -1473,7 +1456,7 @@ if pagina == "Produção":
                 x=sub_hist["Trimestre"],
                 y=sub_hist["Vol_Mt"],
                 mode="lines+markers",
-                name="Produção Real (Mt)",
+                name="Produção Real (kt)",
                 line=dict(color="#00529B", width=2.5)))
 
             x_proj = [sub_hist["Trimestre"].iloc[-1]] + df_futuro["Trimestre"].tolist()
@@ -1483,7 +1466,7 @@ if pagina == "Produção":
                 x=x_proj,
                 y=y_proj,
                 mode="lines+markers",
-                name="Projeção ML (Mt)",
+                name="Projeção ML (kt)",
                 line=dict(color="#00A859", width=2.5, dash="dash"),
                 marker=dict(size=9, symbol="star")))
 
@@ -1491,7 +1474,7 @@ if pagina == "Produção":
                 hovermode="x unified",
                 legend=dict(orientation="h", y=1.1, title=""),
                 xaxis_title="Trimestre",
-                yaxis_title="Volume Extraído (Mt)",
+                yaxis_title="Volume Extraído (kt)",
                 height=400)
 
             st.plotly_chart(fig_prod_ml, use_container_width=True)
@@ -1656,10 +1639,6 @@ if pagina == "Mercado":
                 yaxis_title="USD / Tonelada",
                 height=400,)
             st.plotly_chart(fig_ni_a, use_container_width=True)
-
-        with st.expander(
-            "Visualizar Tabela de Dados Brutos de Mercado (Anual)"):
-            st.dataframe(tabela_anual_m, use_container_width=True)
 
     #VISÃO TRIMESTRAL =====================================================
 
