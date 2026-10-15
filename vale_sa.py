@@ -1836,7 +1836,7 @@ if pagina == "Mercado":
         max_cu_slider = max(20000.0, float(np.ceil(u_merc_cu * 1.3 / 500) * 500))
         max_ni_slider = max(45000.0, float(np.ceil(u_merc_ni * 1.3 / 1000) * 1000))
 
-        #1. Callback Functions para Cenários de Mercado
+        #1. callback functions para cenários de mercado
         def aplicar_cenario_mercado_base():
             st.session_state["slider_m_dol"] = float(round(u_dolar_m, 2))
             st.session_state["slider_m_fe"] = float(round(u_merc_fe, 2))
@@ -1855,7 +1855,7 @@ if pagina == "Mercado":
             st.session_state["slider_m_cu"] = float(round(u_merc_cu * 0.85, 2))
             st.session_state["slider_m_ni"] = float(round(u_merc_ni * 0.85, 2))
 
-        #2. Inicialização do Session State
+        #2. inicialização do session state
         if "slider_m_dol" not in st.session_state:
             st.session_state["slider_m_dol"] = float(round(u_dolar_m, 2))
         if "slider_m_fe" not in st.session_state:
@@ -1865,10 +1865,10 @@ if pagina == "Mercado":
         if "slider_m_ni" not in st.session_state:
             st.session_state["slider_m_ni"] = float(round(u_merc_ni, 2))
 
-        #Ajuste de segurança no slider do Cobre
+        #ajuste de segurança no slider do cobre
         st.session_state["slider_m_cu"] = min(float(st.session_state["slider_m_cu"]), max_cu_slider)
 
-        #3. Botões de Cenários de Mercado
+        #3. botões de cenários de mercado
         st.markdown("###Simulação de Cenários Globais de Commodities")
         c_m1, c_m2, c_m3 = st.columns(3)
 
@@ -1876,7 +1876,7 @@ if pagina == "Mercado":
         c_m2.button("Superciclo de Commodities (+20% Minério)", on_click=aplicar_cenario_mercado_otimista, use_container_width=True)
         c_m3.button("Retração na Demanda Chinesa (-20% Minério)", on_click=aplicar_cenario_mercado_pessimista, use_container_width=True)
 
-        # 4. Sliders de Parâmetros Globais
+        #4. sliders de parâmetros globais
         st.subheader("Ajuste de Cotações Globais e Câmbio")
         sm_col1, sm_col2, sm_col3, sm_col4 = st.columns(4)
 
@@ -1916,7 +1916,7 @@ if pagina == "Mercado":
                 format="US\$ %.0f",
                 key="slider_m_ni")
 
-        #5. Predições em Tempo Real
+        #5. predições em tempo real
         X_fe_pred = pd.DataFrame([[sim_m_fe, sim_m_dol]], columns=["Minério de Ferro", "Média Trimestral Dólar (USD/BRL)"])
         X_cu_pred = pd.DataFrame([[sim_m_cu, sim_m_dol]], columns=["Cobre", "Média Trimestral Dólar (USD/BRL)"])
         X_ni_pred = pd.DataFrame([[sim_m_ni, sim_m_dol]], columns=["Níquel", "Média Trimestral Dólar (USD/BRL)"])
@@ -1925,7 +1925,7 @@ if pagina == "Mercado":
         pred_real_cu = float(modelos_merc["Cobre"].predict(X_cu_pred)[0])
         pred_real_ni = float(modelos_merc["Níquel"].predict(X_ni_pred)[0])
 
-        #6. Exibição dos KPIs Previstos
+        #6. exibição dos KPIs previstos
         st.subheader("Estimativa de Preços Realizados pela Vale S.A.")
         km1, km2, km3 = st.columns(3)
 
@@ -1957,7 +1957,7 @@ if pagina == "Mercado":
             mc2.write(f"**R² Cobre:** `{r2_merc['Cobre']*100:.1f}%`")
             mc3.write(f"**R² Níquel:** `{r2_merc['Níquel']*100:.1f}%`")
 
-        #7. Gráfico Preditivo Interativo com Seletor de Mineral
+        #7. gráfico preditivo interativo com Seletor de Mineral
         st.subheader("Comparativo Preditivo: Mercado Spot vs. Preço Realizado Vale")
         
         col_sel_graf, _ = st.columns([1, 2])
@@ -1982,17 +1982,17 @@ if pagina == "Mercado":
             col_real = "Preço Realizado Níquel/t"
             pred_val = pred_real_ni
 
-        #Linha Spot Mundial
+        #linha Spot Mundial
         fig_m_proj.add_trace(go.Scatter(
             x=df_merc_clean["Trimestre"], y=df_merc_clean[col_spot],
             mode="lines+markers", name=f"{mineral_graf_sel} Spot Mundial", line=dict(color="#00A859", width=2)))
 
-        #Linha Realizado Vale
+        #linha Realizado Vale
         fig_m_proj.add_trace(go.Scatter(
             x=df_merc_clean["Trimestre"], y=df_merc_clean[col_real],
             mode="lines+markers", name=f"{mineral_graf_sel} Realizado Vale", line=dict(color="#00529B", width=2.5)))
 
-        #Ponto de Projeção Simulada
+        #ponto de Projeção Simulada
         fig_m_proj.add_trace(go.Scatter(
             x=["Simulação Preditiva"], y=[pred_val],
             mode="markers", name="Realizado Projetado ML",
