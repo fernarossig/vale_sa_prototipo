@@ -14,14 +14,14 @@ BASE_DIR = Path(__file__).resolve().parent
 
 @st.cache_data
 def carregar_tri_financas():
-    caminho = BASE_DIR / "dados_vale(Tri Financeiro)(1).csv"
+    caminho = BASE_DIR / "dados_vale(Tri Financeiro)(2).csv"
     tri_financas = pd.read_csv(caminho, encoding="ISO-8859-1", sep=";", decimal=",")
     tri_financas.columns = tri_financas.columns.str.strip()
     return tri_financas
 
 @st.cache_data
 def carregar_anual_financas():
-    caminho = BASE_DIR / "dados_vale(Anual Financeiro)(1).csv"
+    caminho = BASE_DIR / "dados_vale(Anual Financeiro)(2).csv"
     anual_financas = pd.read_csv(caminho, encoding="ISO-8859-1", sep=";", decimal=",")
     anual_financas.columns = anual_financas.columns.str.strip()
     anual_financas["Ano"] = anual_financas["Ano"].dropna().astype(int).astype(str)
@@ -30,7 +30,7 @@ def carregar_anual_financas():
 
 @st.cache_data
 def carregar_tri_producao():
-    caminho = BASE_DIR / "dados_vale(Tri Produção)(1).csv"
+    caminho = BASE_DIR / "dados_vale(Tri Produção)(2).csv"
     tri_producao = pd.read_csv(caminho, encoding="ISO-8859-1", sep=";", decimal=",")
     tri_producao.columns = tri_producao.columns.str.strip()
     tri_producao["Produto"] = tri_producao["Produto"].astype(str).str.strip()
@@ -45,7 +45,7 @@ def carregar_tri_producao():
 
 @st.cache_data
 def carregar_anual_producao():
-    caminho = BASE_DIR / "dados_vale(Anual Produção)(1).csv"
+    caminho = BASE_DIR / "dados_vale(Anual Produção)(2).csv"
     anual_prod = pd.read_csv(caminho, encoding="ISO-8859-1", sep=";", decimal=",")
     anual_prod.columns = anual_prod.columns.str.strip()
     anual_prod["Ano"] = anual_prod["Ano"].dropna().astype(int).astype(str)
@@ -53,14 +53,14 @@ def carregar_anual_producao():
 
 @st.cache_data
 def carregar_tri_mercado():
-    caminho = BASE_DIR / "dados_vale(Tri Mercado e Economia)(1).csv"
+    caminho = BASE_DIR / "dados_vale(Tri Mercado e Economia)(2).csv"
     tri_mercado = pd.read_csv(caminho, encoding="ISO-8859-1", sep=";", decimal=",")
     tri_mercado.columns = tri_mercado.columns.str.strip()
     return tri_mercado
 
 @st.cache_data
 def carregar_anual_mercado():
-    caminho = BASE_DIR / "dados_vale(Anual Mercado e Economia )(1).csv"
+    caminho = BASE_DIR / "dados_vale(Anual Mercado e Economia )(2).csv"
     anual_mercado = pd.read_csv(caminho, encoding="ISO-8859-1", sep=";", decimal=",")
     anual_mercado.columns = anual_mercado.columns.str.strip()
     anual_mercado["Ano"] = anual_mercado["Ano"].dropna().astype(int).astype(str)
