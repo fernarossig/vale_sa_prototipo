@@ -7,51 +7,61 @@ from fpdf import FPDF
 from sklearn.linear_model import LinearRegression
 import numpy as np
 
+from pathlib import Path
+
+#pega o diretório exato onde o arquivo Python (vale_sa.py ou app.py) está salvo
+BASE_DIR = Path(__file__).resolve().parent
+
 @st.cache_data
 def carregar_tri_financas():
-    tri_financas = pd.read_csv(
-        "dados_vale(Tri Financeiro).csv", encoding="ISO-8859-1", sep=";",)
-    tri_financas.columns = (tri_financas.columns.str.strip())  #remove espaços antes e depois dos nomes
+    caminho = BASE_DIR / "dados_vale(Tri Financeiro)(1).csv"
+    tri_financas = pd.read_csv(caminho, encoding="ISO-8859-1", sep=";", decimal=",")
+    tri_financas.columns = tri_financas.columns.str.strip()
     return tri_financas
 
 @st.cache_data
 def carregar_anual_financas():
-    anual_financas = pd.read_csv(
-        "dados_vale(Anual Financeiro).csv", encoding="ISO-8859-1", sep=";",)
+    caminho = BASE_DIR / "dados_vale(Anual Financeiro)(1).csv"
+    anual_financas = pd.read_csv(caminho, encoding="ISO-8859-1", sep=";", decimal=",")
     anual_financas.columns = anual_financas.columns.str.strip()
-    #converte coluna de ano para texto limpo:
-    anual_financas["Ano"] = (
-        anual_financas["Ano"].dropna().astype(int).astype(str))
+    anual_financas["Ano"] = anual_financas["Ano"].dropna().astype(int).astype(str)
+    anual_financas.rename(columns={'Custos e Despezas Opercacionais': 'Custos e Despesas Operacionais'}, inplace=True)
     return anual_financas
 
 @st.cache_data
 def carregar_tri_producao():
-    tri_producao = pd.read_csv(
-        "dados_vale(Tri Produção).csv", encoding="ISO-8859-1", sep=";",)
-    tri_producao.columns = tri_producao.columns.str.strip() #remove espaços em branco no início e no final dos nomes das colunas
-    tri_producao["Produto"] = tri_producao["Produto"].astype(str).str.strip() #converte a coluna para texto remove espaços em branco
+    caminho = BASE_DIR / "dados_vale(Tri Produção)(1).csv"
+    tri_producao = pd.read_csv(caminho, encoding="ISO-8859-1", sep=";", decimal=",")
+    tri_producao.columns = tri_producao.columns.str.strip()
+    tri_producao["Produto"] = tri_producao["Produto"].astype(str).str.strip()
     tri_producao["Local"] = tri_producao["Local"].astype(str).str.strip()
-    return tri_producao #retorna a tabela limpa
+
+    #tratamento seguro contra 'NuN', strings invalidas e nulos
+    col_extracao = (
+        tri_producao["Extração (Mil Toneladas Métricas)"].astype(str).str.replace(",", ".").str.strip())
+    tri_producao["Extração (Mil Toneladas Métricas)"] = pd.to_numeric(col_extracao, errors="coerce").fillna(0.0)
+
+    return tri_producao
 
 @st.cache_data
 def carregar_anual_producao():
-    anual_prod = pd.read_csv(
-        "dados_vale(Anual Produção).csv", encoding="ISO-8859-1", sep=";",)
+    caminho = BASE_DIR / "dados_vale(Anual Produção)(1).csv"
+    anual_prod = pd.read_csv(caminho, encoding="ISO-8859-1", sep=";", decimal=",")
     anual_prod.columns = anual_prod.columns.str.strip()
     anual_prod["Ano"] = anual_prod["Ano"].dropna().astype(int).astype(str)
     return anual_prod
 
 @st.cache_data
 def carregar_tri_mercado():
-    tri_mercado = pd.read_csv(
-        "dados_vale(Tri Mercado e Economia).csv", encoding="ISO-8859-1", sep=";")
+    caminho = BASE_DIR / "dados_vale(Tri Mercado e Economia)(1).csv"
+    tri_mercado = pd.read_csv(caminho, encoding="ISO-8859-1", sep=";", decimal=",")
     tri_mercado.columns = tri_mercado.columns.str.strip()
     return tri_mercado
 
 @st.cache_data
 def carregar_anual_mercado():
-    anual_mercado = pd.read_csv(
-        "dados_vale(Anual Mercado e Economia ).csv", encoding="ISO-8859-1", sep=";")
+    caminho = BASE_DIR / "dados_vale(Anual Mercado e Economia )(1).csv"
+    anual_mercado = pd.read_csv(caminho, encoding="ISO-8859-1", sep=";", decimal=",")
     anual_mercado.columns = anual_mercado.columns.str.strip()
     anual_mercado["Ano"] = anual_mercado["Ano"].dropna().astype(int).astype(str)
     return anual_mercado
@@ -63,40 +73,13 @@ tri_producao = carregar_tri_producao()
 tri_financas = carregar_tri_financas()
 anual_financas = carregar_anual_financas()
 
-#==========================================================
 totais_excluir = [
     "Total Norte", "Total Sudeste:", "Total Sul", "Total Centro-Oeste",
     "Produção Total de Minério de Ferro", "Total Canadá", "Produção Total de Níquel",
     "Total Brasil", "Produção Total de Cobre", "Total Sudeste", "Produção Pelotas",
     "Produção Total de Cobalto",]
 
-
-def conv_vol(val) -> float:
-    """
-    Converte uma string/valor de volume para float de forma determinística.
-    Preserva a escala/unidade original indicada no CSV/coluna sem aplicar
-    heurísticas baseadas no tamanho do número.
-    """
-    if pd.isna(val):
-        return 0.0
-    
-    val_str = str(val).strip()
-    if not val_str:
-        return 0.0
-
-    #trata formato brasileiro (ex: 1.400,50 -> 1400.50 ou 1.400 -> 1400.0)
-    if "," in val_str:
-        val_str = val_str.replace(".", "").replace(",", ".")
-    else:
-        #se contiver apenas ponto, verifica se é separador de milhar (ex: "1.400")
-        parts = val_str.split(".")
-        if len(parts) == 2 and len(parts[1]) == 3:
-            val_str = val_str.replace(".", "")
-            
-    try:
-        return float(val_str)
-    except ValueError:
-        return 0.0
+#==========================================================
 
 def conv_pct(val):
     if pd.isna(val): #verifica se o valor é nulo ou ausente
@@ -124,31 +107,6 @@ def conv_preco(val):
         return float(val_str)
     except ValueError:
         return None
-
-def f_bilhoes(val):
-    if pd.isna(val):
-        return None
-
-    val_str = str(val).replace("(R$ bi)", "").replace("R$", "").strip()
-
-    if "," in val_str: #trata formato com vírgula (ex: "1.400,50" ou "1,400")
-        val_str = val_str.replace(".", "").replace(",", ".")
-    else:
-        parts = val_str.split(".") #se tem ponto, verifica os dígitos decimais/separador de milhar
-        if len(parts) == 2:
-            #se tem exatamente 3 dígitos após o ponto (ex: 1.400, 893.000, 5.921)
-            #o ponto é separador de milhar, então removemos o ponto.
-            if len(parts[1]) == 3:
-                val_str = val_str.replace(".", "")
-    try:
-        num = float(val_str)
-    except ValueError:
-        return None
-
-    if abs(num) >= 100: #se o valor numérico for >= 100 (ex: 893 ou 1400), está em Milhões e deve ser convertido para Bilhões
-        return num / 1000.0
-
-    return num
 
 #FUNÇÕES DE EXPORTAÇÃO DE DADOS ==========================
 
@@ -362,8 +320,16 @@ def _card_base(titulo, valor, coluna, tabela, key_slider, conversor, cor, col_te
                             config={"displayModeBar": False}) #oculta a barra de ferramentas do plotly
 
 def card_expansivel_real(titulo, coluna, dados_tri, tabela_validos, key_slider, col_tempo="Trimestre"):
-    valor = f"R$ {str(dados_tri[coluna]).replace(',00', '').strip()}" #remove os decimais
-    _card_base(titulo, valor, coluna, tabela_validos, key_slider, f_bilhoes, "#00529B", col_tempo) #chama o card base com conversor de bilhões
+    val = dados_tri[coluna]
+    try:
+        if pd.notna(val):
+            val_num = float(str(val).replace(",", "."))
+            valor_str = f"R$ {val_num:,.2f}"
+        else:
+            valor_str = "N/A"
+    except (ValueError, TypeError):
+        valor_str = str(val) if pd.notna(val) else "N/A"
+    _card_base(titulo, valor_str, coluna, tabela_validos, key_slider, conv_preco, "#00529B", col_tempo)
 
 def card_expansivel_geral(titulo, coluna, dados_tri, tabela_validos, key_slider, col_tempo="Trimestre"):
     _card_base(titulo, f"{dados_tri[coluna]}", coluna, tabela_validos, key_slider, conv_pct, "#00529B", col_tempo) #conversor de percentual
@@ -419,59 +385,6 @@ if pagina == "Visão Geral":
     st.markdown("##### Resumo Executivo: Desempenho Financeiro, Operacional e de Mercado")
 
     #funções necessárias recriadas localmente ----------------------------------
-    def local_f_bilhoes(val):
-        if pd.isna(val):
-            return None
-        val_str = str(val).replace("(R$ bi)", "").replace("R$", "").strip()
-        if "," in val_str:
-            val_str = val_str.replace(".", "").replace(",", ".")
-        else:
-            parts = val_str.split(".")
-            if len(parts) == 2 and len(parts[1]) == 3 and float(parts[0]) > 10:
-                val_str = val_str.replace(".", "")
-        try:
-            num = float(val_str)
-        except ValueError:
-            return None
-        if abs(num) >= 100:
-            return num / 1000.0
-        return num
-
-    def local_conv_vol(val):
-        if pd.isna(val):
-            return 0.0
-        val_str = str(val).strip()
-        if "," in val_str:
-            val_str = val_str.replace(".", "").replace(",", ".")
-        try:
-            num = float(val_str)
-            if num >= 100 and "." not in val_str and "," not in str(val):
-                return num / 1000.0
-            return num
-        except ValueError:
-            return 0.0
-
-    def local_conv_preco(val):
-        if pd.isna(val):
-            return None
-        val_str = (
-            str(val)
-            .replace("US$", "")
-            .replace("US", "")
-            .replace("R$", "")
-            .replace("$", "")
-            .replace("€", "")
-            .replace("\x80", "")
-            .strip())
-        if "," in val_str and "." in val_str:
-            val_str = val_str.replace(".", "").replace(",", ".")
-        elif "," in val_str:
-            val_str = val_str.replace(",", ".")
-        try:
-            return float(val_str)
-        except ValueError:
-            return None
-
     def local_layout(fig, col_tempo, **extra):
         fig.update_layout( #atualiza as configurações de layout da figura
             hovermode="x unified", #unifica as informações no balão ao passar o mouse pelo eixo X
@@ -501,11 +414,11 @@ if pagina == "Visão Geral":
     c1, c2, c3, c4 = st.columns(4)
 
     with c1:
-        rec_val = local_f_bilhoes(dados_fin["Receita Líquida"])
+        rec_val = float(dados_fin["Receita Líquida"])
         st.metric("Receita Líquida", f"R$ {rec_val:,.2f} Bi" if rec_val else "N/A")
 
     with c2:
-        lucro_val = local_f_bilhoes(dados_fin["Lucro Líquido"])
+        lucro_val = float(dados_fin["Lucro Líquido"])
         st.metric("Lucro Líquido", f"R$ {lucro_val:,.2f} Bi" if lucro_val else "N/A")
 
     with c3:
@@ -514,13 +427,13 @@ if pagina == "Visão Geral":
             (tabela_prod_tri["Produto"] == "Minério de Ferro") & 
             (~tabela_prod_tri["Local"].isin(totais_excluir))].copy()
 
-        sub_fe["Vol_Mt"] = sub_fe["Extração (Mil Toneladas Métricas)"].apply(conv_vol) / 1000.0
+        sub_fe["Vol_Mt"] = sub_fe["Extração (Mil Toneladas Métricas)"].astype(float) / 1000
         vol_fe = sub_fe["Vol_Mt"].sum() if not sub_fe.empty else 0.0
         st.metric("Produção de Minério de Ferro", f"{vol_fe:,.1f} Mt")  #alterado para Mt
 
     with c4:
         if not tabela_merc_tri.empty:
-            pr_fe = local_conv_preco(tabela_merc_tri.iloc[0]["Preço Realizado Ferro/t"])
+            pr_fe = float(tabela_merc_tri.iloc[0]["Preço Realizado Ferro/t"])
             st.metric("Preço Realizado (Ferro)", f"US$ {pr_fe:,.2f}/t" if pr_fe else "N/A")
         else:
             st.metric("Preço Realizado (Ferro)", "N/A")
@@ -538,9 +451,9 @@ if pagina == "Visão Geral":
 
     with g1:
         st.subheader("Evolução da Receita Líquida vs. Lucro Líquido")
-        tabela_fin_bi = tabela_f_sub.assign( #cria colunas temporárias com o valor em bilhões
-            Receita=tabela_f_sub["Receita Líquida"].apply(local_f_bilhoes),
-            Lucro=tabela_f_sub["Lucro Líquido"].apply(local_f_bilhoes))
+        tabela_fin_bi = tabela_f_sub.assign(
+            Receita=tabela_f_sub["Receita Líquida"].astype(float),
+            Lucro=tabela_f_sub["Lucro Líquido"].astype(float))
 
         fig_fin_vis = go.Figure([
             go.Bar(x=tabela_fin_bi["Trimestre"], y=tabela_fin_bi["Receita"], name="Receita Líquida", marker_color="#00529B"), #adiciona barras azuis da receita líquida
@@ -549,8 +462,8 @@ if pagina == "Visão Geral":
 
         st.subheader("Preço Realizado Vale vs. Mercado (Minério de Ferro)")
         tabela_m_clean = tabela_m_sub.assign(
-            Realizado=tabela_m_sub["Preço Realizado Ferro/t"].apply(local_conv_preco),
-            Mercado=tabela_m_sub["Minério de Ferro"].apply(local_conv_preco))
+            Realizado=tabela_m_sub["Preço Realizado Ferro/t"].astype(float),
+            Mercado=tabela_m_sub["Minério de Ferro"].astype(float))
 
         fig_merc_vis = go.Figure([
             go.Scatter(x=tabela_m_clean["Trimestre"], y=tabela_m_clean["Realizado"], name="Realizado Vale", mode="lines+markers", line=dict(color="#00529B", width=2.5)),
@@ -560,7 +473,8 @@ if pagina == "Visão Geral":
     with g2:
         st.subheader(f"Mix de Produção por Mineral em kt ({tri_sel})")
         tabela_prod_operacional = tabela_prod_tri[~tabela_prod_tri["Local"].isin(totais_excluir)].copy()
-        tabela_prod_operacional["Vol"] = tabela_prod_operacional["Extração (Mil Toneladas Métricas)"].apply(conv_vol)
+        tabela_prod_operacional["Vol"] = (
+            tabela_prod_operacional["Extração (Mil Toneladas Métricas)"].astype(str).str.replace(",", ".").astype(float))
         tabela_mix = tabela_prod_operacional.groupby("Produto")["Vol"].sum().reset_index()
 
         fig_mix = px.pie(tabela_mix, values="Vol", names="Produto", hole=0.4, color_discrete_sequence=px.colors.qualitative.Set2) #cria o gráfico de rosca
@@ -569,8 +483,8 @@ if pagina == "Visão Geral":
         fig_mix.update_traces(hovertemplate="%{label}: %{value:,.1f} kt (%{percent})<extra></extra>")
 
         st.subheader("Desempenho VALE3 (B3) vs. Cotação Dólar (USD/BRL)")
-        tabela_m_clean["Dolar"] = tabela_m_sub["Média Trimestral Dólar (USD/BRL)"].apply(local_conv_preco)
-        tabela_m_clean["VALE3"] = tabela_f_sub.tail(len(tabela_m_clean))["VALE3 (B3 - BRL)"].apply(local_conv_preco).values
+        tabela_m_clean["Dolar"] = tabela_m_sub["Média Trimestral Dólar (BRL)"].astype(float)
+        tabela_m_clean["VALE3"] = tabela_f_sub.tail(len(tabela_m_clean))["VALE3 (B3 - BRL)"].astype(float).values
 
         fig_macro = go.Figure([
             go.Scatter(x=tabela_m_clean["Trimestre"], y=tabela_m_clean["VALE3"], name="VALE3 (R$)", mode="lines+markers", line=dict(color="#00A859", width=2.5)), #linha verde para o preço da vale3
@@ -600,9 +514,12 @@ if pagina == "Financeiro":
             col_divida = "Dívida Líquida (MM)"
 
             #liquidez corrente apenas no modo Trimestral
-            tabela_financas["Liquidez Corrente"] = (
-                tabela_financas["Ativo Circulante"]
-                / tabela_financas["Passivo Circulante"])
+            #converte as colunas para float tratando vírgulas
+            ativo = tabela_financas["Ativo Circulante"].astype(str).str.replace(",", ".").astype(float)
+            passivo = tabela_financas["Passivo Circulante"].astype(str).str.replace(",", ".").astype(float)
+
+            tabela_financas["Liquidez Corrente"] = (ativo / passivo).replace([float("inf"), float("-inf")], 0).fillna(0)
+
             tabela_financas["Liquidez Corrente"] = (
                 tabela_financas["Liquidez Corrente"]
                 .replace([float("inf"), float("-inf")], 0)
@@ -611,9 +528,9 @@ if pagina == "Financeiro":
             tabela_financas = anual_financas.copy()
             col_tempo = "Ano"
             col_ebit = "EBIT"
-            col_vale3 = "VALE3 (Fim do Ano)"
-            col_vale_usd = "VALE (Fim do Ano)"
-            col_xvalo = "XVALO (Fim do Ano)"
+            col_vale3 = "VALE3 (Fim do Ano) (BRL)"
+            col_vale_usd = "VALE (Fim do Ano) (DOL)"
+            col_xvalo = "XVALO (Fim do Ano) (EUR)"
             col_divida = "Dívida Líquida"
 
         #garante a filtragem correta das linhas válidas do período ativo
@@ -755,7 +672,7 @@ if pagina == "Financeiro":
             st.subheader("Evolução do Resultado (Receita, EBITDA e Lucro Líquido)")
 
             def _bi(tabela, cols):
-                return tabela.assign(**{c: tabela[c].apply(f_bilhoes) for c in cols if c in tabela.columns})
+                return tabela.assign(**{c: tabela[c].astype(float) for c in cols if c in tabela.columns})
 
             def _layout(fig, col_tempo, **extra):
                 fig.update_layout(
@@ -797,7 +714,7 @@ if pagina == "Financeiro":
             st.subheader("Desempenho das Ações: VALE3 (B3) vs. VALE (NYSE)")
             fig_acoes = go.Figure([
                 go.Scatter(
-                    x=tabela_periodo[col_tempo], y=tabela_periodo[col].apply(conv_preco),
+                    x=tabela_periodo[col_tempo], y=tabela_periodo[col].astype(float),
                     name=nome, mode="lines+markers", yaxis=eixo,
                     line=dict(color=cor, width=2.5),)
                 for col, nome, eixo, cor in [
@@ -845,26 +762,10 @@ if pagina == "Financeiro":
                 
             with c_brum2:
                 st.markdown("##### Custos e Despesas Operacionais (R\$ Bi)")
-                
-                def _tratar_custos_tri(val):
-                    if pd.isna(val):
-                        return 0.0
-                    val_str = str(val).strip()
-                    val_limpo = val_str.replace(".", "").replace(",", ".").replace("R\$", "").strip()
-                    try:
-                        num = float(val_limpo)
-                        val_abs = abs(num)
-                        if val_abs >= 1_000_000:
-                            return val_abs / 1_000_000.0
-                        elif val_abs >= 1_000:
-                            return val_abs / 1_000.0
-                        return val_abs
-                    except ValueError:
-                        return 0.0
 
                 if "Custos e Despesas Operacionais" in tabela_periodo.columns:
                     tabela_custos_tri = tabela_periodo[["Trimestre", "Custos e Despesas Operacionais"]].copy()
-                    tabela_custos_tri["Custos_Bi"] = tabela_custos_tri["Custos e Despesas Operacionais"].apply(_tratar_custos_tri)
+                    tabela_custos_tri["Custos_Bi"] = tabela_custos_tri["Custos e Despesas Operacionais"].astype(float)
 
                     fig_custos_tri = px.line(
                         tabela_custos_tri, 
@@ -902,17 +803,17 @@ if pagina == "Financeiro":
         @st.cache_data
         def treinar_modelo_financeiro_avancado(tabela_fin, tabela_merc, tabela_prod):
             tabela_f = tabela_fin.copy()
-            tabela_f["Rec_Bi"] = tabela_f["Receita Líquida"].apply(f_bilhoes)
-            tabela_f["Lucro_Bi"] = tabela_f["Lucro Líquido"].apply(f_bilhoes)
-            tabela_f["EBITDA_Bi"] = tabela_f["EBITDA"].apply(f_bilhoes)
+            tabela_f["Rec_Bi"] = tabela_f["Receita Líquida"].astype(float)
+            tabela_f["Lucro_Bi"] = tabela_f["Lucro Líquido"].astype(float)
+            tabela_f["EBITDA_Bi"] = tabela_f["EBITDA"].astype(float)
 
             tabela_m = tabela_merc.copy()
-            tabela_m["Dolar_Num"] = tabela_m["Média Trimestral Dólar (USD/BRL)"].apply(conv_preco)
+            tabela_m["Dolar_Num"] = tabela_m["Média Trimestral Dólar (BRL)"].apply(conv_preco)
             tabela_m["Minério_Num"] = tabela_m["Preço Realizado Ferro/t"].apply(conv_preco)
 
             sub_fe = tabela_prod[(tabela_prod["Produto"] == "Minério de Ferro") & (~tabela_prod["Local"].isin(totais_excluir))].copy()
             
-            sub_fe["Vol_Mt"] = sub_fe["Extração (Mil Toneladas Métricas)"].apply(conv_vol) / 1000.0
+            sub_fe["Vol_Mt"] = sub_fe["Extração (Mil Toneladas Métricas)"].astype(float) / 1000
             tabela_p_agg = sub_fe.groupby("Trimestre")["Vol_Mt"].sum().reset_index()
 
             m1 = pd.merge(tabela_f[["Trimestre", "Rec_Bi", "Lucro_Bi", "EBITDA_Bi"]], tabela_m[["Trimestre", "Dolar_Num", "Minério_Num"]], on="Trimestre")
@@ -940,31 +841,34 @@ if pagina == "Financeiro":
         def aplicar_cenario_base():
             st.session_state["slider_pred_dol"] = float(round(u_dolar, 2))
             st.session_state["slider_pred_min"] = float(round(u_minerio, 2))
-            st.session_state["slider_pred_vol"] = float(round(u_vol, 1))
+            st.session_state["slider_pred_vol"] = float(max(round(u_vol, 1), 40.0))
 
         def aplicar_cenario_otimista():
             st.session_state["slider_pred_dol"] = float(round(u_dolar * 1.05, 2))
             st.session_state["slider_pred_min"] = float(round(u_minerio * 1.15, 2))
-            st.session_state["slider_pred_vol"] = float(round(u_vol * 1.05, 1))
+            st.session_state["slider_pred_vol"] = float(max(round(u_vol * 1.05, 1), 40.0))
 
         def aplicar_stress_test():
             st.session_state["slider_pred_dol"] = float(round(u_dolar * 0.95, 2))
             st.session_state["slider_pred_min"] = float(round(u_minerio * 0.75, 2))
-            st.session_state["slider_pred_vol"] = float(round(u_vol * 0.95, 1))
+            st.session_state["slider_pred_vol"] = float(max(round(u_vol * 0.95, 1), 40.0))
 
         def aplicar_alta_dolar():
             st.session_state["slider_pred_dol"] = float(6.20)
             st.session_state["slider_pred_min"] = float(round(u_minerio, 2))
-            st.session_state["slider_pred_vol"] = float(round(u_vol, 1))
+            st.session_state["slider_pred_vol"] = float(max(round(u_vol, 1), 40.0))
 
         if "slider_pred_dol" not in st.session_state:
             st.session_state["slider_pred_dol"] = float(round(u_dolar, 2))
         if "slider_pred_min" not in st.session_state:
             st.session_state["slider_pred_min"] = float(round(u_minerio, 2))
         if "slider_pred_vol" not in st.session_state:
-            st.session_state["slider_pred_vol"] = float(round(u_vol, 1))
+            st.session_state["slider_pred_vol"] = float(max(round(u_vol, 1), 40.0))
+        else:
+            #garante que, se o valor no session_state for menor que 40.0, ele seja corrigido
+            st.session_state["slider_pred_vol"] = float(max(st.session_state["slider_pred_vol"], 40.0))
 
-        st.markdown("###Cenários Estressados de Mercado")
+        st.markdown("### Cenários Estressados de Mercado")
         cenario_col1, cenario_col2, cenario_col3, cenario_col4 = st.columns(4)
 
         cenario_col1.button("Cenário Base (Atual)", on_click=aplicar_cenario_base, use_container_width=True)
@@ -1036,7 +940,7 @@ if pagina == "Financeiro":
             margem_ebitda_est = (ebitda_previsto / rec_prevista * 100) if rec_prevista > 0 else 0.0
             st.metric(label="Margem EBITDA Estimada", value=f"{margem_ebitda_est:.1f}%")
 
-        with st.expander("ℹMétricas de Acurácia Estatística dos Modelos (R² Score)"):
+        with st.expander("Métricas de Acurácia Estatística dos Modelos (R² Score)"):
             c_acc1, c_acc2, c_acc3 = st.columns(3)
             c_acc1.write(f"**R² Receita Líquida:** `{r2_rec*100:.1f}%`")
             c_acc2.write(f"**R² EBITDA:** `{r2_ebitda*100:.1f}%`")
@@ -1108,7 +1012,7 @@ if pagina == "Produção":
         
         cols_num = [c for c in tabela_anual_p.columns if c != "Ano"]
         for c in cols_num:
-            tabela_anual_p[c] = tabela_anual_p[c].apply(conv_vol)
+            tabela_anual_p[c] = tabela_anual_p[c].astype(float)
 
         anos_list = tabela_anual_p["Ano"].unique().tolist()
         ano_sel = st.selectbox("Selecione o Ano:", options=anos_list, index=len(anos_list) - 1)
@@ -1215,7 +1119,8 @@ if pagina == "Produção":
             "Nova Caledônia": {"lat": -22.2700, "lon": 166.4500, "regiao": "Oceania"},
             "Omã": {"lat": 24.3600, "lon": 56.7100, "regiao": "Omã"},}
 
-        tri_producao["Volume_Num"] = tri_producao["Extração (Mil Toneladas Métricas)"].apply(conv_vol)
+        tri_producao["Volume_Num"] = (
+            tri_producao["Extração (Mil Toneladas Métricas)"].astype(str).str.replace(",", ".").astype(float))
 
         c_f1, c_f2, c_f3 = st.columns([1, 1, 1])
 
@@ -1354,7 +1259,7 @@ if pagina == "Produção":
         def treinar_modelo_producao(tabela_prod_tri):
             df_p = tabela_prod_tri.copy()
 
-            df_p["Vol_Mt"] = df_p["Extração (Mil Toneladas Métricas)"].apply(conv_vol)
+            df_p["Vol_Mt"] = df_p["Extração (Mil Toneladas Métricas)"].astype(float)
             df_clean = df_p[~df_p["Local"].isin(totais_excluir)].copy()
             
             agg = df_clean.groupby(["Trimestre", "Produto"])["Vol_Mt"].sum().reset_index()
@@ -1511,7 +1416,7 @@ if pagina == "Mercado":
         tabela_anual_m = anual_mercado.copy()
 
         cols_num = tabela_anual_m.columns.drop("Ano")
-        tabela_anual_m[cols_num] = tabela_anual_m[cols_num].map(conv_moeda)
+        tabela_anual_m[cols_num] = tabela_anual_m[cols_num].astype(float)
 
         anos_list = tabela_anual_m["Ano"].unique().tolist()
         ano_sel = st.selectbox(
@@ -1558,7 +1463,7 @@ if pagina == "Mercado":
 
         marcacao_preta()
 
-        #gráficos Anuais
+        #gráficos anuais
         g1, g2 = st.columns(2)
 
         with g1:
@@ -1659,7 +1564,7 @@ if pagina == "Mercado":
         k1, k2, k3, k4 = st.columns(4)
 
         with k1:
-            val_dol = dados_tri_m["Média Trimestral Dólar (USD/BRL)"]
+            val_dol = dados_tri_m["Média Trimestral Dólar (BRL)"]
             st.metric(
                 "Dólar Médio",
                 f"R$ {val_dol:,.2f}" if pd.notna(val_dol) else "N/A",)
@@ -1739,10 +1644,10 @@ if pagina == "Mercado":
             fig_usd_t = px.line(
                 tabela_tri_m_sub,
                 x="Trimestre",
-                y="Média Trimestral Dólar (USD/BRL)",
+                y="Média Trimestral Dólar (BRL)",
                 markers=True,
                 color_discrete_sequence=["#2563EB"],
-                labels={"Média Trimestral Dólar (USD/BRL)": "R$"},)
+                labels={"Média Trimestral Dólar (BRL)": "R$"},)
             fig_usd_t.update_layout(hovermode="x unified", height=400)
             st.plotly_chart(fig_usd_t, use_container_width=True)
 
@@ -1797,17 +1702,17 @@ if pagina == "Mercado":
             df_m["Tempo_Idx"] = df_m["Trimestre"].map(mapa_tempo)
             
             #treinamento de modelos preditivos de regressão por commodity
-            X_fe = df_m[["Minério de Ferro", "Média Trimestral Dólar (USD/BRL)"]]
+            X_fe = df_m[["Minério de Ferro", "Média Trimestral Dólar (BRL)"]]
             y_fe = df_m["Preço Realizado Ferro/t"]
             mdl_fe = LinearRegression().fit(X_fe, y_fe)
             r2_fe = max(0.0, mdl_fe.score(X_fe, y_fe))
 
-            X_cu = df_m[["Cobre", "Média Trimestral Dólar (USD/BRL)"]]
+            X_cu = df_m[["Cobre", "Média Trimestral Dólar (BRL)"]]
             y_cu = df_m["Preço Realizado Cobre/t"]
             mdl_cu = LinearRegression().fit(X_cu, y_cu)
             r2_cu = max(0.0, mdl_cu.score(X_cu, y_cu))
 
-            X_ni = df_m[["Níquel", "Média Trimestral Dólar (USD/BRL)"]]
+            X_ni = df_m[["Níquel", "Média Trimestral Dólar (BRL)"]]
             y_ni = df_m["Preço Realizado Níquel/t"]
             mdl_ni = LinearRegression().fit(X_ni, y_ni)
             r2_ni = max(0.0, mdl_ni.score(X_ni, y_ni))
@@ -1819,7 +1724,7 @@ if pagina == "Mercado":
             u_real_cu = float(df_m["Preço Realizado Cobre/t"].iloc[-1])
             u_merc_ni = float(df_m["Níquel"].iloc[-1])
             u_real_ni = float(df_m["Preço Realizado Níquel/t"].iloc[-1])
-            u_dolar_m = float(df_m["Média Trimestral Dólar (USD/BRL)"].iloc[-1])
+            u_dolar_m = float(df_m["Média Trimestral Dólar (BRL)"].iloc[-1])
 
             modelos = {"Minério de Ferro": mdl_fe, "Cobre": mdl_cu, "Níquel": mdl_ni}
             r2_scores = {"Minério de Ferro": r2_fe, "Cobre": r2_cu, "Níquel": r2_ni}
@@ -1836,7 +1741,7 @@ if pagina == "Mercado":
         max_cu_slider = max(20000.0, float(np.ceil(u_merc_cu * 1.3 / 500) * 500))
         max_ni_slider = max(45000.0, float(np.ceil(u_merc_ni * 1.3 / 1000) * 1000))
 
-        #1. callback functions para cenários de mercado
+        #1. callback Functions para Cenários de Mercado
         def aplicar_cenario_mercado_base():
             st.session_state["slider_m_dol"] = float(round(u_dolar_m, 2))
             st.session_state["slider_m_fe"] = float(round(u_merc_fe, 2))
@@ -1855,7 +1760,7 @@ if pagina == "Mercado":
             st.session_state["slider_m_cu"] = float(round(u_merc_cu * 0.85, 2))
             st.session_state["slider_m_ni"] = float(round(u_merc_ni * 0.85, 2))
 
-        #2. inicialização do session state
+        #2. inicialização do Session State
         if "slider_m_dol" not in st.session_state:
             st.session_state["slider_m_dol"] = float(round(u_dolar_m, 2))
         if "slider_m_fe" not in st.session_state:
@@ -1865,10 +1770,10 @@ if pagina == "Mercado":
         if "slider_m_ni" not in st.session_state:
             st.session_state["slider_m_ni"] = float(round(u_merc_ni, 2))
 
-        #ajuste de segurança no slider do cobre
+        #ajuste de segurança no slider do Cobre
         st.session_state["slider_m_cu"] = min(float(st.session_state["slider_m_cu"]), max_cu_slider)
 
-        #3. botões de cenários de mercado
+        #3. botões de Cenários de Mercado
         st.markdown("###Simulação de Cenários Globais de Commodities")
         c_m1, c_m2, c_m3 = st.columns(3)
 
@@ -1876,7 +1781,7 @@ if pagina == "Mercado":
         c_m2.button("Superciclo de Commodities (+20% Minério)", on_click=aplicar_cenario_mercado_otimista, use_container_width=True)
         c_m3.button("Retração na Demanda Chinesa (-20% Minério)", on_click=aplicar_cenario_mercado_pessimista, use_container_width=True)
 
-        #4. sliders de parâmetros globais
+        # 4. sliders de Parâmetros Globais
         st.subheader("Ajuste de Cotações Globais e Câmbio")
         sm_col1, sm_col2, sm_col3, sm_col4 = st.columns(4)
 
@@ -1916,16 +1821,16 @@ if pagina == "Mercado":
                 format="US\$ %.0f",
                 key="slider_m_ni")
 
-        #5. predições em tempo real
-        X_fe_pred = pd.DataFrame([[sim_m_fe, sim_m_dol]], columns=["Minério de Ferro", "Média Trimestral Dólar (USD/BRL)"])
-        X_cu_pred = pd.DataFrame([[sim_m_cu, sim_m_dol]], columns=["Cobre", "Média Trimestral Dólar (USD/BRL)"])
-        X_ni_pred = pd.DataFrame([[sim_m_ni, sim_m_dol]], columns=["Níquel", "Média Trimestral Dólar (USD/BRL)"])
+        #5. predições em Tempo Real
+        X_fe_pred = pd.DataFrame([[sim_m_fe, sim_m_dol]], columns=["Minério de Ferro", "Média Trimestral Dólar (BRL)"])
+        X_cu_pred = pd.DataFrame([[sim_m_cu, sim_m_dol]], columns=["Cobre", "Média Trimestral Dólar (BRL)"])
+        X_ni_pred = pd.DataFrame([[sim_m_ni, sim_m_dol]], columns=["Níquel", "Média Trimestral Dólar (BRL)"])
 
         pred_real_fe = float(modelos_merc["Minério de Ferro"].predict(X_fe_pred)[0])
         pred_real_cu = float(modelos_merc["Cobre"].predict(X_cu_pred)[0])
         pred_real_ni = float(modelos_merc["Níquel"].predict(X_ni_pred)[0])
 
-        #6. exibição dos KPIs previstos
+        #6. exibição dos KPIs Previstos
         st.subheader("Estimativa de Preços Realizados pela Vale S.A.")
         km1, km2, km3 = st.columns(3)
 
@@ -1957,7 +1862,7 @@ if pagina == "Mercado":
             mc2.write(f"**R² Cobre:** `{r2_merc['Cobre']*100:.1f}%`")
             mc3.write(f"**R² Níquel:** `{r2_merc['Níquel']*100:.1f}%`")
 
-        #7. gráfico preditivo interativo com Seletor de Mineral
+        #7. gráfico Preditivo Interativo com Seletor de Mineral
         st.subheader("Comparativo Preditivo: Mercado Spot vs. Preço Realizado Vale")
         
         col_sel_graf, _ = st.columns([1, 2])
