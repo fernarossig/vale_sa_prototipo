@@ -12,26 +12,60 @@ from pathlib import Path
 #pega o diretório exato onde o arquivo Python (vale_sa.py ou app.py) está salvo
 BASE_DIR = Path(__file__).resolve().parent
 
+#correção: padroniza os valores financeiros para R$ bilhões já na leitura (vale para todas as páginas)
+def para_bilhoes(val, limite_mm=100):
+    #se o valor absoluto passar do limite, ele foi inserido em R$ milhões
+    if pd.isna(val):
+        return np.nan
+    try:
+        v = float(str(val).replace(",", ".").strip())
+    except ValueError:
+        return np.nan
+    return v / 1000.0 if abs(v) > limite_mm else v
+
 @st.cache_data
 def carregar_tri_financas():
     caminho = BASE_DIR / "dados_vale(Tri Financeiro)(2).csv"
-    tri_financas = pd.read_csv(caminho, encoding="ISO-8859-1", sep=";", decimal=",")
+    tri_financas = pd.read_csv(caminho, encoding="ISO-8859-1", sep=";", decimal=".")
     tri_financas.columns = tri_financas.columns.str.strip()
+
+    #correção: converte as colunas de valor para R$ bilhões
+    cols_valor = ["Receita Líquida", "EBITDA", "Lucro Líquido",
+                  "Fluxo de Caixa Operacional", "Fluxo de Caixa Livre",
+                  "EBIT/ Resultado Operacional", "Dívida Líquida (MM)"]
+    for c in cols_valor:
+        if c in tri_financas.columns:
+            tri_financas[c] = tri_financas[c].apply(para_bilhoes)
     return tri_financas
 
 @st.cache_data
 def carregar_anual_financas():
     caminho = BASE_DIR / "dados_vale(Anual Financeiro)(2).csv"
-    anual_financas = pd.read_csv(caminho, encoding="ISO-8859-1", sep=";", decimal=",")
+    anual_financas = pd.read_csv(caminho, encoding="ISO-8859-1", sep=";", decimal=".")
     anual_financas.columns = anual_financas.columns.str.strip()
+    if 'Coluna1' in anual_financas.columns:
+        anual_financas.rename(columns={'Coluna1': 'Ano'}, inplace=True)
     anual_financas["Ano"] = anual_financas["Ano"].dropna().astype(int).astype(str)
-    anual_financas.rename(columns={'Custos e Despezas Opercacionais': 'Custos e Despesas Operacionais'}, inplace=True)
+    anual_financas.rename(columns={
+        'Receita Líquida (R$)': 'Receita Líquida',
+        'Lucro Bruto (R$)': 'Lucro Bruto',
+        'Lucro Líquido (R$)': 'Lucro Líquido',
+        'EBITDA (R$)': 'EBITDA',
+        'EBIT (R$)': 'EBIT',
+        'Custos e Despesas Operacionais (R$)': 'Custos e Despesas Operacionais',
+        'Custos e Despezas Opercacionais': 'Custos e Despesas Operacionais',
+        'Caixa e Equivalentes de Caixa (R$)': 'Caixa e Equivalentes de Caixa',
+        'Dívida Bruta (R$)': 'Dívida Bruta',
+        'Dívida Líquida ($)': 'Dívida Líquida',
+        'Fluxo de Caixa Operacional (R$)': 'Fluxo de Caixa Operacional',
+        'Fluxo de Caixa Livre (R$)': 'Fluxo de Caixa Livre'
+    }, inplace=True)
     return anual_financas
 
 @st.cache_data
 def carregar_tri_producao():
     caminho = BASE_DIR / "dados_vale(Tri Produção)(2).csv"
-    tri_producao = pd.read_csv(caminho, encoding="ISO-8859-1", sep=";", decimal=",")
+    tri_producao = pd.read_csv(caminho, encoding="ISO-8859-1", sep=";", decimal=".")
     tri_producao.columns = tri_producao.columns.str.strip()
     tri_producao["Produto"] = tri_producao["Produto"].astype(str).str.strip()
     tri_producao["Local"] = tri_producao["Local"].astype(str).str.strip()
@@ -46,22 +80,24 @@ def carregar_tri_producao():
 @st.cache_data
 def carregar_anual_producao():
     caminho = BASE_DIR / "dados_vale(Anual Produção)(2).csv"
-    anual_prod = pd.read_csv(caminho, encoding="ISO-8859-1", sep=";", decimal=",")
+    anual_prod = pd.read_csv(caminho, encoding="ISO-8859-1", sep=";", decimal=".")
     anual_prod.columns = anual_prod.columns.str.strip()
+    if 'Coluna1' in anual_prod.columns:
+        anual_prod.rename(columns={'Coluna1': 'Ano'}, inplace=True)
     anual_prod["Ano"] = anual_prod["Ano"].dropna().astype(int).astype(str)
     return anual_prod
 
 @st.cache_data
 def carregar_tri_mercado():
     caminho = BASE_DIR / "dados_vale(Tri Mercado e Economia)(2).csv"
-    tri_mercado = pd.read_csv(caminho, encoding="ISO-8859-1", sep=";", decimal=",")
+    tri_mercado = pd.read_csv(caminho, encoding="ISO-8859-1", sep=";", decimal=".")
     tri_mercado.columns = tri_mercado.columns.str.strip()
     return tri_mercado
 
 @st.cache_data
 def carregar_anual_mercado():
     caminho = BASE_DIR / "dados_vale(Anual Mercado e Economia )(2).csv"
-    anual_mercado = pd.read_csv(caminho, encoding="ISO-8859-1", sep=";", decimal=",")
+    anual_mercado = pd.read_csv(caminho, encoding="ISO-8859-1", sep=";", decimal=".")
     anual_mercado.columns = anual_mercado.columns.str.strip()
     anual_mercado["Ano"] = anual_mercado["Ano"].dropna().astype(int).astype(str)
     return anual_mercado
@@ -78,6 +114,20 @@ totais_excluir = [
     "Produção Total de Minério de Ferro", "Total Canadá", "Produção Total de Níquel",
     "Total Brasil", "Produção Total de Cobre", "Total Sudeste", "Produção Pelotas",
     "Produção Total de Cobalto",]
+
+#correção: o minério de ferro trimestral vem em Mt (soma ~75); converte para kt como as demais colunas
+def normalizar_producao(df):
+    col = "Extração (Mil Toneladas Métricas)"
+    df = df.copy()
+    folhas = ~df["Local"].isin(totais_excluir)
+    fe = df["Produto"] == "Minério de Ferro"
+    soma_fe = df[folhas & fe].groupby("Trimestre")[col].sum()
+    tri_em_mt = soma_fe[soma_fe < 1000].index #soma real em kt é de dezenas de milhares
+    mascara = fe & df["Trimestre"].isin(tri_em_mt)
+    df.loc[mascara, col] = df.loc[mascara, col] * 1000 #Mt -> kt
+    return df
+
+tri_producao = normalizar_producao(tri_producao)
 
 #==========================================================
 
@@ -319,12 +369,13 @@ def _card_base(titulo, valor, coluna, tabela, key_slider, conversor, cor, col_te
             st.plotly_chart(fig, use_container_width=True, #exibe gráfico na largura do card
                             config={"displayModeBar": False}) #oculta a barra de ferramentas do plotly
 
-def card_expansivel_real(titulo, coluna, dados_tri, tabela_validos, key_slider, col_tempo="Trimestre"):
+#correção: card agora mostra a unidade (R$ ... Bi); prefixo e sufixo podem ser trocados (ex.: liquidez corrente)
+def card_expansivel_real(titulo, coluna, dados_tri, tabela_validos, key_slider, col_tempo="Trimestre", prefixo="R$ ", sufixo=" Bi"):
     val = dados_tri[coluna]
     try:
         if pd.notna(val):
             val_num = float(str(val).replace(",", "."))
-            valor_str = f"R$ {val_num:,.2f}"
+            valor_str = f"{prefixo}{val_num:,.2f}{sufixo}"
         else:
             valor_str = "N/A"
     except (ValueError, TypeError):
@@ -343,6 +394,33 @@ def marcacao_preta():
        <hr style="border: 1px solid #444; margin-top: 20px; margin-bottom: 20px;">
        """,
         unsafe_allow_html=True,)
+
+def grafico_mix_producao(tabela, col_valor, altura=440):  #1. aumentado de 380 para 440
+    #rosca com fatias comprimidas (valor^0.3) para os minérios pequenos continuarem visíveis; rótulos mostram o valor real
+    t = tabela.copy()
+    t.loc[t["Produto"].str.contains("Cobalto", case=False, na=False), col_valor] /= 1000  #cobalto vem em toneladas -> kt
+    t = t[t[col_valor] > 0].sort_values(col_valor, ascending=False)
+    total = t[col_valor].sum()
+    t["Share"] = t[col_valor] / total * 100
+    t["Peso"] = t[col_valor] ** 0.65
+    t["Rotulo"] = t.apply(lambda r: f"{r['Produto']}<br>{r[col_valor]:,.1f} kt ({r['Share']:.2f}%)", axis=1)
+
+    fig = go.Figure(go.Pie(
+        labels=t["Produto"], values=t["Peso"], hole=0.45, sort=False,
+        text=t["Rotulo"], textinfo="text", textposition="outside",
+        automargin=True,  #2. adicionado para evitar corte nos rótulos externos
+        customdata=t[[col_valor, "Share"]].values,
+        hovertemplate="%{label}: %{customdata[0]:,.1f} kt (%{customdata[1]:.2f}%)<extra></extra>",
+        marker=dict(colors=px.colors.qualitative.Set2),
+        showlegend=False))
+
+    fig.add_annotation(text=f"Total<br>{total:,.0f} kt", x=0.5, y=0.5, showarrow=False, font=dict(size=14))
+    fig.add_annotation(text="Tamanho das fatias comprimido; valores reais nos rótulos",
+                       x=0.5, y=-0.16, xref="paper", yref="paper", showarrow=False, font=dict(size=10, color="#888"))
+
+    #3. margens superior (t=65) e inferior (b=65) ampliadas para caber o rótulo do topo e a nota de rodapé
+    fig.update_layout(height=altura, margin=dict(l=90, r=90, t=65, b=65))
+    return fig
 
 #CONFIGURAÇÃO E SIDEBAR DA PÁGINA =========================================================
 st.set_page_config(layout="wide")
@@ -372,7 +450,7 @@ st.markdown(
 
 st.sidebar.title("Menu de Navegação")
 pagina = st.sidebar.radio(
-    "Escolha uma página:", ["Visão Geral", "Financeiro", "Produção", "Mercado"])
+    "Escolha uma página:", ["Visão Geral", "Financeiro", "Produção", "Mercado", "Investidores"])
 
 st.sidebar.write(
     "Criado por Fernando Henrique M. Rossignolli, Israel Gomes Galdino, "
@@ -477,10 +555,7 @@ if pagina == "Visão Geral":
             tabela_prod_operacional["Extração (Mil Toneladas Métricas)"].astype(str).str.replace(",", ".").astype(float))
         tabela_mix = tabela_prod_operacional.groupby("Produto")["Vol"].sum().reset_index()
 
-        fig_mix = px.pie(tabela_mix, values="Vol", names="Produto", hole=0.4, color_discrete_sequence=px.colors.qualitative.Set2) #cria o gráfico de rosca
-        fig_mix.update_layout(height=380, margin=dict(l=0, r=0, t=20, b=0)) #limpa e converte a cotção do dólar para número
-        st.plotly_chart(fig_mix, use_container_width=True)
-        fig_mix.update_traces(hovertemplate="%{label}: %{value:,.1f} kt (%{percent})<extra></extra>")
+        st.plotly_chart(grafico_mix_producao(tabela_mix, "Vol", 380), use_container_width=True)
 
         st.subheader("Desempenho VALE3 (B3) vs. Cotação Dólar (USD/BRL)")
         tabela_m_clean["Dolar"] = tabela_m_sub["Média Trimestral Dólar (BRL)"].astype(float)
@@ -503,6 +578,8 @@ if pagina == "Financeiro":
 
     #1. VISÕES HISTÓRICAS (TRIMESTRAL E ANUAL) ====================================================================
     if visao in ["Trimestral", "Anual"]:
+
+        #correção: bloco converter_para_bilhoes removido (a conversão agora é feita em carregar_tri_financas)
 
         if visao == "Trimestral":
             tabela_financas = tri_financas.copy()
@@ -604,7 +681,8 @@ if pagina == "Financeiro":
                     dados_tri_copy,
                     tabela_validos,
                     "slider_liqcor",
-                    col_tempo=col_tempo,)
+                    col_tempo=col_tempo,
+                    prefixo="", sufixo="",) #correção: liquidez é índice, sem R$ nem Bi
             else:
                 card_expansivel_real(
                     "Caixa e Equiv.",
@@ -987,7 +1065,7 @@ if pagina == "Financeiro":
 
         st.plotly_chart(fig_sim, use_container_width=True)
 
-# PÁGINA PRODUÇÃO ===================================================================================================================
+# PÁGINA PRODUÇÃO ===================================================================================================
 
 if pagina == "Produção":
     st.title("Produção e Operações da Vale S.A.")
@@ -1235,12 +1313,7 @@ if pagina == "Produção":
                 tabela_tri_p[~tabela_tri_p["Local"].isin(totais_excluir)]
                 .groupby("Produto")["Volume_Num"].sum().reset_index())
 
-            fig_pie = px.pie(
-                tabela_pie, values="Volume_Num", names="Produto", hole=0.4,
-                color_discrete_sequence=px.colors.qualitative.Set2,)
-            fig_pie.update_layout(height=400, margin=dict(l=0, r=0, t=20, b=0))
-            fig_pie.update_traces(hovertemplate="%{label}: %{value:,.1f} kt (%{percent})<extra></extra>")
-            st.plotly_chart(fig_pie, use_container_width=True)
+            st.plotly_chart(grafico_mix_producao(tabela_pie, "Volume_Num", 400), use_container_width=True)
 
         renderizar_painel_exportacao_producao( #exportação trimestral
             tabela_tri=tri_producao,
@@ -1911,3 +1984,396 @@ if pagina == "Mercado":
             height=420)
 
         st.plotly_chart(fig_m_proj, use_container_width=True)
+
+# PÁGINA PARA INVESTIDORES ==========================================================================================
+
+if pagina == "Investidores":
+
+    st.title("Para Investidores — Análise de Valor & Valuation (Vale S.A.)")
+    st.markdown("### Indicadores de Rentabilidade, Retorno ao Acionista, Drivers de Mercado e Simulador de Preço-Alvo (ML)")
+
+    #funções auxiliares locais para garantir compatibilidade de colunas e escalas
+    def _buscar_col_inv(df, opcoes):
+        for col in opcoes:
+            if col in df.columns:
+                return col
+        return None
+
+    def _conv_pct_inv(val):
+        if pd.isna(val):
+            return 0.0
+        s = str(val).replace("%", "").replace(",", ".").strip()
+        try:
+            return float(s)
+        except ValueError:
+            return 0.0
+
+    def _conv_bi_inv(val):
+        if pd.isna(val):
+            return 0.0
+        v = float(str(val).replace(",", ".").strip())
+        return v / 1000.0 if abs(v) > 100.0 else v
+
+    def _conv_preco_inv(val):
+        if pd.isna(val):
+            return np.nan
+        s = str(val).replace("US$", "").replace("R$", "").replace("$", "").replace(",", ".").strip()
+        try:
+            return float(s)
+        except ValueError:
+            return np.nan
+
+    #preparação das bases anual e trimestral
+    df_anual_inv = anual_financas.dropna(subset=["Ano"]).copy()
+    df_anual_inv["Ano_Str"] = df_anual_inv["Ano"].astype(int).astype(str)
+
+    col_rec_anual = _buscar_col_inv(df_anual_inv, ["Receita Líquida", "Receita Líquida (R$)"])
+    col_lucro_anual = _buscar_col_inv(df_anual_inv, ["Lucro Líquido", "Lucro Líquido (R$)"])
+    col_ebitda_anual = _buscar_col_inv(df_anual_inv, ["EBITDA", "EBITDA (R$)"])
+    col_fco_anual = _buscar_col_inv(df_anual_inv, ["Fluxo de Caixa Operacional", "Fluxo de Caixa Operacional (R$)"])
+    col_fcl_anual = _buscar_col_inv(df_anual_inv, ["Fluxo de Caixa Livre", "Fluxo de Caixa Livre (R$)"])
+    col_divliq_anual = _buscar_col_inv(df_anual_inv, ["Dívida Líquida", "Dívida Líquida ($)"])
+    col_ret_vale3 = _buscar_col_inv(df_anual_inv, ["VALE3 Retorno (EUR)", "VALE3 Retorno"])
+    col_ret_vale = _buscar_col_inv(df_anual_inv, ["VALE Retorno"])
+    col_ret_xvalo = _buscar_col_inv(df_anual_inv, ["XVALO Retorno"])
+
+    for c_num in [col_rec_anual, col_lucro_anual, col_ebitda_anual, col_fco_anual, col_fcl_anual, col_divliq_anual]:
+        if c_num:
+            df_anual_inv[c_num] = df_anual_inv[c_num].apply(lambda x: float(str(x).replace(",", ".").strip()) if pd.notna(x) else 0.0)
+
+    for c_pct in ["ROE (%)", "ROA (%)", "Margem Bruta (%)", "Margem Líquida (%)", "Endividamento (%)", col_ret_vale3, col_ret_vale, col_ret_xvalo]:
+        if c_pct and c_pct in df_anual_inv.columns:
+            df_anual_inv[c_pct + "_Num"] = df_anual_inv[c_pct].apply(_conv_pct_inv)
+
+    aba_inv = st.radio(
+        "Selecione o Módulo de Análise:",
+        ["Fundamentos & Retorno ao Acionista", "Correlação & Drivers de Mercado", "Simulador de Preço-Alvo & Aporte (ML)"],
+        horizontal=True)
+
+    # MÓDULO 1: FUNDAMENTOS, DIVIDENDOS (FCL) E RETORNO AO ACIONISTA
+
+    if aba_inv == "Fundamentos & Retorno ao Acionista":
+
+        anos_disp = df_anual_inv["Ano_Str"].tolist()
+        ano_inv_sel = st.selectbox("Selecione o Ano Fiscal para Análise de Fundamentos:", options=anos_disp, index=len(anos_disp) - 1)
+        row_ano = df_anual_inv[df_anual_inv["Ano_Str"] == ano_inv_sel].iloc[0]
+
+        st.markdown(f"#### Métricas-Chave para o Investidor ({ano_inv_sel})")
+        k1, k2, k3, k4, k5 = st.columns(5)
+
+        roe_val = row_ano.get("ROE (%)_Num", 0.0)
+        roa_val = row_ano.get("ROA (%)_Num", 0.0)
+        mg_liq_val = row_ano.get("Margem Líquida (%)_Num", 0.0)
+        fcl_val = row_ano[col_fcl_anual] if col_fcl_anual else 0.0
+        ebitda_val = row_ano[col_ebitda_anual] if col_ebitda_anual else 1.0
+        div_liq_val = row_ano[col_divliq_anual] if col_divliq_anual else 0.0
+        alavancagem = (div_liq_val / ebitda_val) if ebitda_val > 0 else 0.0
+
+        with k1:
+            st.metric("ROE (Retorno s/ Patrimônio)", f"{roe_val:.1f}%", help="Mede quanto lucro líquido a Vale gera para cada R$ 100 de patrimônio dos acionistas.")
+        with k2:
+            st.metric("ROA (Retorno s/ Ativos)", f"{roa_val:.1f}%", help="Rentabilidade operacional gerada sobre o total de ativos da companhia.")
+        with k3:
+            st.metric("Margem Líquida", f"{mg_liq_val:.1f}%", help="Percentual da receita líquida que se converte em lucro final.")
+        with k4:
+            st.metric("Fluxo de Caixa Livre (FCL)", f"R$ {fcl_val:,.1f} Bi", help="Caixa disponível após investimentos (CAPEX) para pagamento de Dividendos, JCP e recompra de ações.")
+        with k5:
+            st.metric("Alavancagem (Dív. Líq/EBITDA)", f"{alavancagem:.2f}x", help="Quantos anos de geração operacional (EBITDA) seriam necessários para quitar a dívida líquida.")
+
+        marcacao_preta()
+
+        g1, g2 = st.columns(2)
+
+        with g1:
+            st.subheader("Retorno Anual das Ações nas Bolsas (%)")
+            cols_ret = [c + "_Num" for c in [col_ret_vale3, col_ret_vale, col_ret_xvalo] if c and (c + "_Num") in df_anual_inv.columns]
+            nomes_ret = {"VALE3 Retorno (EUR)_Num": "VALE3 (B3)", "VALE3 Retorno_Num": "VALE3 (B3)", "VALE Retorno_Num": "VALE (NYSE)", "XVALO Retorno_Num": "XVALO (Latibex)"}
+
+            df_ret_plot = df_anual_inv[["Ano_Str"] + cols_ret].rename(columns=nomes_ret)
+            fig_ret = px.bar(
+                df_ret_plot,
+                x="Ano_Str",
+                y=[c for c in df_ret_plot.columns if c != "Ano_Str"],
+                barmode="group",
+                labels={"value": "Retorno Anual (%)", "Ano_Str": "Ano", "variable": "Ativo"},
+                color_discrete_sequence=["#00529B", "#00A859", "#F59E0B"])
+            fig_ret.update_layout(hovermode="x unified", legend=dict(orientation="h", y=1.12, title=""), height=400)
+            st.plotly_chart(fig_ret, use_container_width=True)
+
+            st.subheader("Capacidade de Dividendos: FCO vs. Fluxo de Caixa Livre (R$ Bi)")
+            fig_div_cap = go.Figure()
+            if col_fco_anual:
+                fig_div_cap.add_trace(go.Bar(x=df_anual_inv["Ano_Str"], y=df_anual_inv[col_fco_anual], name="Fluxo de Caixa Operacional", marker_color="#00529B"))
+            if col_fcl_anual:
+                fig_div_cap.add_trace(go.Bar(x=df_anual_inv["Ano_Str"], y=df_anual_inv[col_fcl_anual], name="Fluxo de Caixa Livre (Base Dividendos)", marker_color="#00A859"))
+            fig_div_cap.update_layout(
+                barmode="group",
+                hovermode="x unified",
+                legend=dict(orientation="h", y=1.12, title=""),
+                xaxis_title="Ano",
+                yaxis_title="R$ (Bilhões)",
+                height=400)
+            st.plotly_chart(fig_div_cap, use_container_width=True)
+
+        with g2:
+            st.subheader("Rentabilidade do Acionista: ROE, ROA e Margem Líquida (%)")
+            fig_rent = go.Figure()
+            for col_r, nome_r, cor_r in [
+                ("ROE (%)_Num", "ROE (%)", "#00A859"),
+                ("Margem Líquida (%)_Num", "Margem Líquida (%)", "#00529B"),
+                ("ROA (%)_Num", "ROA (%)", "#D97706")]:
+                if col_r in df_anual_inv.columns:
+                    fig_rent.add_trace(go.Scatter(
+                        x=df_anual_inv["Ano_Str"],
+                        y=df_anual_inv[col_r],
+                        mode="lines+markers",
+                        name=nome_r,
+                        line=dict(color=cor_r, width=2.5)))
+            fig_rent.update_layout(
+                hovermode="x unified",
+                legend=dict(orientation="h", y=1.12, title=""),
+                xaxis_title="Ano",
+                yaxis_title="Percentual (%)",
+                height=400)
+            st.plotly_chart(fig_rent, use_container_width=True)
+
+            st.subheader("Endividamento (%) vs. Dívida Líquida (US$ Bi)")
+            fig_divida = go.Figure()
+            if col_divliq_anual:
+                fig_divida.add_trace(go.Bar(
+                    x=df_anual_inv["Ano_Str"],
+                    y=df_anual_inv[col_divliq_anual],
+                    name="Dívida Líquida (US$ Bi)",
+                    marker_color="#64748B",
+                    yaxis="y"))
+            if "Endividamento (%)_Num" in df_anual_inv.columns:
+                fig_divida.add_trace(go.Scatter(
+                    x=df_anual_inv["Ano_Str"],
+                    y=df_anual_inv["Endividamento (%)_Num"],
+                    name="Endividamento Geral (%)",
+                    mode="lines+markers",
+                    line=dict(color="#DC2626", width=2.5),
+                    yaxis="y2"))
+            fig_divida.update_layout(
+                hovermode="x unified",
+                legend=dict(orientation="h", y=1.12, title=""),
+                xaxis_title="Ano",
+                yaxis=dict(title="Dívida Líquida (US$ Bi)"),
+                yaxis2=dict(title="Endividamento (%)", overlaying="y", side="right"),
+                height=400)
+            st.plotly_chart(fig_divida, use_container_width=True)
+
+    #MÓDULO 2: CORRELAÇÃO E DRIVERS DE VALOR DA AÇÃO
+
+    elif aba_inv == "Correlação & Drivers de Mercado":
+
+        tf_corr = tri_financas.dropna(subset=["Trimestre"]).copy()
+        tf_corr["Receita (Bi)"] = tf_corr["Receita Líquida"].apply(_conv_bi_inv)
+        tf_corr["EBITDA (Bi)"] = tf_corr["EBITDA"].apply(_conv_bi_inv)
+        tf_corr["Caixa Livre (Bi)"] = tf_corr["Fluxo de Caixa Livre"].apply(_conv_bi_inv)
+        tf_corr["VALE3 (BRL)"] = tf_corr["VALE3 (B3 - BRL)"].apply(_conv_preco_inv)
+        tf_corr["VALE (USD)"] = tf_corr["VALE (NYSE - USD)"].apply(_conv_preco_inv)
+
+        tm_corr = tri_mercado.dropna(subset=["Trimestre"]).copy()
+        tm_corr["Minério Ferro (US$/t)"] = tm_corr["Preço Realizado Ferro/t"].apply(_conv_preco_inv)
+        tm_corr["Cobre (US$/t)"] = tm_corr["Cobre"].apply(_conv_preco_inv)
+        tm_corr["Dólar (BRL)"] = tm_corr["Média Trimestral Dólar (BRL)"].apply(_conv_preco_inv)
+
+        df_drivers = pd.merge(
+            tf_corr[["Trimestre", "VALE3 (BRL)", "VALE (USD)", "Receita (Bi)", "EBITDA (Bi)", "Caixa Livre (Bi)"]],
+            tm_corr[["Trimestre", "Minério Ferro (US$/t)", "Cobre (US$/t)", "Dólar (BRL)"]],
+            on="Trimestre").dropna()
+
+        col_d1, col_d2 = st.columns([1.1, 1])
+
+        with col_d1:
+            st.subheader("Matriz de Correlação: O que move as ações da Vale?")
+            cols_corr = ["VALE3 (BRL)", "VALE (USD)", "Minério Ferro (US$/t)", "Cobre (US$/t)", "Dólar (BRL)", "Receita (Bi)", "Caixa Livre (Bi)"]
+            matriz_corr = df_drivers[cols_corr].corr().round(2)
+
+            fig_heat = px.imshow(
+                matriz_corr,
+                text_auto=True,
+                color_continuous_scale="RdBu_r",
+                zmin=-1,
+                zmax=1,
+                aspect="auto")
+            fig_heat.update_layout(height=460, margin=dict(l=10, r=10, t=30, b=10))
+            st.plotly_chart(fig_heat, use_container_width=True)
+
+        with col_d2:
+            st.subheader("Cotação VALE3 vs. Preço do Minério de Ferro")
+            fig_sync = go.Figure()
+            fig_sync.add_trace(go.Scatter(
+                x=df_drivers["Trimestre"],
+                y=df_drivers["VALE3 (BRL)"],
+                name="VALE3 (R$)",
+                mode="lines+markers",
+                line=dict(color="#00529B", width=2.5),
+                yaxis="y"))
+            fig_sync.add_trace(go.Scatter(
+                x=df_drivers["Trimestre"],
+                y=df_drivers["Minério Ferro (US$/t)"],
+                name="Minério Realizado (US$/t)",
+                mode="lines+markers",
+                line=dict(color="#00A859", width=2.5, dash="dot"),
+                yaxis="y2"))
+            fig_sync.update_layout(
+                hovermode="x unified",
+                legend=dict(orientation="h", y=1.12, title=""),
+                yaxis=dict(title="Cotação VALE3 (R$)"),
+                yaxis2=dict(title="Minério de Ferro (US$/t)", overlaying="y", side="right"),
+                height=460)
+            st.plotly_chart(fig_sync, use_container_width=True)
+
+        st.info(
+            "💡 **Leitura para o Investidor:** A correlação histórica mostra que a cotação de **VALE3** responde fortemente ao **Preço Realizado do Minério de Ferro** (correlação > 0,80) e à **Receita Líquida**, enquanto o **Dólar (USD/BRL)** atua como proteção natural (hedge cambial) para receitas em reais.")
+
+    #MÓDULO 3: SIMULADOR DE VALUATION (PREÇO-ALVO ML) & RETORNO DE APORTE
+
+    elif aba_inv == "Simulador de Preço-Alvo & Aporte (ML)":
+
+        st.subheader("Modelo Preditivo de Valuation — Preço Justo Estimado (VALE3 & VALE ADR)")
+        st.markdown("##### Regressão Linear Múltipla treinada com Fundamentos Trimestrais (Minério, Câmbio, Receita e FCL)")
+
+        def treinar_valuation_ml(t_fin, t_merc):
+            df_f = t_fin.dropna(subset=["Trimestre"]).copy()
+            df_f["Rec_Bi"] = df_f["Receita Líquida"].apply(_conv_bi_inv)
+            df_f["FCL_Bi"] = df_f["Fluxo de Caixa Livre"].apply(_conv_bi_inv)
+            df_f["VALE3"] = df_f["VALE3 (B3 - BRL)"].apply(_conv_preco_inv)
+            df_f["VALE_USD"] = df_f["VALE (NYSE - USD)"].apply(_conv_preco_inv)
+
+            df_m = t_merc.dropna(subset=["Trimestre"]).copy()
+            df_m["Ferro"] = df_m["Preço Realizado Ferro/t"].apply(_conv_preco_inv)
+            df_m["Dolar"] = df_m["Média Trimestral Dólar (BRL)"].apply(_conv_preco_inv)
+
+            df_ml = pd.merge(
+                df_f[["Trimestre", "Rec_Bi", "FCL_Bi", "VALE3", "VALE_USD"]],
+                df_m[["Trimestre", "Ferro", "Dolar"]],
+                on="Trimestre").dropna()
+
+            X = df_ml[["Ferro", "Dolar", "Rec_Bi", "FCL_Bi"]]
+            mdl_v3 = LinearRegression().fit(X, df_ml["VALE3"])
+            mdl_usd = LinearRegression().fit(X, df_ml["VALE_USD"])
+
+            r2_v3 = mdl_v3.score(X, df_ml["VALE3"])
+            r2_usd = mdl_usd.score(X, df_ml["VALE_USD"])
+
+            return mdl_v3, mdl_usd, r2_v3, r2_usd, df_ml
+
+        mdl_v3, mdl_usd, r2_v3, r2_usd, df_ml_inv = treinar_valuation_ml(tri_financas, tri_mercado)
+
+        ult_ferro = float(df_ml_inv["Ferro"].iloc[-1])
+        ult_dolar = float(df_ml_inv["Dolar"].iloc[-1])
+        ult_rec = float(df_ml_inv["Rec_Bi"].iloc[-1])
+        ult_fcl = float(df_ml_inv["FCL_Bi"].iloc[-1])
+        cotacao_atual_v3 = float(df_ml_inv["VALE3"].iloc[-1])
+        cotacao_atual_usd = float(df_ml_inv["VALE_USD"].iloc[-1])
+
+        def _set_val_conservador():
+            st.session_state["inv_sim_ferro"] = float(round(ult_ferro * 0.80, 1))
+            st.session_state["inv_sim_dolar"] = float(round(ult_dolar * 0.95, 2))
+            st.session_state["inv_sim_rec"] = float(round(ult_rec * 0.85, 1))
+            st.session_state["inv_sim_fcl"] = float(round(ult_fcl * 0.80, 1))
+
+        def _set_val_base():
+            st.session_state["inv_sim_ferro"] = float(round(ult_ferro, 1))
+            st.session_state["inv_sim_dolar"] = float(round(ult_dolar, 2))
+            st.session_state["inv_sim_rec"] = float(round(ult_rec, 1))
+            st.session_state["inv_sim_fcl"] = float(round(ult_fcl, 1))
+
+        def _set_val_superciclo():
+            st.session_state["inv_sim_ferro"] = float(round(ult_ferro * 1.25, 1))
+            st.session_state["inv_sim_dolar"] = float(round(ult_dolar * 1.05, 2))
+            st.session_state["inv_sim_rec"] = float(round(ult_rec * 1.20, 1))
+            st.session_state["inv_sim_fcl"] = float(round(ult_fcl * 1.30, 1))
+
+        if "inv_sim_ferro" not in st.session_state:
+            _set_val_base()
+
+        b1, b2, b3 = st.columns(3)
+        b1.button("Cenário Conservador (-20% Ferro)", on_click=_set_val_conservador, use_container_width=True)
+        b2.button("Cenário Base (Premissas Atuais)", on_click=_set_val_base, use_container_width=True)
+        b3.button("Superciclo Commodities (+25% Ferro)", on_click=_set_val_superciclo, use_container_width=True)
+
+        s1, s2, s3, s4 = st.columns(4)
+        with s1:
+            p_ferro = st.slider("Minério Realizado (US$/t):", 50.0, 200.0, step=1.0, key="inv_sim_ferro")
+        with s2:
+            p_dolar = st.slider("Câmbio (USD/BRL):", 3.50, 7.50, step=0.05, key="inv_sim_dolar")
+        with s3:
+            p_rec = st.slider("Receita Trimestral (R$ Bi):", 25.0, 100.0, step=1.0, key="inv_sim_rec")
+        with s4:
+            p_fcl = st.slider("Fluxo Caixa Livre (R$ Bi):", 0.0, 35.0, step=0.5, key="inv_sim_fcl")
+
+        X_cenario = pd.DataFrame([[p_ferro, p_dolar, p_rec, p_fcl]], columns=["Ferro", "Dolar", "Rec_Bi", "FCL_Bi"])
+        preco_justo_v3 = max(10.0, float(mdl_v3.predict(X_cenario)[0]))
+        preco_justo_usd = max(2.0, float(mdl_usd.predict(X_cenario)[0]))
+
+        upside_v3 = ((preco_justo_v3 / cotacao_atual_v3) - 1) * 100
+        upside_usd = ((preco_justo_usd / cotacao_atual_usd) - 1) * 100
+
+        st.markdown("#### Resultado do Valuation Estimado vs. Cotação Atual")
+        v1, v2, v3, v4 = st.columns(4)
+
+        with v1:
+            st.metric("Cotação Atual VALE3 (B3)", f"R$ {cotacao_atual_v3:,.2f}")
+        with v2:
+            st.metric("Preço Justo VALE3 (ML)", f"R$ {preco_justo_v3:,.2f}", delta=f"{upside_v3:+.1f}% Potencial (Upside)")
+        with v3:
+            st.metric("Preço Justo VALE ADR (NYSE)", f"US$ {preco_justo_usd:,.2f}", delta=f"{upside_usd:+.1f}% Potencial (Upside)")
+        with v4:
+            st.metric("Aderência do Modelo (R²)", f"{r2_v3 * 100:.1f}%", help="Percentual da variação histórica de VALE3 explicada pelos fundamentos.")
+
+        #gráfico histórico de rotação real vs. preço justo ajustado pelo modelo + projeção
+        df_ml_inv["VALE3_Modelo_Hist"] = mdl_v3.predict(df_ml_inv[["Ferro", "Dolar", "Rec_Bi", "FCL_Bi"]])
+
+        fig_val = go.Figure()
+        fig_val.add_trace(go.Scatter(
+            x=df_ml_inv["Trimestre"],
+            y=df_ml_inv["VALE3"],
+            mode="lines+markers",
+            name="Cotação Real VALE3 (R$)",
+            line=dict(color="#00529B", width=2.5)))
+        fig_val.add_trace(go.Scatter(
+            x=df_ml_inv["Trimestre"],
+            y=df_ml_inv["VALE3_Modelo_Hist"],
+            mode="lines",
+            name="Preço Justo Histórico (Modelo ML)",
+            line=dict(color="#94A3B8", width=2, dash="dash")))
+        fig_val.add_trace(go.Scatter(
+            x=["Cenário Simulado"],
+            y=[preco_justo_v3],
+            mode="markers+text",
+            text=[f"R$ {preco_justo_v3:.2f}"],
+            textposition="top center",
+            name="Preço-Alvo Projetado (ML)",
+            marker=dict(color="#00A859", size=16, symbol="star")))
+        fig_val.update_layout(
+            hovermode="x unified",
+            legend=dict(orientation="h", y=1.12, title=""),
+            xaxis_title="Trimestre",
+            yaxis_title="Preço da Ação VALE3 (R$)",
+            height=420)
+        st.plotly_chart(fig_val, use_container_width=True)
+
+        marcacao_preta()
+
+        #simulador prático de investimento financeiro
+        st.subheader("Simulador de Aporte do Investidor")
+        c_ap1, c_ap2, c_ap3 = st.columns(3)
+
+        with c_ap1:
+            valor_aporte = st.number_input("Valor do Investimento Inicial (R$):", min_value=100.0, max_value=10000000.0, value=10000.0, step=1000.0)
+
+        qtd_acoes = valor_aporte / cotacao_atual_v3
+        valor_projetado = qtd_acoes * preco_justo_v3
+        lucro_estimado = valor_projetado - valor_aporte
+
+        with c_ap2:
+            st.metric("Quantidade Estimada de Ações", f"{qtd_acoes:,.1f} ações VALE3")
+        with c_ap3:
+            st.metric(
+                "Patrimônio Projetado no Cenário",
+                f"R$ {valor_projetado:,.2f}",
+                delta=f"R$ {lucro_estimado:+,.2f} ({upside_v3:+.1f}%)")
