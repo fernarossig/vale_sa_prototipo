@@ -4,3 +4,4 @@ streamlit
 fpdf2
 scikit-learn
 numpy
+yfinance
