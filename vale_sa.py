@@ -6,11 +6,22 @@ import io
 from fpdf import FPDF
 from sklearn.linear_model import LinearRegression
 import numpy as np
+import textwrap
+import yfinance as yf
 
 from pathlib import Path
 
 #pega o diretório exato onde o arquivo Python (vale_sa.py ou app.py) está salvo
 BASE_DIR = Path(__file__).resolve().parent
+
+#ícone do app
+BASE_DIR = Path(__file__).resolve().parent
+
+# Configuração da página com título e ícone personalizado
+st.set_page_config(
+    page_title="Dashboard Vale S.A.",
+    page_icon=str(BASE_DIR / "VALE_ICONE.png"),
+    layout="wide",)
 
 #correção: padroniza os valores financeiros para R$ bilhões já na leitura (vale para todas as páginas)
 def para_bilhoes(val, limite_mm=100):
@@ -28,6 +39,7 @@ def carregar_tri_financas():
     caminho = BASE_DIR / "dados_vale(Tri Financeiro)(2).csv"
     tri_financas = pd.read_csv(caminho, encoding="ISO-8859-1", sep=";", decimal=".")
     tri_financas.columns = tri_financas.columns.str.strip()
+    tri_financas = tri_financas.dropna(axis=1, how="all").dropna(subset=["Trimestre"]).copy()
 
     #correção: converte as colunas de valor para R$ bilhões
     cols_valor = ["Receita Líquida", "EBITDA", "Lucro Líquido",
@@ -43,9 +55,11 @@ def carregar_anual_financas():
     caminho = BASE_DIR / "dados_vale(Anual Financeiro)(2).csv"
     anual_financas = pd.read_csv(caminho, encoding="ISO-8859-1", sep=";", decimal=".")
     anual_financas.columns = anual_financas.columns.str.strip()
+    anual_financas = anual_financas.dropna(axis=1, how="all").copy()
     if 'Coluna1' in anual_financas.columns:
         anual_financas.rename(columns={'Coluna1': 'Ano'}, inplace=True)
-    anual_financas["Ano"] = anual_financas["Ano"].dropna().astype(int).astype(str)
+    anual_financas = anual_financas.dropna(subset=["Ano"]).copy()
+    anual_financas["Ano"] = anual_financas["Ano"].astype(int).astype(str)
     anual_financas.rename(columns={
         'Receita Líquida (R$)': 'Receita Líquida',
         'Lucro Bruto (R$)': 'Lucro Bruto',
@@ -67,6 +81,7 @@ def carregar_tri_producao():
     caminho = BASE_DIR / "dados_vale(Tri Produção)(2).csv"
     tri_producao = pd.read_csv(caminho, encoding="ISO-8859-1", sep=";", decimal=".")
     tri_producao.columns = tri_producao.columns.str.strip()
+    tri_producao = tri_producao.dropna(axis=1, how="all").dropna(subset=["Trimestre"]).copy()
     tri_producao["Produto"] = tri_producao["Produto"].astype(str).str.strip()
     tri_producao["Local"] = tri_producao["Local"].astype(str).str.strip()
 
@@ -82,9 +97,11 @@ def carregar_anual_producao():
     caminho = BASE_DIR / "dados_vale(Anual Produção)(2).csv"
     anual_prod = pd.read_csv(caminho, encoding="ISO-8859-1", sep=";", decimal=".")
     anual_prod.columns = anual_prod.columns.str.strip()
+    anual_prod = anual_prod.dropna(axis=1, how="all").copy()
     if 'Coluna1' in anual_prod.columns:
         anual_prod.rename(columns={'Coluna1': 'Ano'}, inplace=True)
-    anual_prod["Ano"] = anual_prod["Ano"].dropna().astype(int).astype(str)
+    anual_prod = anual_prod.dropna(subset=["Ano"]).copy()
+    anual_prod["Ano"] = anual_prod["Ano"].astype(int).astype(str)
     return anual_prod
 
 @st.cache_data
@@ -92,6 +109,7 @@ def carregar_tri_mercado():
     caminho = BASE_DIR / "dados_vale(Tri Mercado e Economia)(2).csv"
     tri_mercado = pd.read_csv(caminho, encoding="ISO-8859-1", sep=";", decimal=".")
     tri_mercado.columns = tri_mercado.columns.str.strip()
+    tri_mercado = tri_mercado.dropna(axis=1, how="all").dropna(subset=["Trimestre"]).copy()
     return tri_mercado
 
 @st.cache_data
@@ -99,7 +117,8 @@ def carregar_anual_mercado():
     caminho = BASE_DIR / "dados_vale(Anual Mercado e Economia )(2).csv"
     anual_mercado = pd.read_csv(caminho, encoding="ISO-8859-1", sep=";", decimal=".")
     anual_mercado.columns = anual_mercado.columns.str.strip()
-    anual_mercado["Ano"] = anual_mercado["Ano"].dropna().astype(int).astype(str)
+    anual_mercado = anual_mercado.dropna(axis=1, how="all").dropna(subset=["Ano"]).copy()
+    anual_mercado["Ano"] = anual_mercado["Ano"].astype(int).astype(str)
     return anual_mercado
 
 tri_mercado = carregar_tri_mercado()
@@ -170,32 +189,48 @@ def gerar_excel_customizado(tabela, colunas_selecionadas):
     return output
 
 def gerar_pdf_customizado(tabela, colunas_selecionadas, titulo_relatorio):
-    #gera um relatório PDF simples com a tabela formatada
+    #Relatórios largos são divididos horizontalmente para que nenhuma coluna fique espremida ou desapareça.
     tabela_filtrado = tabela[colunas_selecionadas].copy()
     pdf = FPDF(orientation="L", unit="mm", format="A4")
-    pdf.add_page()
-    pdf.set_font("Helvetica", "B", 16)
-    pdf.cell(0, 10, titulo_relatorio, new_x="LMARGIN", new_y="NEXT", align="C")
-    pdf.set_font("Helvetica", "I", 10)
-    pdf.cell(0, 8, "Relatorio Exportado via Dashboard Vale S.A.", new_x="LMARGIN", new_y="NEXT", align="C")
-    pdf.ln(5)
-    
-    pdf.set_font("Helvetica", "B", 9)
+    pdf.set_auto_page_break(auto=True, margin=12)
     largura_pagina = 277
-    largura_col = max(20, largura_pagina / len(colunas_selecionadas))
-    
-    for col in colunas_selecionadas:
-        col_nome = str(col)[:18] + ".." if len(str(col)) > 20 else str(col)
-        pdf.cell(largura_col, 8, col_nome, border=1, align="C")
-    pdf.ln()
-    
-    pdf.set_font("Helvetica", "", 8)
-    for _, row in tabela_filtrado.iterrows():
-        for col in colunas_selecionadas:
-            val = str(row[col]) if pd.notna(row[col]) else "-"
-            val_texto = val[:18] + ".." if len(val) > 20 else val
-            pdf.cell(largura_col, 6, val_texto, border=1, align="C")
+    max_colunas_por_pagina = 8
+    grupos_colunas = [
+        colunas_selecionadas[i:i + max_colunas_por_pagina]
+        for i in range(0, len(colunas_selecionadas), max_colunas_por_pagina)]
+
+    def adicionar_cabecalho(grupo, parte, total_partes):
+        pdf.set_font("Helvetica", "B", 14)
+        pdf.cell(0, 9, titulo_relatorio, new_x="LMARGIN", new_y="NEXT", align="C")
+        pdf.set_font("Helvetica", "I", 9)
+        pdf.cell(0, 7, f"Relatorio Exportado via Dashboard Vale S.A. | Parte {parte}/{total_partes}",
+                 new_x="LMARGIN", new_y="NEXT", align="C")
+        pdf.ln(3)
+        largura_col = largura_pagina / len(grupo)
+        pdf.set_font("Helvetica", "B", 8)
+        for col in grupo:
+            nome = str(col)
+            limite = 30 if len(grupo) <= 5 else 22
+            col_nome = nome if len(nome) <= limite else nome[:limite - 2] + ".."
+            pdf.cell(largura_col, 7, col_nome, border=1, align="C")
         pdf.ln()
+        return largura_col
+
+    for parte, grupo in enumerate(grupos_colunas, start=1):
+        pdf.add_page()
+        largura_col = adicionar_cabecalho(grupo, parte, len(grupos_colunas))
+        pdf.set_font("Helvetica", "", 7.5)
+        limite_valor = 30 if len(grupo) <= 5 else 22
+        for _, row in tabela_filtrado[grupo].iterrows():
+            if pdf.get_y() + 6 > pdf.page_break_trigger:
+                pdf.add_page()
+                largura_col = adicionar_cabecalho(grupo, parte, len(grupos_colunas))
+                pdf.set_font("Helvetica", "", 7.5)
+            for col in grupo:
+                val = str(row[col]) if pd.notna(row[col]) else "-"
+                val_texto = val if len(val) <= limite_valor else val[:limite_valor - 2] + ".."
+                pdf.cell(largura_col, 6, val_texto, border=1, align="C")
+            pdf.ln()
     return bytes(pdf.output())
 
 def renderizar_painel_exportacao_financeiro(tabela_tri, tabela_anual, titulo_relatorio, key_prefix):
@@ -214,11 +249,8 @@ def renderizar_painel_exportacao_financeiro(tabela_tri, tabela_anual, titulo_rel
         tabela_export = tabela_tri.copy() if tipo_base == "Trimestral" else tabela_anual.copy()
         colunas_disponiveis = tabela_export.columns.tolist()
 
-        #colunas padrão iniciais
-        col_tempo = "Trimestre" if tipo_base == "Trimestral" else "Ano"
-        default_cols = [c for c in [col_tempo, "Receita Líquida", "EBITDA", "Lucro Líquido"] if c in colunas_disponiveis]
-        if not default_cols:
-            default_cols = colunas_disponiveis[:min(4, len(colunas_disponiveis))]
+        #Começa com todas as colunas da base; o usuário pode desmarcar o que não quiser exportar.
+        default_cols = colunas_disponiveis.copy()
 
         #2. seleção de colunas dinâmicas
         colunas_selecionadas = st.multiselect(
@@ -264,10 +296,8 @@ def renderizar_painel_exportacao_producao(tabela_tri, tabela_anual, titulo_relat
         tabela_export = tabela_tri.copy() if tipo_base == "Trimestral" else tabela_anual.copy()
         colunas_disponiveis = tabela_export.columns.tolist()
 
-        col_tempo = "Trimestre" if tipo_base == "Trimestral" else "Ano"
-        default_cols = [c for c in [col_tempo, "Produto", "Local", "Extração (Mil Toneladas Métricas)"] if c in colunas_disponiveis]
-        if not default_cols:
-            default_cols = colunas_disponiveis[:min(4, len(colunas_disponiveis))]
+        #Inclui extração, vendas e todos os demais campos existentes na respectiva base.
+        default_cols = colunas_disponiveis.copy()
 
         colunas_selecionadas = st.multiselect(
             f"Selecione as colunas da base {tipo_base} que deseja incluir no relatório:",
@@ -312,8 +342,8 @@ def renderizar_painel_exportacao_mercado(tabela_tri, tabela_anual, titulo_relato
         tabela_export = tabela_tri.copy() if tipo_base == "Trimestral" else tabela_anual.copy()
         colunas_disponiveis = tabela_export.columns.tolist()
 
-        col_tempo = "Trimestre" if tipo_base == "Trimestral" else "Ano"
-        default_cols = colunas_disponiveis[:min(4, len(colunas_disponiveis))]
+        #Inclui preços realizados, referências de mercado e câmbio por padrão.
+        default_cols = colunas_disponiveis.copy()
 
         colunas_selecionadas = st.multiselect(
             f"Selecione as colunas da base {tipo_base} que deseja incluir no relatório:",
@@ -345,9 +375,9 @@ def renderizar_painel_exportacao_mercado(tabela_tri, tabela_anual, titulo_relato
 
 #CARDS EXPANSÍVEIS =====================================
 
-def _card_base(titulo, valor, coluna, tabela, key_slider, conversor, cor, col_tempo):
+def _card_base(titulo, valor, coluna, tabela, key_slider, conversor, cor, col_tempo, help=None):
     with st.container(border=True):
-        st.metric(titulo, valor)
+        st.metric(titulo, valor, help=help)
 
         with st.expander("Histórico"):
             n = st.slider("Períodos:", 3, len(tabela), min(8, len(tabela)), key=key_slider) #slider para escolher o número de períodos
@@ -370,7 +400,7 @@ def _card_base(titulo, valor, coluna, tabela, key_slider, conversor, cor, col_te
                             config={"displayModeBar": False}) #oculta a barra de ferramentas do plotly
 
 #correção: card agora mostra a unidade (R$ ... Bi); prefixo e sufixo podem ser trocados (ex.: liquidez corrente)
-def card_expansivel_real(titulo, coluna, dados_tri, tabela_validos, key_slider, col_tempo="Trimestre", prefixo="R$ ", sufixo=" Bi"):
+def card_expansivel_real(titulo, coluna, dados_tri, tabela_validos, key_slider, col_tempo="Trimestre", prefixo="R$ ", sufixo=" Bi", help=None):
     val = dados_tri[coluna]
     try:
         if pd.notna(val):
@@ -380,13 +410,13 @@ def card_expansivel_real(titulo, coluna, dados_tri, tabela_validos, key_slider, 
             valor_str = "N/A"
     except (ValueError, TypeError):
         valor_str = str(val) if pd.notna(val) else "N/A"
-    _card_base(titulo, valor_str, coluna, tabela_validos, key_slider, conv_preco, "#00529B", col_tempo)
+    _card_base(titulo, valor_str, coluna, tabela_validos, key_slider, conv_preco, "#00529B", col_tempo, help=help) #repassando 'help=help'
 
-def card_expansivel_geral(titulo, coluna, dados_tri, tabela_validos, key_slider, col_tempo="Trimestre"):
-    _card_base(titulo, f"{dados_tri[coluna]}", coluna, tabela_validos, key_slider, conv_pct, "#00529B", col_tempo) #conversor de percentual
+def card_expansivel_geral(titulo, coluna, dados_tri, tabela_validos, key_slider, col_tempo="Trimestre", help=None): #padrão 'help=None'
+    _card_base(titulo, f"{dados_tri[coluna]}", coluna, tabela_validos, key_slider, conv_pct, "#00529B", col_tempo, help=help) #repassando 'help=help'
 
-def card_expansivel_acao(titulo, coluna, dados_tri, tabela_validos, key_slider, simbolo="", col_tempo="Trimestre"):
-    _card_base(titulo, f"{simbolo}{dados_tri[coluna]}", coluna, tabela_validos, key_slider, conv_preco, "#00A859", col_tempo) #conversor de preço e símbolo personalizável
+def card_expansivel_acao(titulo, coluna, dados_tri, tabela_validos, key_slider, simbolo="", col_tempo="Trimestre", help=None): #padrão 'help=None'
+    _card_base(titulo, f"{simbolo}{dados_tri[coluna]}", coluna, tabela_validos, key_slider, conv_preco, "#00A859", col_tempo, help=help) #repassando 'help=help'
 
 def marcacao_preta():
     st.markdown(
@@ -394,6 +424,123 @@ def marcacao_preta():
        <hr style="border: 1px solid #444; margin-top: 20px; margin-bottom: 20px;">
        """,
         unsafe_allow_html=True,)
+
+#DESTAQUES NOS GRÁFICOS (pontos com explicação no hover) ============================
+#chave do gráfico: lista de (série(s), {período: texto}); série None = gráfico de série única
+DESTAQUES = {
+    "fin_resultado": [
+        (["Receita Líquida", "EBITDA", "Lucro Líquido"], {"2021": "Desempenho recorde impulsionado pelo pico histórico no preço do minério."}),
+        ("Receita Líquida", {"4T20": "Alta impulsionada por forte demanda global, superando o peso das provisões."}),
+        ("Lucro Líquido", {
+            "4T25": "Prejuízo recorde causado por aumento extremo nas despesas operacionais.",
+            "2025": "Menor valor da série, fortemente pressionado pelos custos recordes anuais."}),],
+    "fin_balanco": [
+        (["Dívida Bruta", "Dívida Líquida"], {"2025": "Alta queima de caixa (queda de equivalentes) distanciou os indicadores."}),],
+    "fin_caixa": [
+        ("FCO (Operacional)", {"4T23": "Geração máxima de caixa alavancada por alta receita e boas margens."}),
+        ("FCL (Livre)", {
+            "2T24": "FCL negativo: concentração de pagamentos a fornecedores, obrigações de concessões e menor entrada de recebíveis no trimestre.",
+            "4T24": "Fluxo de caixa positivo, mas o lucro foi pressionado por custos e despesas operacionais."}),
+        (["FCO (Operacional)", "FCL (Livre)"], {
+            "2021": "Pico anual de geração de caixa, sustentado pelo EBITDA mais forte e pelo minério de ferro em preço elevado."}),],
+    "fin_acoes": [
+        ("VALE3 (B3)", {
+            "1T20": "Cotação em queda refletindo a incerteza econômica do início da pandemia.",
+            "2T21": "Preço recorde acompanhando o pico histórico de lucro e receita do período."}),
+        (["VALE3 (B3)", "VALE (NYSE)"], {
+            "2020": "Alta acentuada: recuperação das ações após 2019 e valorização do minério; o preço realizado do ferro subiu 23,3% frente a 2019.",
+            "2022": "Mercado precificando os fortes dividendos gerados pelo caixa recorde de 2021.",
+            "4T24": "As ações fecharam o trimestre em patamar baixo, pressionadas pelo recuo do minério e pelas preocupações com a demanda chinesa.",
+            "2024": "Retorno negativo refletindo o enfraquecimento dos preços do minério e das margens no ano."}),],
+    "fin_brum": [
+        (None, {"4T20": "Registro extraordinário de R$ 25 bilhões em provisões do desastre."}),],
+    "fin_custos_tri": [
+        (None, {p: "Lançamentos de despesas contábeis extremas que destruíram as margens destes trimestres."
+                for p in ["2T22", "4T24", "4T25"]}),],
+    "fin_custos_anual": [
+        (None, {
+            "2023": "Alívio geral nas despesas operacionais que beneficiou o balanço.",
+            "2025": "Recorde negativo de despesas que gerou o pior lucro da série histórica."}),],
+    "prod_pelotas": [
+        ("Produção (Mt)", {"2020": "Queda decorrente de paralisações operacionais nas minas abastecedoras."}),],
+    "prod_cobre": [
+        ("Produção (kt)", {"2022": "Redução de volume causada por desafios operacionais pontuais na extração."}),],
+    "merc_ferro_tri": [
+        ("Mercado Mundial", {"2T21": "Pico atípico de demanda global seguido de forte correção nos trimestres seguintes."}),],
+    "merc_dolar_tri": [
+        (None, {p: "Saltos do dólar que inflaram receitas em reais, mas pressionaram custos." for p in ["2T20", "4T24"]}),],
+    "merc_cobre_tri": [
+        #Índice 1 aponta diretamente para a segunda linha do gráfico: Cobre (mercado mundial).
+        (1, {
+            "2T22": "Preço internacional do cobre em nível elevado no trimestre.",
+            "2T26": "Preço internacional do cobre em nível elevado na série apresentada.",
+            "1T24": "Preço de mercado recuou em relação ao pico observado no trimestre anterior."}),],
+    "merc_niquel_tri": [
+        ("Mercado Mundial", {
+            "1T22": "Fortes altas globais impulsionaram receitas.",
+            "2T26": "Fortes altas globais impulsionaram receitas.",
+            "1T24": "Amargou forte baixa."}),],
+    "merc_ferro_anual": [
+        ("Média Mundial (BRL/t)", {"2021": "Maior preço da série histórica, grande motor do lucro recorde da Vale."}),],
+    "merc_dolar_anual": [
+        (None, {"2020": "Desvalorização do Real que turbinou a conversão das receitas globais."}),],
+    "merc_cobre_anual": [
+        ("Média Mundial", {"2021": "Altas consistentes que diversificaram os lucros além do minério."}),],
+    "merc_niquel_anual": [
+        ("Média Mundial", {"2022": "Altas consistentes que diversificaram os lucros além do minério."}),],
+    "inv_retorno": [
+        (["VALE3 (B3)", "VALE (NYSE)", "XVALO (Latibex)"], {
+            "2020": "Alta refletindo a recuperação pós-Brumadinho e câmbio favorável.",
+            "2024": "Custos altos puniram 2024, mas a expectativa de ajuste melhorou a projeção para 2025.",
+            "2025": "Custos altos puniram 2024, mas a expectativa de ajuste melhorou a projeção para 2025."}),
+        ("VALE3 (B3)", {"2021": "Negativo pois o mercado precificou a queda vertiginosa do minério no final do ano."}),],
+    "inv_rent": [
+        (["ROE (%)", "ROA (%)"], {"2021": "ROE e ROA estouraram no primeiro semestre e caíram junto com a commodity."}),],
+    "inv_caixa": [
+        (["Fluxo de Caixa Operacional", "Fluxo de Caixa Livre (Base Dividendos)"],
+         {"2021": "Máxima geração de caixa livre que garantiu os dividendos históricos seguintes."}),],
+    "inv_divida": [
+        ("Dívida Líquida (US$ Bi)", {p: "Dívida caiu ao mínimo em 2021 com muito caixa gerado, mas voltou a subir depois."
+                                     for p in ["2020", "2021"]}),],}
+
+def aplicar_destaques(fig, chave, cor="#DC2626"):
+    #marca os pontos definidos em DESTAQUES[chave]; ao passar o mouse aparece o texto explicativo
+    for series, destaques in DESTAQUES.get(chave, []):
+        if series is None or isinstance(series, (str, int, np.integer)):
+            series = [series]
+        texto_ja_exibido = False #quando várias séries são marcadas no mesmo período, o texto aparece só uma vez
+        for nome in series:
+            if isinstance(nome, (int, np.integer)):
+                trace = fig.data[int(nome)] if 0 <= int(nome) < len(fig.data) else None
+            else:
+                trace = fig.data[0] if nome is None else next((t for t in fig.data if t.name == nome), None)
+            if trace is None or trace.x is None or trace.y is None:
+                continue
+            xs = [str(x) for x in trace.x]
+            pontos = [(x, y) for x, y in zip(xs, trace.y) if x in destaques and pd.notna(y)]
+            if not pontos: #período fora do slider ou série inexistente neste gráfico
+                continue
+
+            if isinstance(trace, go.Bar):
+                #barras: o ponto é um "●" sobre a barra; o hover vem de um marcador invisível
+                marcas = list(trace.texttemplate) if isinstance(trace.texttemplate, (list, tuple, np.ndarray)) else [""] * len(xs)
+                for i, x in enumerate(xs):
+                    if x in destaques:
+                        marcas[i] = "●"
+                trace.update(texttemplate=marcas, textposition="outside", cliponaxis=False,
+                             textfont=dict(color=cor, size=16))
+                marcador = dict(size=14, opacity=0)
+            else:
+                marcador = dict(size=11, color=cor, line=dict(color="white", width=2))
+
+            hover = dict(hoverinfo="skip") if texto_ja_exibido else dict(hovertemplate="%{text}<extra></extra>")
+            fig.add_trace(go.Scatter(
+                x=[p[0] for p in pontos], y=[p[1] for p in pontos],
+                text=["<br>".join(textwrap.wrap(destaques[p[0]], 45)) for p in pontos], #quebra o texto em linhas
+                mode="markers", marker=marcador, name="Destaque", showlegend=False,
+                yaxis=trace.yaxis or "y", **hover))
+            texto_ja_exibido = True
+    return fig
 
 def grafico_mix_producao(tabela, col_valor, altura=440):  #1. aumentado de 380 para 440
     #rosca com fatias comprimidas (valor^0.3) para os minérios pequenos continuarem visíveis; rótulos mostram o valor real
@@ -423,26 +570,46 @@ def grafico_mix_producao(tabela, col_valor, altura=440):  #1. aumentado de 380 p
     return fig
 
 #CONFIGURAÇÃO E SIDEBAR DA PÁGINA =========================================================
-st.set_page_config(layout="wide")
+# CONFIGURAÇÃO E SIDEBAR DA PÁGINA =========================================================
+st.set_page_config(layout="wide", page_title="Dashboard Vale S.A.")
+
+#1. adiciona a logo da Vale no topo do menu lateral
+logo_path = BASE_DIR / "VALE.png"
+if logo_path.exists():
+    st.sidebar.image(str(logo_path), width=150)
+else:
+    #caso ainda não tenha baixado o arquivo local, pode usar uma URL direta ou exibir o texto estilizado
+    st.sidebar.markdown("<h2 style='color: white; margin-bottom: 0;'>VALE</h2>", unsafe_allow_html=True)
 
 st.markdown(
     """
    <style>
-       .main .block-container {
-           max-width: 100%;
-           padding-left: 0.5rem;
-           padding-right: 0.5rem;
-           padding-top: 1rem;
-           padding-bottom: 0rem;
+        .main .block-container {
+            max-width: 100%;
+            padding-left: 0.5rem;
+            padding-right: 0.5rem;
+            padding-top: 1rem;
+            padding-bottom: 0rem;
        }
-       [data-testid="stSidebar"] {
-           width: 100px !important;
+        /* Cor de fundo do menu lateral inspirada no verde oficial da Vale () */
+        [data-testid="stSidebar"] {
+            background-color: #4DB6AC;
+            width: 240px !important; /* Aumentei levemente de 100px para caber a logo e os textos sem cortar */
        }
-       [data-testid="stExpander"] details > div {
-           padding: 0.25rem 1rem 0.25rem 0.25rem;
+        /* Deixa todos os textos, títulos e opções de rádio do menu em branco */
+        [data-testid="stSidebar"] * {
+            color: #FFFFFF !important;
        }
-       [data-testid="stVerticalBlockBorderWrapper"] {
-           padding: 0.5rem;
+        /* Destaque sutil ao passar o mouse nas opções do menu */
+        [data-testid="stSidebar"] .stRadio label:hover {
+            background-color: rgba(255, 255, 255, 0.15);
+            border-radius: 6px;
+       }
+        [data-testid="stExpander"] details > div {
+            padding: 0.25rem 1rem 0.25rem 0.25rem;
+       }
+        [data-testid="stVerticalBlockBorderWrapper"] {
+            padding: 0.5rem;
        }
    </style>
 """,
@@ -452,14 +619,19 @@ st.sidebar.title("Menu de Navegação")
 pagina = st.sidebar.radio(
     "Escolha uma página:", ["Visão Geral", "Financeiro", "Produção", "Mercado", "Investidores"])
 
+st.sidebar.markdown("---")
+
 st.sidebar.write(
     "Criado por Fernando Henrique M. Rossignolli, Israel Gomes Galdino, "
-    "Luis Felipe de Souza Ferreira e João Pedro Barreto de Almeida")
+    "Luigi Sanches Silva, Luis Felipe de Souza Ferreira e João Pedro Barreto de Almeida")
+
+st.sidebar.write(
+    "Todos os dados foram retirados de fontes oficiais da Vale S.A. \n https://vale.com/pt/comunicados-resultados-apresentacoes-e-relatorios")
 
 #PÁGINA VISÃO GERAL ===================================================================================================================
 
 if pagina == "Visão Geral":
-    st.title("Visão Geral — Vale S.A.")
+    st.title("Visão Geral - Vale S.A.")
     st.markdown("##### Resumo Executivo: Desempenho Financeiro, Operacional e de Mercado")
 
     #funções necessárias recriadas localmente ----------------------------------
@@ -479,6 +651,325 @@ if pagina == "Visão Geral":
             '<hr style="border: 1px solid #444; margin-top: 20px; margin-bottom: 20px;">',
             unsafe_allow_html=True,)
 
+    # CARREGAMENTO DAS COTAÇÕES ----------------------------------------
+    @st.cache_data(ttl=45, show_spinner=False)
+    def carregar_cotacao_intradiaria(ticker, intervalos):
+
+        ultimo_erro = None
+
+        for intervalo in intervalos: #tenta diferentes intervalos até encontrar histórico
+
+            try:
+                dados = yf.Ticker(ticker).history(
+                    period="5d",
+                    interval=intervalo,
+                    auto_adjust=False,
+                    prepost=False,
+                    actions=False,
+                    timeout=20)
+
+                if dados.empty or "Close" not in dados.columns:
+                    continue
+
+                dados = dados[["Close"]].copy()
+                dados["Close"] = pd.to_numeric(
+                    dados["Close"],
+                    errors="coerce")
+
+                dados = dados.dropna()
+                dados = dados[dados["Close"] > 0]
+
+                dados = dados[
+                    ~dados.index.duplicated(keep="last")]
+
+                dados = dados.sort_index()
+
+                if len(dados) >= 2: #precisa de pelo menos dois pontos para montar o gráfico
+                    return dados, intervalo, None
+
+            except Exception as erro:
+                ultimo_erro = str(erro)
+
+        return pd.DataFrame(), None, ultimo_erro
+
+    #FORMATAÇÃO DOS VALORES
+
+    def formatar_valor_reais(valor, casas=2):
+
+        numero = f"{float(valor):,.{casas}f}"
+        numero = (
+            numero
+            .replace(",", "X")
+            .replace(".", ",")
+            .replace("X", "."))
+        
+        return f"R$ {numero}"
+
+    def formatar_horario(timestamp):
+
+        timestamp = pd.Timestamp(timestamp)
+
+        if timestamp.tzinfo is None:
+            timestamp = timestamp.tz_localize(
+                "America/Sao_Paulo")
+        else:
+            timestamp = timestamp.tz_convert(
+                "America/Sao_Paulo")
+
+        return timestamp.strftime("%d/%m/%Y às %H:%M")
+
+    # GRÁFICO EXPANSÍVEL
+
+    def renderizar_grafico_intradiario(
+        dados,
+        ticker,
+        titulo,
+        cor,
+        casas_decimais,
+        intervalo_usado):
+
+        with st.expander(
+            "Ver gráfico dos últimos períodos",
+            expanded=False):
+
+            minutos = st.selectbox(
+                "Período exibido",
+
+                options=[60, 240, 1440],
+
+                format_func=lambda x: {
+                    60: "Última 1 hora",
+                    240: "Últimas 4 horas",
+                    1440: "Últimas 24 horas"
+                }[x],
+
+                index=1,
+
+                key=f"periodo_{ticker}")
+
+            ultimo_horario = dados.index[-1] #seleciona o intervalo solicitado
+
+            inicio = ultimo_horario - pd.Timedelta(
+                minutes=minutos)
+
+            recorte = dados.loc[
+                dados.index >= inicio]
+
+            if len(recorte) < 2:
+
+                st.info(
+                    "Não há pontos suficientes neste período. "
+                    "Selecione uma janela maior.")
+
+                return
+
+            #AJUSTE DA ESCALA VERTICAL
+
+            menor_valor = float(recorte["Close"].min())
+            maior_valor = float(recorte["Close"].max())
+
+            amplitude = maior_valor - menor_valor
+
+            margem = max(
+                amplitude * 0.15,
+                abs((maior_valor + menor_valor) / 2) * 0.00005)
+
+            # CONSTRUÇÃO DO GRÁFICO
+
+            figura = go.Figure()
+
+            figura.add_trace(
+                go.Scatter(
+                    x=recorte.index,
+                    y=recorte["Close"],
+
+                    mode="lines",
+
+                    name=titulo,
+
+                    line=dict(
+                        color=cor,
+                        width=2.5),
+
+                    hovertemplate=(
+                        "%{x|%d/%m/%Y %H:%M}"
+                        f"<br>R$ %{{y:.{casas_decimais}f}}"
+                        "<extra></extra>")))
+
+            figura.update_layout(
+
+                height=280,
+
+                margin=dict(
+                    l=5,
+                    r=5,
+                    t=15,
+                    b=5),
+
+                showlegend=False,
+
+                hovermode="x unified",
+
+                uirevision=ticker,
+
+                paper_bgcolor="rgba(0,0,0,0)",
+                plot_bgcolor="rgba(0,0,0,0)",
+
+                xaxis=dict(
+                    title=None,
+                    showgrid=False,
+                    tickformat="%H:%M",
+                    rangeslider=dict(visible=False)),
+
+                yaxis=dict(
+                    title=None,
+                    showgrid=True,
+
+                    tickprefix="R$ ",
+
+                    tickformat=f".{casas_decimais}f",
+
+                    range=[
+                        menor_valor - margem,
+                        maior_valor + margem]))
+
+            st.plotly_chart(
+                figura,
+                use_container_width=True,
+                config={
+                    "displayModeBar": False,
+                    "responsive": True})
+
+            st.caption(
+                f"Resolução dos dados: candles de {intervalo_usado}.")
+
+    # PAINEL PRINCIPAL DE COTAÇÕES
+
+    @st.fragment(run_every="60s")
+    def painel_cotacoes_vale():
+
+        coluna_dolar, coluna_vale = st.columns(2, gap="large")
+
+        #DÓLAR
+
+        with coluna_dolar:
+
+            with st.container(border=True):
+
+                st.markdown("### Dólar")
+
+                try:
+
+                    dados_dolar, intervalo_dolar, erro_dolar = (
+                        carregar_cotacao_intradiaria(
+                            "BRL=X",
+                            ("5m", "15m", "30m", "60m")))
+
+                    if dados_dolar.empty:
+
+                        st.warning(
+                            "Cotação do dólar indisponível.")
+
+                        if erro_dolar:
+                            st.caption(erro_dolar)
+
+                    else:
+
+                        ultimo_valor = float(
+                            dados_dolar["Close"].iloc[-1])
+
+                        ultimo_horario = dados_dolar.index[-1]
+
+                        st.metric(
+                            label="USD / BRL",
+
+                            value=formatar_valor_reais(
+                                ultimo_valor,
+                                casas=4))
+
+                        st.caption(
+                            "Último dado recebido: "
+                            f"{formatar_horario(ultimo_horario)}")
+
+                        renderizar_grafico_intradiario(
+                            dados=dados_dolar,
+                            ticker="BRL=X",
+                            titulo="Dólar",
+                            cor="#D6A928",
+                            casas_decimais=4,
+                            intervalo_usado=intervalo_dolar)
+
+                except Exception as erro:
+
+                    st.error(
+                        "Não foi possível carregar o dólar.")
+
+                    st.caption(str(erro))
+
+        #VALE3
+
+        with coluna_vale:
+
+            with st.container(border=True):
+
+                st.markdown("### VALE3")
+                try:
+
+                    dados_vale, intervalo_vale, erro_vale = (
+                        carregar_cotacao_intradiaria(
+                            "VALE3.SA",
+                            ("1m", "5m", "15m")))
+
+                    if dados_vale.empty:
+
+                        st.warning(
+                            "Cotação de VALE3 indisponível.")
+
+                        if erro_vale:
+                            st.caption(erro_vale)
+
+                    else:
+
+                        ultimo_valor = float(
+                            dados_vale["Close"].iloc[-1])
+
+                        ultimo_horario = dados_vale.index[-1]
+
+                        st.metric(
+                            label="VALE3 — B3",
+
+                            value=formatar_valor_reais(
+                                ultimo_valor,
+                                casas=2))
+
+                        st.caption(
+                            "Último dado recebido: "
+                            f"{formatar_horario(ultimo_horario)}")
+
+                        renderizar_grafico_intradiario(
+                            dados=dados_vale,
+                            ticker="VALE3.SA",
+                            titulo="VALE3",
+                            cor="#009CA6",
+                            casas_decimais=2,
+                            intervalo_usado=intervalo_vale)
+
+                except Exception as erro:
+
+                    st.error(
+                        "Não foi possível carregar VALE3.")
+
+                    st.caption(str(erro))
+
+    #EXIBIÇÃO DO PAINEL
+
+    painel_cotacoes_vale()
+
+    st.caption(
+        "Fonte: Yahoo Finance. "
+        "Atualização automática a cada 60 segundos. "
+        "As cotações podem apresentar atraso em relação ao mercado.")
+
     #1. alinhamento de período -------------------------------------------------
     tabela_tri_f_valid = tri_financas.dropna(subset=["Trimestre"]).copy() #remove linhas sem trimestre
     periodos_list = tabela_tri_f_valid["Trimestre"].unique().tolist() #pega a lista de trimestres únicos disponíveis
@@ -489,6 +980,7 @@ if pagina == "Visão Geral":
     tabela_merc_tri = tri_mercado[tri_mercado["Trimestre"] == tri_sel].copy() #filtra a tabela de mercado para o tri selescionado
 
     #2. cards principais de destaque --------------------------------------------
+
     c1, c2, c3, c4 = st.columns(4)
 
     with c1:
@@ -567,6 +1059,90 @@ if pagina == "Visão Geral":
         local_layout(fig_macro, "Trimestre", yaxis=dict(title="Preço VALE3 (R$)"), yaxis2=dict(title="Dólar (USD/BRL)", overlaying="y", side="right"), height=380) #configura os dois eixos y e o layout
         local_mostrar(fig_macro)
 
+    marcacao_preta()
+
+    st.subheader("Análise da Vale S.A.")
+
+    with st.expander("1. A Vale está saudável financeiramente?"):
+        st.info("""
+        **Sim, com ressalvas.**
+
+        - Continua lucrativa e gerando caixa.
+        - Mantém uma operação de grande escala.
+        - Porém, o lucro, as margens e o retorno sobre patrimônio vêm enfraquecendo.
+        - O aumento das despesas e do endividamento merece atenção.
+        """)
+
+    with st.expander("2. O que mudou de 2019 para cá?"):
+        st.info("""
+
+        | Indicador | 2019 | 2025 |
+        |---|---:|---:|
+        | Receita líquida | R$ 148,6 bi | R$ 213,6 bi |
+        | Lucro líquido | -R$ 8,7 bi | R$ 13,8 bi |
+        | EBITDA | R$ 19,7 bi | R$ 77,6 bi |
+        | Custos operacionais | R$ 143,7 bi | R$ 153 bi |
+
+        **Principais características:**
+
+        - **2019:** impacto de Brumadinho e prejuízo.
+        - **2020–2021:** recuperação extraordinária e recordes de rentabilidade.
+        - **2022–2023:** desaceleração após o pico das commodities.
+        - **2024–2025:** margens menores, custos elevados e redução do lucro.
+        """)
+
+    with st.expander("3. O que esperar daqui a 5 anos (2031)?"):
+        st.info("""
+        **Cenário provável, não uma previsão matemática:**
+
+        - O minério de ferro continuará sendo fundamental.
+        - O cobre poderá ganhar importância com a eletrificação e a transição energética.
+        - Custos, demanda chinesa e preços internacionais serão determinantes.
+        - Se conseguir controlar despesas e diversificar sua produção, a Vale poderá recuperar sua rentabilidade.
+
+        **Principal risco:** depender excessivamente do preço do minério de ferro.
+        """)
+
+    with st.expander("4. O que mantém a Vale em pé?"):
+        st.info("""
+        1. **Escala produtiva:** capacidade de produzir centenas de milhões de toneladas de minério.
+        2. **Mercado internacional:** demanda global por aço e minerais.
+        3. **Geração de caixa:** capacidade de financiar operações e investimentos.
+        4. **Diversificação:** cobre, níquel e outros minerais.
+        5. **Ativos estratégicos:** minas, ferrovias, portos e infraestrutura logística.
+        """)
+
+    with st.expander("5. Qual é o principal problema da Vale?"):
+        st.info("""
+        **A rentabilidade.**
+
+        A receita de 2025 foi superior à de 2019, mas o lucro continua relativamente baixo diante do tamanho da operação.
+
+        A empresa consegue faturar muito, mas precisa transformar uma parcela maior desse faturamento em lucro.
+        """)
+
+    with st.expander("6. Avaliação"):
+        st.info("""
+
+        | Critério | Avaliação |
+        |---|---|
+        | Saúde financeira | Boa |
+        | Rentabilidade | Em queda |
+        | Capacidade produtiva | Forte |
+        | Perspectiva de longo prazo | Promissora, com riscos |
+
+        **Como pode recuperar a rentabilidade?**
+
+        - Reduzindo custos e despesas operacionais.
+        - Melhorando a eficiência da produção.
+        - Ampliando investimentos em cobre.
+        - Priorizando minérios de maior qualidade.
+        - Controlando o endividamento.
+
+        **Conclusão:** a Vale não parece uma empresa em crise de sobrevivência, mas uma gigante que precisa recuperar eficiência e rentabilidade para sustentar seu crescimento.
+        """)
+
+
 # PÁGINA FINANCEIRA ======================================================================================================================================
 
 if pagina == "Financeiro":
@@ -629,7 +1205,8 @@ if pagina == "Financeiro":
                 dados_tri,
                 tabela_validos,
                 "slider_rec",
-                col_tempo=col_tempo,)
+                col_tempo=col_tempo,
+                help="Mostra o faturamento real da empresa após descontar impostos, devoluções e descontos.")
 
         with col2:
             card_expansivel_real(
@@ -638,7 +1215,8 @@ if pagina == "Financeiro":
                 dados_tri,
                 tabela_validos,
                 "slider_ebitda",
-                col_tempo=col_tempo,)
+                col_tempo=col_tempo,
+                help="Mede a geração de caixa operacional da empresa, desconsiderando juros, impostos, depreciação e amortização.")
 
         with col3:
             card_expansivel_real(
@@ -647,7 +1225,8 @@ if pagina == "Financeiro":
                 dados_tri,
                 tabela_validos,
                 "slider_lucro",
-                col_tempo=col_tempo,)
+                col_tempo=col_tempo,
+                help="Mostra o ganho real final da empresa após descontar todos os custos, despesas, juros e impostos. ")
 
         with col4:
             card_expansivel_geral(
@@ -656,7 +1235,8 @@ if pagina == "Financeiro":
                 dados_tri,
                 tabela_validos,
                 "slider_margem",
-                col_tempo=col_tempo,)
+                col_tempo=col_tempo,
+                help="Mostra o percentual da receita que sobra após descontar os custos diretos de produção ou venda.")
 
         with col5:
             card_expansivel_real(
@@ -665,7 +1245,8 @@ if pagina == "Financeiro":
                 dados_tri,
                 tabela_validos,
                 "slider_divliq",
-                col_tempo=col_tempo,)
+                col_tempo=col_tempo,
+                help="Mostra o endividamento real da empresa após descontar o dinheiro que ela já possui em caixa.")
 
         #LINHA 2 DE CARDS --------------------------------------------------
         col6, col7, col8, col9, col10 = st.columns(5)
@@ -682,6 +1263,7 @@ if pagina == "Financeiro":
                     tabela_validos,
                     "slider_liqcor",
                     col_tempo=col_tempo,
+                    help="Mostra a capacidade da empresa de pagar suas dívidas de curto prazo usando seus recursos disponíveis rapidamente.",
                     prefixo="", sufixo="",) #correção: liquidez é índice, sem R$ nem Bi
             else:
                 card_expansivel_real(
@@ -690,7 +1272,8 @@ if pagina == "Financeiro":
                     dados_tri,
                     tabela_validos,
                     "slider_caixa_eq",
-                    col_tempo=col_tempo,)
+                    col_tempo=col_tempo,
+                    help="Mostra o total de dinheiro imediatamente disponível da empresa, somando o saldo em conta e aplicações de liquidez imediata.")
 
         with col7:
             card_expansivel_real(
@@ -699,7 +1282,8 @@ if pagina == "Financeiro":
                 dados_tri,
                 tabela_validos,
                 "slider_resultoper",
-                col_tempo=col_tempo,)
+                col_tempo=col_tempo,
+                help="Mostra o lucro operacional da empresa antes do desconto de juros financeiros e impostos sobre o lucro.")
 
         with col8:
             card_expansivel_acao(
@@ -708,7 +1292,8 @@ if pagina == "Financeiro":
                 dados_tri,
                 tabela_validos,
                 "slider_vale3",
-                col_tempo=col_tempo,)
+                col_tempo=col_tempo,
+                help="Ações da Vale na Bolsa de Valores de São Paulo")
 
         with col9:
             card_expansivel_acao(
@@ -718,7 +1303,8 @@ if pagina == "Financeiro":
                 tabela_validos,
                 "slider_vale_usd",
                 simbolo="US\$ " if visao == "Trimestral" else "",
-                col_tempo=col_tempo,)
+                col_tempo=col_tempo,
+                help="Ações da Vale na Bolsa de Valores de Nova Iorque")
 
         with col10:
             card_expansivel_acao(
@@ -728,7 +1314,8 @@ if pagina == "Financeiro":
                 tabela_validos,
                 "slider_xvalo",
                 simbolo="€",
-                col_tempo=col_tempo,)
+                col_tempo=col_tempo,
+                help="Ações da Vale da Bolsa de Valores de Madrid")
 
         marcacao_preta()
 
@@ -767,6 +1354,7 @@ if pagina == "Financeiro":
             fig_resultado = px.line(
                 _bi(tabela_periodo, cols_res), x=col_tempo, y=cols_res, markers=True,
                 labels={"value": "R\$ (Bilhões)", "variable": "Indicador"},)
+            aplicar_destaques(fig_resultado, "fin_resultado")
             _mostrar(_layout(fig_resultado, col_tempo, yaxis_title="R\$ (Bilhões)"))
 
             st.subheader("Composição de Capital / Estrutura")
@@ -777,6 +1365,7 @@ if pagina == "Financeiro":
             fig_balanco = px.bar(
                 _bi(tabela_periodo, cols_balanco), x=col_tempo, y=cols_balanco, barmode="group",
                 labels={"value": "R\$ (Bilhões)", "variable": "Estrutura"},)
+            aplicar_destaques(fig_balanco, "fin_balanco")
             _mostrar(_layout(fig_balanco, col_tempo, bargap=0.15, yaxis_title="R\$ (Bilhões)"))
 
         with col12:
@@ -787,6 +1376,7 @@ if pagina == "Financeiro":
             fig_caixa = go.Figure([
                 go.Bar(x=tabela_fcl[col_tempo], y=tabela_fcl["Fluxo de Caixa Operacional"], name="FCO (Operacional)"),
                 go.Bar(x=tabela_fcl[col_tempo], y=tabela_fcl["Fluxo de Caixa Livre"], name="FCL (Livre)"),])
+            aplicar_destaques(fig_caixa, "fin_caixa")
             _mostrar(_layout(fig_caixa, col_tempo, barmode="group", bargap=0.15, yaxis_title="R\$ (Bilhões)"))
 
             st.subheader("Desempenho das Ações: VALE3 (B3) vs. VALE (NYSE)")
@@ -802,6 +1392,7 @@ if pagina == "Financeiro":
                 fig_acoes, col_tempo,
                 yaxis=dict(title="Preço VALE3"),
                 yaxis2=dict(title="Preço VALE (USD)", overlaying="y", side="right"),)
+            aplicar_destaques(fig_acoes, "fin_acoes")
             _mostrar(fig_acoes)
             
         #PAINEL DE BRUMADINHO E CUSTOS OPERACIONAIS =======================================
@@ -836,6 +1427,7 @@ if pagina == "Financeiro":
                     y="Brumadinho_Bi",
                     color_discrete_sequence=["#DC2626"],
                     labels={"Brumadinho_Bi": "R\$ (Bilhões)", "Trimestre": "Trimestre"})
+                aplicar_destaques(fig_brum, "fin_brum")
                 _mostrar(_layout(fig_brum, "Trimestre", yaxis_title="R\$ (Bilhões)"), key="fig_brum_painel_tri")
                 
             with c_brum2:
@@ -852,6 +1444,7 @@ if pagina == "Financeiro":
                         markers=True,
                         color_discrete_sequence=["#F59E0B"],
                         labels={"Custos_Bi": "R\$ (Bilhões)", "Trimestre": "Trimestre"})
+                    aplicar_destaques(fig_custos_tri, "fin_custos_tri")
                     _mostrar(_layout(fig_custos_tri, "Trimestre", yaxis_title="R\$ (Bilhões)"), key="fig_custos_painel_tri")
                 else:
                     st.info("Coluna de Custos e Despesas Operacionais não encontrada nos dados trimestrais.")
@@ -869,7 +1462,14 @@ if pagina == "Financeiro":
                 markers=True,
                 color_discrete_sequence=["#F59E0B"],
                 labels={"Custos_Anual_Bi": "R\$ (Bilhões)", "Ano": "Ano"})
+            aplicar_destaques(fig_custos_anual, "fin_custos_anual")
             _mostrar(_layout(fig_custos_anual, "Ano", yaxis_title="R\$ (Bilhões)"), key="fig_custos_painel_anual")
+
+        renderizar_painel_exportacao_financeiro(
+            tabela_tri=tri_financas,
+            tabela_anual=anual_financas,
+            titulo_relatorio="Indicadores Financeiros da Vale S.A.",
+            key_prefix="financeiro")
 
     #2. VISÃO APENAS DE PREVISÕES (SIMULADOR ML) ===================================================================
     elif visao == "Previsões":
@@ -1145,6 +1745,7 @@ if pagina == "Produção":
                 barmode="group", bargap=0.15, hovermode="x unified",
                 legend=dict(orientation="h", y=1.1, title=""),
                 xaxis_title="Ano", yaxis_title="Mil Toneladas (kt)", height=400)
+            aplicar_destaques(fig_cu, "prod_cobre")
             st.plotly_chart(fig_cu, use_container_width=True)
 
         with g_col2:
@@ -1156,6 +1757,7 @@ if pagina == "Produção":
                 barmode="group", bargap=0.15, hovermode="x unified",
                 legend=dict(orientation="h", y=1.1, title=""),
                 xaxis_title="Ano", yaxis_title="Milhões de Toneladas (Mt)", height=400)
+            aplicar_destaques(fig_pel, "prod_pelotas")
             st.plotly_chart(fig_pel, use_container_width=True)
 
             st.subheader("Níquel: Produção vs. Vendas (kt)")
@@ -1367,7 +1969,7 @@ if pagina == "Produção":
         col_ml1, col_ml2 = st.columns([1, 2])
 
         with col_ml1:
-            st.markdown("####Parâmetros da Projeção")
+            st.markdown("#### Parâmetros da Projeção")
             prod_ml_sel = st.selectbox(
                 "Selecione o Mineral para Previsão:",
                 options=list(modelos_prod.keys()),
@@ -1407,7 +2009,7 @@ if pagina == "Produção":
             df_futuro = pd.DataFrame(novas_projecoes)
             
             with col_ml2:
-                st.markdown(f"####Projeção Estimada — {prod_ml_sel}")
+                st.markdown(f"#### Projeção Estimada - {prod_ml_sel}")
                 
                 cols_kpi_ml = st.columns(len(df_futuro))
                 vol_ult = ultimos_vols.get(prod_ml_sel, 1.0)
@@ -1560,6 +2162,7 @@ if pagina == "Mercado":
                 xaxis_title="Ano",
                 yaxis_title="Preço",
                 height=400,)
+            aplicar_destaques(fig_fe_a, "merc_ferro_anual")
             st.plotly_chart(fig_fe_a, use_container_width=True)
 
             st.subheader("Cobre: Realizado Vale vs. Média Mundial (USD/t)")
@@ -1582,6 +2185,7 @@ if pagina == "Mercado":
                 xaxis_title="Ano",
                 yaxis_title="USD / Tonelada",
                 height=400,)
+            aplicar_destaques(fig_cu_a, "merc_cobre_anual")
             st.plotly_chart(fig_cu_a, use_container_width=True)
 
         with g2:
@@ -1594,6 +2198,7 @@ if pagina == "Mercado":
                 color_discrete_sequence=["#2563EB"],
                 labels={"USD/BRL Médio": "Cotação (R$)"},)
             fig_usd_a.update_layout(hovermode="x unified", height=400)
+            aplicar_destaques(fig_usd_a, "merc_dolar_anual")
             st.plotly_chart(fig_usd_a, use_container_width=True)
 
             st.subheader("Níquel: Realizado Vale vs. Média Mundial (USD/t)")
@@ -1616,6 +2221,7 @@ if pagina == "Mercado":
                 xaxis_title="Ano",
                 yaxis_title="USD / Tonelada",
                 height=400,)
+            aplicar_destaques(fig_ni_a, "merc_niquel_anual")
             st.plotly_chart(fig_ni_a, use_container_width=True)
 
     #VISÃO TRIMESTRAL =====================================================
@@ -1690,6 +2296,7 @@ if pagina == "Mercado":
                 hovermode="x unified",
                 legend=dict(orientation="h", y=1.1, title=""),
                 height=400,)
+            aplicar_destaques(fig_fe_t, "merc_ferro_tri")
             st.plotly_chart(fig_fe_t, use_container_width=True)
 
             st.subheader("Cobre: Realizado Vale vs. Mercado (USD/t)")
@@ -1710,6 +2317,7 @@ if pagina == "Mercado":
                 hovermode="x unified",
                 legend=dict(orientation="h", y=1.1, title=""),
                 height=400,)
+            aplicar_destaques(fig_cu_t, "merc_cobre_tri")
             st.plotly_chart(fig_cu_t, use_container_width=True)
 
         with g2:
@@ -1722,6 +2330,7 @@ if pagina == "Mercado":
                 color_discrete_sequence=["#2563EB"],
                 labels={"Média Trimestral Dólar (BRL)": "R$"},)
             fig_usd_t.update_layout(hovermode="x unified", height=400)
+            aplicar_destaques(fig_usd_t, "merc_dolar_tri")
             st.plotly_chart(fig_usd_t, use_container_width=True)
 
             st.subheader("Níquel: Realizado Vale vs. Mercado (USD/t)")
@@ -1742,6 +2351,7 @@ if pagina == "Mercado":
                 hovermode="x unified",
                 legend=dict(orientation="h", y=1.1, title=""),
                 height=400,)
+            aplicar_destaques(fig_ni_t, "merc_niquel_tri")
             st.plotly_chart(fig_ni_t, use_container_width=True)
     
     #EXPORTAÇÃO - MERCADO
@@ -1847,7 +2457,7 @@ if pagina == "Mercado":
         st.session_state["slider_m_cu"] = min(float(st.session_state["slider_m_cu"]), max_cu_slider)
 
         #3. botões de Cenários de Mercado
-        st.markdown("###Simulação de Cenários Globais de Commodities")
+        st.markdown("### Simulação de Cenários Globais de Commodities")
         c_m1, c_m2, c_m3 = st.columns(3)
 
         c_m1.button("Cenário Base (Atual)", on_click=aplicar_cenario_mercado_base, use_container_width=True)
@@ -1989,7 +2599,7 @@ if pagina == "Mercado":
 
 if pagina == "Investidores":
 
-    st.title("Para Investidores — Análise de Valor & Valuation (Vale S.A.)")
+    st.title("Para Investidores - Análise de Valor & Valuation (Vale S.A.)")
     st.markdown("### Indicadores de Rentabilidade, Retorno ao Acionista, Drivers de Mercado e Simulador de Preço-Alvo (ML)")
 
     #funções auxiliares locais para garantir compatibilidade de colunas e escalas
@@ -2050,7 +2660,7 @@ if pagina == "Investidores":
         ["Fundamentos & Retorno ao Acionista", "Correlação & Drivers de Mercado", "Simulador de Preço-Alvo & Aporte (ML)"],
         horizontal=True)
 
-    # MÓDULO 1: FUNDAMENTOS, DIVIDENDOS (FCL) E RETORNO AO ACIONISTA
+    #MÓDULO 1: FUNDAMENTOS, DIVIDENDOS (FCL) E RETORNO AO ACIONISTA
 
     if aba_inv == "Fundamentos & Retorno ao Acionista":
 
@@ -2098,6 +2708,7 @@ if pagina == "Investidores":
                 labels={"value": "Retorno Anual (%)", "Ano_Str": "Ano", "variable": "Ativo"},
                 color_discrete_sequence=["#00529B", "#00A859", "#F59E0B"])
             fig_ret.update_layout(hovermode="x unified", legend=dict(orientation="h", y=1.12, title=""), height=400)
+            aplicar_destaques(fig_ret, "inv_retorno")
             st.plotly_chart(fig_ret, use_container_width=True)
 
             st.subheader("Capacidade de Dividendos: FCO vs. Fluxo de Caixa Livre (R$ Bi)")
@@ -2113,6 +2724,7 @@ if pagina == "Investidores":
                 xaxis_title="Ano",
                 yaxis_title="R$ (Bilhões)",
                 height=400)
+            aplicar_destaques(fig_div_cap, "inv_caixa")
             st.plotly_chart(fig_div_cap, use_container_width=True)
 
         with g2:
@@ -2135,6 +2747,7 @@ if pagina == "Investidores":
                 xaxis_title="Ano",
                 yaxis_title="Percentual (%)",
                 height=400)
+            aplicar_destaques(fig_rent, "inv_rent")
             st.plotly_chart(fig_rent, use_container_width=True)
 
             st.subheader("Endividamento (%) vs. Dívida Líquida (US$ Bi)")
@@ -2161,6 +2774,7 @@ if pagina == "Investidores":
                 yaxis=dict(title="Dívida Líquida (US$ Bi)"),
                 yaxis2=dict(title="Endividamento (%)", overlaying="y", side="right"),
                 height=400)
+            aplicar_destaques(fig_divida, "inv_divida")
             st.plotly_chart(fig_divida, use_container_width=True)
 
     #MÓDULO 2: CORRELAÇÃO E DRIVERS DE VALOR DA AÇÃO
@@ -2227,13 +2841,13 @@ if pagina == "Investidores":
             st.plotly_chart(fig_sync, use_container_width=True)
 
         st.info(
-            "💡 **Leitura para o Investidor:** A correlação histórica mostra que a cotação de **VALE3** responde fortemente ao **Preço Realizado do Minério de Ferro** (correlação > 0,80) e à **Receita Líquida**, enquanto o **Dólar (USD/BRL)** atua como proteção natural (hedge cambial) para receitas em reais.")
+            "💡 **Leitura para o Investidor:** Quando o preço do minério de ferro sobe, as ações da Vale geralmente também tendem a subir. O mesmo acontece quando a empresa aumenta sua receita. Já o dólar pode ajudar a Vale quando seu valor aumenta, pois a empresa recebe parte de suas receitas em moeda estrangeira.")
 
     #MÓDULO 3: SIMULADOR DE VALUATION (PREÇO-ALVO ML) & RETORNO DE APORTE
 
     elif aba_inv == "Simulador de Preço-Alvo & Aporte (ML)":
 
-        st.subheader("Modelo Preditivo de Valuation — Preço Justo Estimado (VALE3 & VALE ADR)")
+        st.subheader("Modelo Preditivo de Valuation - Preço Justo Estimado (VALE3 & VALE ADR)")
         st.markdown("##### Regressão Linear Múltipla treinada com Fundamentos Trimestrais (Minério, Câmbio, Receita e FCL)")
 
         def treinar_valuation_ml(t_fin, t_merc):
@@ -2377,3 +2991,16 @@ if pagina == "Investidores":
                 "Patrimônio Projetado no Cenário",
                 f"R$ {valor_projetado:,.2f}",
                 delta=f"R$ {lucro_estimado:+,.2f} ({upside_v3:+.1f}%)")
+
+    #EXPORTAÇÃO DAS BASES UTILIZADAS NA ANÁLISE DE INVESTIDORES
+    renderizar_painel_exportacao_financeiro(
+        tabela_tri=tri_financas,
+        tabela_anual=anual_financas,
+        titulo_relatorio="Fundamentos Financeiros da Vale S.A. - Investidores",
+        key_prefix="investidores_financeiro")
+
+    renderizar_painel_exportacao_mercado(
+        tabela_tri=tri_mercado,
+        tabela_anual=anual_mercado,
+        titulo_relatorio="Mercado e Economia - Drivers do Investidor",
+        key_prefix="investidores_mercado")
